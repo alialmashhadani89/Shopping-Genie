@@ -14,6 +14,8 @@ from googleapiclient.discovery import build
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
 amazon_base_url = "https://www.amazon.com/s?k="
 walmart_base_url = "https://www.walmart.com/search/?query="
+# to be accessed from the other file.
+result_list = []
 
 # my API key for the google search engine.
 api_key = "AIzaSyCJjHkpKCmznN_gvY9KJK1I-YQWiqdvKrA"
@@ -44,7 +46,7 @@ def search_result_with_google(input):
 
     for item in finalResult:
         print_result(item)
-
+    result_list = finalResult
 
 
 def search_results_bestbuy(search_term):
@@ -57,7 +59,8 @@ def search_results_walmart(search_term):
     print(response.text)
 
 def search_results_amazon(search_term):
-    response = requests.get(amazon_base_url + search_term)
+    user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
+    response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
     print(response.text)
 
 
@@ -68,8 +71,8 @@ def api():
 
     #search_results_bestbuy(search)
     #search_result_with_google(search)
-    search_results_walmart(search)
-    # we need to fix the gard of the website.
+    #search_results_walmart(search)
+    #we need to fix the gard of the website.
     search_results_amazon(search)
 
     return json.dumps({"search": search})
