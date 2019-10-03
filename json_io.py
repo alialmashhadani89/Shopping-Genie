@@ -17,6 +17,9 @@ walmart_base_url = "https://www.walmart.com/search/?query="
 # to be accessed from the other file.
 result_list = []
 
+# to paypass the website restriction
+user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
+
 # my API key for the google search engine.
 api_key = "AIzaSyCJjHkpKCmznN_gvY9KJK1I-YQWiqdvKrA"
 
@@ -50,16 +53,14 @@ def search_result_with_google(input):
 
 
 def search_results_bestbuy(search_term):
-    user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
     response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
     print(response.text)
 
 def search_results_walmart(search_term):
-    response = requests.get(walmart_base_url + search_term)
+    response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
     print(response.text)
 
 def search_results_amazon(search_term):
-    user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
     response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
     print(response.text)
 
@@ -69,11 +70,13 @@ def search_results_amazon(search_term):
 def api():
     search = request.args.get('search')
 
-    #search_results_bestbuy(search)
+    # to use google search engine
     #search_result_with_google(search)
-    #search_results_walmart(search)
-    #we need to fix the gard of the website.
-    search_results_amazon(search)
+
+    # to search straight in in each website.
+    #search_results_bestbuy(search)
+    search_results_walmart(search)
+    #search_results_amazon(search)
 
     return json.dumps({"search": search})
 
