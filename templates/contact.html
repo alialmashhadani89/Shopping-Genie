@@ -1,17 +1,54 @@
-
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>About Page</title>
-  </head>
-  <body style="background-color:green;">
-  <header>
-      <ul class="menu">
-		<li><a href="index">Home</a></li>
-	</ul>
-  </header>
-    <center><h1> This is the contact page! </h1></center>
 
-  </body>
+<html>
+<head>
+
+	<title>Price Genie_Contact Page </title>
+
+	<meta name="viewreport" content="width=device-width, intial-scale=1">
+
+    {% assets "contactstyle" %}
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/contact_style.css') }}">
+    {% endassets %}
+
+</head>
+
+
+
+
+<body>
+
+<div class="topnav">
+  <a href="index">Home</a>
+  <a href="about">About</a>
+  <a href="feedback">Feedback</a>
+  <a class="active" href="contact">Contact</a>
+</div>
+
+
+
+<div class ="img">
+</div>
+
+<img src = "static/images/contact-us-banner.jpg" width="1450px">
+
+
+
+<div class = "text">
+
+<h2> How can we help you? </h2>
+<h4> Please contact us, if you have any questions. </h4>
+<h4> Call-US: 888-888-8888 </h4>
+<h4> Email: xxxxxx@price_genie.com </h4>
+
+</div>
+
+
+
+
+
+
+
+</body>
+
 </html>

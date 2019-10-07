@@ -9,11 +9,13 @@ from jinja2 import TemplateNotFound
 from urllib.request import urlopen
 import webbrowser
 from googleapiclient.discovery import build
+from web_scraping import *
 
 # base url for the 3 website we using for the project.
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
 amazon_base_url = "https://www.amazon.com/s?k="
 walmart_base_url = "https://www.walmart.com/search/?query="
+bh_base_url = "https://www.bhphotovideo.com/c/search?Ntt="
 # to be accessed from the other file.
 result_list = []
 
@@ -39,6 +41,7 @@ def print_result(item):
     time.sleep(2)
     print(item['title'], item['link'])
 
+
 def search_result_with_google(input):
     finalResult = []
 
@@ -53,16 +56,28 @@ def search_result_with_google(input):
 
 
 def search_results_bestbuy(search_term):
-    response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
-    print(response.text)
+    #response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
+    #print(response.text)
+    response = requests.get(bestbuy_base_url+search_term,headers=user_agent,allow_redirects=True).text
+    wesite_response_link(response)
 
 def search_results_walmart(search_term):
-    response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
-    print(response.text)
+    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
+    #print(response.text)
+    response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
+    wesite_response_link(response)
 
 def search_results_amazon(search_term):
-    response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
-    print(response.text)
+    #response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
+    #print(response.text)
+    response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True).text
+    wesite_response_link(response)
+
+def search_results_bh(search_term):
+    #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True)
+    # print(response.text)
+    response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
+    wesite_response_link(response)
 
 
 # the main API
@@ -71,12 +86,13 @@ def api():
     search = request.args.get('search')
 
     # to use google search engine
-    #search_result_with_google(search)
+    search_result_with_google(search) # bing question mark.
 
     # to search straight in in each website.
     #search_results_bestbuy(search)
-    search_results_walmart(search)
+    #search_results_walmart(search)
     #search_results_amazon(search)
+    #search_results_bh(search)
 
     return json.dumps({"search": search})
 
@@ -134,7 +150,7 @@ Note for the next class:
 * finish the details page so we can put the info from (databases) on it or from the search result.
 * working on the other pages. 
 * for the feedback page, we need to store the input in something so we can review it.
-* 
+* we might need to change amazon for B&H website since it bing bad
 
 
 """""

@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.topnav{ /*top navigation bar*/
+
+  background-color: white;
+  overflow: hidden;
+}
+
+.topnav a{
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover{
+  background-color: #ddd;
+  color: red;
+}
+
+.topnav a.active{
+  background-color: orange;
+  color: black;
+}
+
+
+.text{
+  margin-left: 160px;
+}
+
+
+.text2{
+  margin-top: -560px;
+  margin-left: 850px;
+}
+
+
+/* Submit button
+.mySubmit{
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.mySubmit s{
+  color: black;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.mySubmit s.active{
+  background-color: orange;
+  color: black;
+}
+
+input[type="Submit"]{
+  width: 100px;
+  height: 100px;
+}

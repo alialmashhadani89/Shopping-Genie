@@ -1,16 +1,36 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>About Page</title>
-  </head>
-  <body style="background-color:powderblue;">
-  <header>
-      <ul class="menu">
-		<li><a href="index">Home</a></li>
-	</ul>
-  </header>
-    <center><h1> This is the about page! </h1></center>
 
-  </body>
+<html>
+<head>
+
+	<title>Price Genie_About Page </title>
+
+	<meta name="viewreport" content="width=device-width, intial-scale=1">
+    {% assets "about_style" %}
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/about_style.css') }}">
+    {% endassets %}
+
+</head>
+
+
+
+<body>
+
+	<div class="topnav">
+  <a href="index">Home</a>
+  <a class="active" href="about">About</a>
+  <a href="feedback">Feedback</a>
+  <a href="contact">Contact</a>
+</div>
+
+
+
+<div class="text">
+<h2> Who we are? </h2>
+
+</div>
+
+
+</body>
+
 </html>
