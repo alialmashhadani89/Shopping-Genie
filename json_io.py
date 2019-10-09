@@ -15,7 +15,7 @@ from web_scraping import *
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
 amazon_base_url = "https://www.amazon.com/s?k="
 walmart_base_url = "https://www.walmart.com/search/?query="
-bh_base_url = "https://www.bhphotovideo.com/c/search?Ntt="
+bh_base_url = "https://www.bhphotovideo.com/c/search?sts=ma&N=0&pn=1&Ntt="
 # to be accessed from the other file.
 result_list = []
 
@@ -59,25 +59,27 @@ def search_results_bestbuy(search_term):
     #response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
     #print(response.text)
     response = requests.get(bestbuy_base_url+search_term,headers=user_agent,allow_redirects=True).text
-    wesite_response_link(response)
+    #wesite_response_link(response)
 
 def search_results_walmart(search_term):
     #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
     #print(response.text)
     response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    wesite_response_link(response)
+    #wesite_response_link(response)
 
 def search_results_amazon(search_term):
     #response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
     #print(response.text)
     response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    wesite_response_link(response)
+    #wesite_response_link(response)
 
 def search_results_bh(search_term):
     #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True)
     # print(response.text)
-    response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    wesite_response_link(response)
+    #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
+    #wesite_bh_info(bh_base_url+search_term)
+    wesite_bh_info(bh_base_url+search_term )
+
 
 
 # the main API
@@ -86,13 +88,13 @@ def api():
     search = request.args.get('search')
 
     # to use google search engine
-    search_result_with_google(search) # bing question mark.
+    #search_result_with_google(search) # bing question mark.
 
     # to search straight in in each website.
     #search_results_bestbuy(search)
     #search_results_walmart(search)
     #search_results_amazon(search)
-    #search_results_bh(search)
+    search_results_bh(search)
 
     return json.dumps({"search": search})
 
@@ -140,17 +142,5 @@ cacheId
 formattedUrl
 htmlFormattedUrl
 pagemap
-
-
-Note for the next class:
-
-* to avoid using a confusing (one word) words that might start pulling products we don't need. 
-* web scarping?
-* store the info we need in the databases (MySql)
-* finish the details page so we can put the info from (databases) on it or from the search result.
-* working on the other pages. 
-* for the feedback page, we need to store the input in something so we can review it.
-* we might need to change amazon for B&H website since it bing bad
-
 
 """""
