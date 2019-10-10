@@ -5,20 +5,20 @@ from json_io import *
 
 # if the item not in the store, it will reject the search.
 # in that case, we will save time and stop getting wrong items in out date bases.
-def search_grad(response,search_tearm):
+def search_guard(response,search_tearm):
     soup = BeautifulSoup(response, 'lxml')
     item_name = soup.find_all('span', itemprop="name")
     item_brand = soup.find_all('span', itemprop="brand")
     if search_tearm.find('\"') == -1:
         index_of_tilt = str(item_name[0].text).find('\"') + 1
-        full_name = str(item_brand[0].text).lower()+ str(item_name[0].text).lower()[index_of_tilt:]
-        if str(search_tearm).lower() in full_name:
+        full_item_name = str(item_brand[0].text).lower() + str(item_name[0].text).lower()[index_of_tilt:]
+        if str(search_tearm).lower() in full_item_name:
             return True
         else:
             return False
     else:
-        full_name2 =  str(item_brand[0].text).lower() + " " + str(item_name[0].text).lower()
-        if str(search_tearm).lower() in full_name2:
+        full_item_name =  str(item_brand[0].text).lower() + " " + str(item_name[0].text).lower()
+        if str(search_tearm).lower() in full_item_name:
             return True
         else:
             return False
@@ -47,7 +47,7 @@ def wesite_bh_info(link,search_tearm):
 
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
-    if search_grad(response,search_tearm):
+    if search_guard(response,search_tearm):
 
         if soup.find('div', class_="pagination-zone") == None:
            wesite_bh_info_helping(response)
