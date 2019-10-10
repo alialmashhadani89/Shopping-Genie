@@ -8,10 +8,20 @@ from json_io import *
 def search_grad(response,search_tearm):
     soup = BeautifulSoup(response, 'lxml')
     item_name = soup.find_all('span', itemprop="name")
-    if str(search_tearm).lower() in str(item_name[0].text).lower():
-        return True
+    item_brand = soup.find_all('span', itemprop="brand")
+    if search_tearm.find('\"') == -1:
+        index_of_tilt = str(item_name[0].text).find('\"') + 1
+        full_name = str(item_brand[0].text).lower()+ str(item_name[0].text).lower()[index_of_tilt:]
+        if str(search_tearm).lower() in full_name:
+            return True
+        else:
+            return False
     else:
-        return False
+        full_name2 =  str(item_brand[0].text).lower() + " " + str(item_name[0].text).lower()
+        if str(search_tearm).lower() in full_name2:
+            return True
+        else:
+            return False
 
 
 # getting the info from the website.
@@ -40,7 +50,7 @@ def wesite_bh_info(link,search_tearm):
     if search_grad(response,search_tearm):
 
         if soup.find('div', class_="pagination-zone") == None:
-           wesite_bh_info_helping(response,search_tearm)
+           wesite_bh_info_helping(response)
         else:
             page_number_list = soup.find('div', class_="bottom pagination js-pagination clearfix left")
             page_number = page_number_list.find_all("a", class_="pn-btn active litGrayBtn")
@@ -57,6 +67,6 @@ def wesite_bh_info(link,search_tearm):
             # getting in info
             for links in link_list:
                 response = requests.get(links, headers=user_agent, allow_redirects=True).text
-                wesite_bh_info_helping(response,search_tearm)
+                wesite_bh_info_helping(response)
     else:
         print("We are sorry!The item you looking for is not in the B&H store")
