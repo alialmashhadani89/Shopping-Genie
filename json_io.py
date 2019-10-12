@@ -78,7 +78,7 @@ def search_results_bh(search_term):
     # print(response.text)
     #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
     #wesite_bh_info(bh_base_url+search_term)
-    wesite_bh_info(bh_base_url+search_term , search_term)
+    website_bh_info(bh_base_url+search_term , search_term)
 
 
 
