@@ -10,6 +10,7 @@ from urllib.request import urlopen
 import webbrowser
 from googleapiclient.discovery import build
 from web_scraping import *
+from item_page_scraping_utilities import *
 
 # base url for the 3 website we using for the project.
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
@@ -64,8 +65,9 @@ def search_results_bestbuy(search_term):
 def search_results_walmart(search_term):
     #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
     #print(response.text)
-    response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
+    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
     #wesite_response_link(response)
+    page_parser_walmart(walmart_base_url+search_term)
 
 def search_results_amazon(search_term):
     #response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)

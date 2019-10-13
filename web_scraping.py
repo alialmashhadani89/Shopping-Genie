@@ -3,23 +3,17 @@ import requests
 import re
 from json_io import *
 
-
 def check_item(item_brand, item_name, search_term):
-    if search_term.find('\"') == -1:
-        index_of_tilt = str(item_name[0].text).find('\"') + 1
-        full_item_name = str(item_brand[0].text).lower() + str(item_name[0].text).lower()[index_of_tilt:]
-        print(full_item_name)
-        print(search_term)
-        if str(search_term).lower() in full_item_name:
-            return True
-        else:
-            return False
+    check_number = 0
+    full_item_name = str(item_brand[0].text).lower() + " " + str(item_name[0].text).lower()
+    for word in search_term.split():
+        if len(word)>=2:
+            if str(word).lower() in full_item_name:
+                check_number += 1
+    if check_number >= 2:
+        return True
     else:
-        full_item_name =  str(item_brand[0].text).lower() + " " + str(item_name[0].text).lower()
-        if str(search_term).lower() in full_item_name:
-            return True
-        else:
-            return False
+        return False
 
 
 # if the item not in the store, it will reject the search.
@@ -41,7 +35,6 @@ def website_bh_info_helping(response, search_term):
     item_brand = soup.find_all('span', itemprop="brand")
     item_name = soup.find_all('span', itemprop="name")
     images = soup.find_all('img', {'src':re.compile('.jpg')})
-    price_index = 0
     for i in range(len(price)):
         if check_item(item_brand, item_name, search_term):
             print(item_brand[i].text + " " + item_name[i].text + " " + price[i].text + " " + images[i] ['src'])
@@ -63,7 +56,7 @@ def website_bh_info(link,search_term):
     if search_guard(response,search_term):
 
         if soup.find('div', class_="pagination-zone") == None:
-           wesite_bh_info_helping(response,search_term)
+           website_bh_info_helping(response,search_term)
         else:
             page_number_list = soup.find('div', class_="bottom pagination js-pagination clearfix left")
             page_number = page_number_list.find_all("a", class_="pn-btn active litGrayBtn")
@@ -80,6 +73,6 @@ def website_bh_info(link,search_term):
             # getting in info
             for links in link_list:
                 response = requests.get(links, headers=user_agent, allow_redirects=True).text
-                wesite_bh_info_helping(response,search_term)
+                website_bh_info_helping(response,search_term)
     else:
         print("We are sorry! The item you looking for is not in the B&H store")
