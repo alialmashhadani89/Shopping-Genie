@@ -1,5 +1,10 @@
 # Functions to facilitate webscraping and data collection
 
+# Usage Notes
+    # The page_parser functions should be given the src of an html request, not the link. The request must
+    # already be made prior to calling a page_parser function.
+
+
 # Notes
     # Future Websites to consider
         # Microsoft, Apple, Dell, HP
@@ -57,8 +62,37 @@ def page_parser_walmart(data):
 
     # I have discovered the magic of soup.select_one(), and am using it to pull the first option.
 
+    # Product title
+    # <h1 class="prod-productTitle font-normal" content="Apple Airpods" itemprop="name">Apple Airpods</h1>
+
+    # Brand Name
+    # <span itemprop="brand">Apple</span>
+
+    # Product Image
+    # <div class="hover-zoom-hero-image-container">
+    #   <img class="hover-zoom-hero-image" src="thejuice">
+    # </div>
+
+
 
     soup = BeautifulSoup(data, 'lxml')
+
+    # Item Name
+    tag = soup.find('h1', {"class": "prod-ProductTitle font-normal"})
+    item_name = tag.get_text()
+    print(item_name)
+
+    # Brand
+    tag = soup.find('span', {"itemprop": "brand"})
+    brand_name = tag.get_text()
+    print(brand_name)
+
+    # Image Link
+    tag = soup.find('img', {"class": "hover-zoom-hero-image"})
+    image_link = tag["src"]
+    print(image_link)
+
+    # Price Acquisition
     # price-characteristic: the dollars
     # price-mantissa: the cents
     t_char = soup.select_one(".price-characteristic")
@@ -71,38 +105,58 @@ def page_parser_walmart(data):
     # The first value is the current price (or sale price)
     # The second one is a value hidden from display
     # The third value is the regular price
-    t_comb = t_char.get_text() + '.' + t_mant.get_text()
+    price = t_char.get_text() + '.' + t_mant.get_text()
 
-    print(t_comb)
-    return t_comb
-
-# A helper function for filtering
-def filter_whitespace(string):
-    for x in string:
-        if x >= '0' and x <= '9' or x == '.':
-            return True
-        else:
-            return False
+    print(price)
+    return price
 
 # @pre
 # @post
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
 def page_parser_amazon(data):
-    # Amazon requires some extra filtering due to how their information is displayed.
-    #
+    # Amazon  requires some extra filtering due to how their information is displayed.
+
+    # Price
+    # <span id="price_inside_buybox> value </span>
+
+    # Product name
+    # <span id="productTitle class="a-size-large">
+    #   " <A whole lot of whitespace, then> ASUS Chromebook modelnumber details and specs"
+    # </span>
+
+    # Image(s?)
+    # <div id="imgTagWrapperId" class="imgTagWrapper" style="height: 443px;">
+    #   <img alt="itemname/desc" src="the juice" ~~ id="landingImage" ~~~~ >
+    # </div>
+
+
 
     soup = BeautifulSoup(data, 'lxml')
 
-    # For amazon
-    # <span id="price_inside_buybox> value </span>
+    # Get Item Name
+    tag = soup.find('span', {"id": "productTitle"})
+    item_name = tag.get_text(strip="true")
+    print(item_name)
+
+    # Get Brand Name
+    tag = soup.find('a', {"id": "bylineInfo"})
+    brand_name = tag.get_text()
+    print(brand_name)
+
+    # Get Image Link
+    tag = soup.find('img', {"id": "landingImage"})
+    image_link = tag['src']
+    print(image_link)
+
+    # Get price
     tag = soup.select("#price_inside_buybox")
     print(len(tag))
-    if (len(tag) == 0):
+    if len(tag) == 0:
         print("Other")
         tag = soup.select("#priceblock_ourprice")
-    listVal = list(filter(filter_whitespace, tag[0].get_text()))
-    price = ''.join(str(e) for e in listVal)
+    price = tag[0].get_text(strip="true")
+
     print(price)
     return price
 
