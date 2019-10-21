@@ -1,7 +1,5 @@
 # Recurrent Neural Network
 
-
-
 # Part 1 - Data Preprocessing
 
 # Importing the libraries
@@ -14,12 +12,13 @@ import os
 # Importing the Keras libraries and packages
 from keras.models import Sequential
 from keras.layers import Dense, LSTM , Dropout # output
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 
 
 
 # Importing the training set
-dataset_train = pd.read_csv('Google_Stock_Price_Train.csv')
+# change here
+dataset_train = pd.read_csv('AAPL_data.csv')
 #taking only the opening value of the dateset (we will base the predication on the open columne only)
 training_set = dataset_train.iloc[:, 1:2].values
 
@@ -31,7 +30,9 @@ training_set_scaled = sc.fit_transform(training_set)
 # Creating a data structure with 60 timesteps and 1 output
 X_train = []
 y_train = []
-for i in range(60, 1258):
+
+# change here
+for i in range(60, 1237):
     X_train.append(training_set_scaled[i-60:i, 0])
     y_train.append(training_set_scaled[i, 0])
 X_train, y_train = np.array(X_train), np.array(y_train)
@@ -71,17 +72,23 @@ regressor.add(Dense(units = 1))
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 
 # Fitting the RNN to the Training set. we can do 100 and 50
-regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+if(not os.path.exists('stock_prediction.h5')):
+    regressor.fit(X_train, y_train, epochs=100, batch_size=32)
+    regressor.save('stock_prediction.h5')
+
+regressor = load_model('stock_prediction.h5')
 
 
 # Part 3 - Making the predictions and visualising the results
 
-# Getting the real stock price of 2017
-dataset_test = pd.read_csv('Google_Stock_Price_Test.csv')
+
+# change here
+dataset_test = pd.read_csv('apple_test.csv')
 real_stock_price = dataset_test.iloc[:, 1:2].values
 
 # Getting the predicted stock price of 2017
-dataset_total = pd.concat((dataset_train['Open'], dataset_test['Open']), axis = 0)
+# change here
+dataset_total = pd.concat((dataset_train['open'], dataset_test['open']), axis = 0)
 inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values
 inputs = inputs.reshape(-1,1)
 inputs = sc.transform(inputs)
