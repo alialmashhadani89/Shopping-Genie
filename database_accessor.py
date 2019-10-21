@@ -33,7 +33,7 @@ def insertOneIntoResultTable(result):
 
 
     
-    sql = "INSERT INTO test_result3 (price, url, item_name, image_link, bid, sid, qid) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+    sql = "INSERT INTO results(price, url, item_name, image_link, bid, sid, qid) VALUES (%s, %s, %s, %s, %s, %s, %s);"
     val = (result["price"], result["url"], result["item_name"], result["image_link"], result["brand"], result["seller"], "1")
     mycursor.execute(sql, val)
 
