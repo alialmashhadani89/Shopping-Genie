@@ -2,8 +2,8 @@ import mysql.connector
 
 mydb = mysql.connector.connect(
     host="localhost",
-    user="ss1517",
-    passwd="passtext",
+    user="",
+    passwd="",
     database="shopping_genie"
 )
 
@@ -16,16 +16,16 @@ def insertOneIntoResultTable(result):
 
     mycursor = mydb.cursor(buffered=True)
 
-    sid = findSellerIdByName(result["seller"])[0]
+    sid = findSellerIdByName(result["seller"])
     if sid != None:
-        result["seller"] = sid
+        result["seller"] = sid[0]
     else:
         insertOneIntoSellerTable(result["seller"])
         result["seller"] = findSellerIdByName(result["seller"])[0]
 
-    bid = findBrandIdByName(result["brand"])[0]
+    bid = findBrandIdByName(result["brand"])
     if bid != None:
-        result["brand"] = bid
+        result["brand"] = bid[0]
     else:
         insertOneIntoBrandTable(result["brand"])
         result["brand"] = findBrandIdByName(result["brand"])[0]
