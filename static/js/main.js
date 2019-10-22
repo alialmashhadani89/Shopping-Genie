@@ -14,6 +14,8 @@ function submitForm(e) {
     e.preventDefault()
     const searchInput = document.getElementById("search-term");
     const searchValue = searchInput.value;
-    console.log("Hello World", searchValue)
-    fetch('/api?search=' + searchValue)
+    if (searchValue.split(" ").length < 2)
+        alert("Please enter more than one keyword.")
+    else
+       fetch('/api?search=' + searchValue)
 }
