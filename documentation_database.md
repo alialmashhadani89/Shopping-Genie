@@ -7,6 +7,8 @@ Current Iteration Creation Statements
 ======
 Iteration 1
 
+NOTE: Please name the database "shopping_genie"
+
 CREATE TABLE queries(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 search_term VARCHAR(255));
