@@ -220,7 +220,7 @@ def page_parser_bandh(link):
 
     # Price
     tag = soup.find('div', {"data-selenium": "pricingPrice"})
-    price = tag.get_text().strip('$')
+    price = tag.get_text().strip('$').replace(",","")
     print(price)
 
     # Item Name

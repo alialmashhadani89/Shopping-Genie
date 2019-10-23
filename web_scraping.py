@@ -33,7 +33,11 @@ def search_guard(response,search_term):
 # getting the info from the website.
 def website_bh_info_helping(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
-    links = soup.find_all('a', {"data-selenium": "itemHeading"})
+    anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
+    links = []
+    for a in anchors:
+        links.append(a["href"])
+    print(links)
     #price = soup.find_all('span', class_="itc-you-pay-price bold")
     item_brand = soup.find_all('span', itemprop="brand")
     item_name = soup.find_all('span', itemprop="name")
@@ -43,7 +47,10 @@ def website_bh_info_helping(response, search_term):
     #        print(item_brand[i].text + " " + item_name[i].text + " " + price[i].text + " " + images[i] ['src'])
     for link in links:
         if check_item(item_brand, item_name, search_term):
+            print("Is relevant")
             page_parser_bandh(link)
+        else:
+            print("Not relevant")
 
 
 
@@ -59,14 +66,17 @@ def website_bh_info(link,search_term):
 
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
-    if search_guard(response,search_term):
+    if search_guard(response, search_term):
 
         # If only one page
         if soup.find('div', class_="pagination-zone") == None:
+           print("One page")
            website_bh_info_helping(response,search_term)
         else:
+            print("Many page")
             page_number_list = soup.find('div', class_="bottom pagination js-pagination clearfix left")
             page_number = page_number_list.find_all("a", class_="pn-btn active litGrayBtn")
+
 
             # getting the links
             for link in page_number:
@@ -85,6 +95,15 @@ def website_bh_info(link,search_term):
     else:
         print("We are sorry! The item you looking for is not in the B&H store")
 
+# getting the info from the website.
+def website_bb_info_helping(response, search_term):
+    # Cannot use check item because for bestbuy, brand name is not accessable at this stage
+    soup = BeautifulSoup(response, 'lxml')
+    links = soup.find_all('h4', {"class": "sku-header"}).find('a')['href']
+    for link in links:
+            page_parser_bestbuy(link)
+
+
 # get the response and convert it into lxml format.
 def website_bb_info(link, search_term):
     # list that will store all the links needed
@@ -100,7 +119,7 @@ def website_bb_info(link, search_term):
 
         # If only one page
         if soup.find('ol', class_="paging-list") == None:
-           website_bh_info_helping(response,search_term)
+           website_bb_info_helping(response, search_term)
         else:
             page_number_list = soup.find('div', class_="bottom pagination js-pagination clearfix left")
             page_number = page_number_list.find_all("a", class_="pn-btn active litGrayBtn")
@@ -116,8 +135,8 @@ def website_bb_info(link, search_term):
 
             # getting in info
             for links in link_list:
-               # response = requests.get(links, headers=user_agent, allow_redirects=True).text
-               # website_bh_info_helping(response,search_term)
-                page_parser_bandh(link)
+                response = requests.get(links, headers=user_agent, allow_redirects=True).text
+                website_bh_info_helping(response,search_term)
+                #page_parser_bestbuy(links)
     else:
         print("We are sorry! The item you looking for is not in the B&H store")
