@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from json_io import *
+from item_page_scraping_utilities import *
 
 def check_item(item_brand, item_name, search_term):
     check_number = 0
@@ -55,6 +56,7 @@ def website_bh_info(link,search_term):
     # if not then we will stop the search.
     if search_guard(response,search_term):
 
+        # If only one page
         if soup.find('div', class_="pagination-zone") == None:
            website_bh_info_helping(response,search_term)
         else:
@@ -72,7 +74,8 @@ def website_bh_info(link,search_term):
 
             # getting in info
             for links in link_list:
-                response = requests.get(links, headers=user_agent, allow_redirects=True).text
-                website_bh_info_helping(response,search_term)
+               # response = requests.get(links, headers=user_agent, allow_redirects=True).text
+               # website_bh_info_helping(response,search_term)
+                page_parser_bandh(link)
     else:
         print("We are sorry! The item you looking for is not in the B&H store")
