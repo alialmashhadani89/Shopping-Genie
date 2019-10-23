@@ -40,14 +40,61 @@ def search_parser_bandh(data):
 # @post
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
-def page_parser_bestbuy(data):
-    # For the time being, as far as I am aware, Bestbuy is being difficult. Thus, havent actually tested this yet
-    soup = BeautifulSoup(data, 'lxml')
+def page_parser_bestbuy(link):
+    result = requests.get(link, headers=headers, timeout=None, allow_redirects=True)
 
-    tag = soup.select(".priceView-hero-price")
-    print(tag)
+    print(result.status_code)
 
+    src = result.content
+    soup = BeautifulSoup(src, 'lxml')
 
+    # Item Name
+    # <div class="sku-title" itemprop="name">
+    #  <h1 class="heading-5 v-fw-regular">"The Juice"</h1>
+    # </div>
+    tag = soup.find('div', {"class": "sku-title"})
+    item_name = tag.h1.get_text()
+    print(item_name)
+
+    # Image Link
+    # <img draggable="false" class="primary-image zoomable" src="thejuice">
+
+    tag = soup.find('img', {"class": "primary-image"})
+    image_link = tag["src"]
+    print(image_link)
+
+    # Brand
+    tags = soup.find_all('div', {"class": "category-wrapper row"})
+    for x in tags:
+        if x.div.h3.get_text() == "General":
+            parent_tag = x
+            break
+    specs_table = parent_tag.find('div', {"class": "specs-table col-xs-9"})
+    ul = specs_table.ul.find_all('li')
+    for x in ul:
+        y = x.find('div', {"class": "title-container col-xs-6 v-fw-medium"})
+        z = y.find('div', {"class": "row-title"})
+        if z.get_text().strip() == "Brand":
+            row = x
+            break
+
+    brand = row.find('div', {"class": "row-value col-xs-6 v-fw-regular"}).get_text()
+    print(brand)
+
+    # Price
+    tag = soup.find('div', {"class": "priceView-hero-price priceView-customer-price"})
+    price = tag.span.get_text().strip("$")
+    print(price)
+
+    result = {
+        "price": price,
+        "url": link,
+        "item_name": item_name,
+        "image_link": image_link,
+        "brand": brand,
+        "seller": "Best Buy"}
+
+    insertOneIntoResultTable(result)
 
 
 # @pre  A query has been made and an http request has returned html to parse
@@ -55,27 +102,11 @@ def page_parser_bestbuy(data):
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
 def page_parser_walmart(data):
-    # To be noted that Walmart apparently splits up the price into two pieces, and has
-    # several prices listed on the page (with regards to sales, regular price, financing, etc)
-    # Thus I've elected to assemble a list of these prices, and we can figure out what to do with them
-    # at a later time.
+    result = requests.get(link, headers=headers, stream=False)
+    print(result.status_code)
 
-    # I have discovered the magic of soup.select_one(), and am using it to pull the first option.
-
-    # Product title
-    # <h1 class="prod-productTitle font-normal" content="Apple Airpods" itemprop="name">Apple Airpods</h1>
-
-    # Brand Name
-    # <span itemprop="brand">Apple</span>
-
-    # Product Image
-    # <div class="hover-zoom-hero-image-container">
-    #   <img class="hover-zoom-hero-image" src="thejuice">
-    # </div>
-
-
-
-    soup = BeautifulSoup(data, 'lxml')
+    src = result.content
+    soup = BeautifulSoup(src, 'lxml')
 
     # Item Name
     tag = soup.find('h1', {"class": "prod-ProductTitle font-normal"})
@@ -84,8 +115,8 @@ def page_parser_walmart(data):
 
     # Brand
     tag = soup.find('span', {"itemprop": "brand"})
-    brand_name = tag.get_text()
-    print(brand_name)
+    brand = tag.get_text()
+    print(brand)
 
     # Image Link
     tag = soup.find('img', {"class": "hover-zoom-hero-image"})
@@ -108,32 +139,32 @@ def page_parser_walmart(data):
     price = t_char.get_text() + '.' + t_mant.get_text()
 
     print(price)
-    return price
+
+    result = {
+        "price": price,
+        "url": link,
+        "item_name": item_name,
+        "image_link": image_link,
+        "brand": brand,
+        "seller": "Walmart"}
+
+    insertOneIntoResultTable(result)
+
 
 # @pre
 # @post
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
-def page_parser_amazon(data):
-    # Amazon  requires some extra filtering due to how their information is displayed.
+def page_parser_amazon(link):
+    result = requests.get(link, headers=headers, stream=False, allow_redirects=True)
 
-    # Price
+    print(result.status_code)
+
+    src = result.content
+    soup = BeautifulSoup(src, 'lxml')
+
+    # For amazon
     # <span id="price_inside_buybox> value </span>
-
-    # Product name
-    # <span id="productTitle class="a-size-large">
-    #   " <A whole lot of whitespace, then> ASUS Chromebook modelnumber details and specs"
-    # </span>
-
-    # Image(s?)
-    # <div id="imgTagWrapperId" class="imgTagWrapper" style="height: 443px;">
-    #   <img alt="itemname/desc" src="the juice" ~~ id="landingImage" ~~~~ >
-    # </div>
-
-
-
-    soup = BeautifulSoup(data, 'lxml')
-
     # Get Item Name
     tag = soup.find('span', {"id": "productTitle"})
     item_name = tag.get_text(strip="true")
@@ -141,8 +172,8 @@ def page_parser_amazon(data):
 
     # Get Brand Name
     tag = soup.find('a', {"id": "bylineInfo"})
-    brand_name = tag.get_text()
-    print(brand_name)
+    brand = tag.get_text()
+    print(brand)
 
     # Get Image Link
     tag = soup.find('img', {"id": "landingImage"})
@@ -155,10 +186,18 @@ def page_parser_amazon(data):
     if len(tag) == 0:
         print("Other")
         tag = soup.select("#priceblock_ourprice")
-    price = tag[0].get_text(strip="true")
-
+    price = tag[0].get_text(strip="true").strip("$")
     print(price)
-    return price
+
+    result = {
+        "price": price,
+        "url": link,
+        "item_name": item_name,
+        "image_link": image_link,
+        "brand": brand,
+        "seller": "Amazon"}
+
+    insertOneIntoResultTable(result)
 
 
 # @pre
