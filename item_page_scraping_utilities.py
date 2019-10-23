@@ -14,6 +14,8 @@
     #  Walmart a bunch of prices nested in similar elements, but the first one listed is the current price.
     # B and H, as far as single item page goes, was fairly straight forward.
 from bs4 import BeautifulSoup
+import requests
+from database_accessor import insertOneIntoResultTable
 
 
 
