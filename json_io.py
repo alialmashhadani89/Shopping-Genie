@@ -23,12 +23,6 @@ result_list = []
 # to paypass the website restriction
 user_agent = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
 
-# my API key for the google search engine.
-api_key = "AIzaSyCJjHkpKCmznN_gvY9KJK1I-YQWiqdvKrA"
-
-# we build the search engine.
-resource = build(serviceName ="customsearch", version = "v1", developerKey=api_key).cse()
-
 app = Flask(__name__)
 
 css = Bundle('style.css', output='styles/main.css')
@@ -36,24 +30,6 @@ css = Bundle('style.css', output='styles/main.css')
 assets = Environment(app)
 
 assets.register('main_css', css)
-
-# to print with time out.
-def print_result(item):
-    time.sleep(2)
-    print(item['title'], item['link'])
-
-
-def search_result_with_google(input):
-    finalResult = []
-
-    # from what number to what
-    for i in range(1, 20, 10):
-        result = resource.list(q=input, cx='007105990500405929801:dz5kgdlvpxl', start=i).execute()
-        finalResult += result['items']
-
-    for item in finalResult:
-        print_result(item)
-    result_list = finalResult
 
 
 def search_results_bestbuy(search_term):
@@ -88,9 +64,6 @@ def search_results_bh(search_term):
 @app.route('/api')
 def api():
     search = request.args.get('search')
-
-    # to use google search engine
-    #search_result_with_google(search) # bing question mark.
 
     # to search straight in in each website.
     #search_results_bestbuy(search)
