@@ -165,11 +165,41 @@ def page_parser_amazon(data):
 # @post
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
-def page_parser_bandh(data):
-    # <div class="price_1DPoToKrLP8uWvruGqgtaY" data-selenium="pricingPrice">$904.48</div>
-    #
-    soup = BeautifulSoup(data, 'lxml')
-    tag = soup.find('div', {"data-selenium": "pricingPrice"})
-    value = tag.get_text().strip('$')
+def page_parser_bandh(link):
+    result = requests.get(link, headers=headers, timeout=None)
 
-    return value
+    print(result.status_code)
+
+    src = result.content
+
+    soup = BeautifulSoup(src, 'lxml')
+
+    # Price
+    tag = soup.find('div', {"data-selenium": "pricingPrice"})
+    price = tag.get_text().strip('$')
+    print(price)
+
+    # Item Name
+    tag = soup.find('h1', {"data-selenium": "productTitle"})
+    item_name = tag.get_text()
+    print(item_name)
+
+    # Image Link
+    tag = soup.find('img', {"data-selenium": "inlineMediaMainImage"})
+    image_link = tag["src"]
+    print(image_link)
+
+    # Brand
+    tag = soup.find('img', {"data-selenium": "authorizeDealerBrandImage"})
+    brand = tag["alt"]
+    print(brand)
+
+    result = {
+        "price": price,
+        "url": link,
+        "item_name": item_name,
+        "image_link": image_link,
+        "brand": brand,
+        "seller": "B&H"}
+
+    insertOneIntoResultTable(result)
