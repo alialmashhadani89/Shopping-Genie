@@ -14,8 +14,17 @@
     #  Walmart a bunch of prices nested in similar elements, but the first one listed is the current price.
     # B and H, as far as single item page goes, was fairly straight forward.
 from bs4 import BeautifulSoup
+<<<<<<< HEAD
+from database_accessor import *
+import requests
+import os, sys
+from json_io import user_agent
+
+headers = user_agent
+=======
 import requests
 from database_accessor import insertOneIntoResultTable
+>>>>>>> c142308dd8f6c5396a17182bc97d1c32477eaaed
 
 referer = "https://google.com"
 
