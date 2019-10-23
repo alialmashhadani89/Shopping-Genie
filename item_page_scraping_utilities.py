@@ -110,7 +110,7 @@ def page_parser_bestbuy(link):
 # @post  The item price will be parsed and returned in an acceptable form
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
-def page_parser_walmart(data):
+def page_parser_walmart(link):
     result = requests.get(link, headers=headers, stream=False)
     print(result.status_code)
 
