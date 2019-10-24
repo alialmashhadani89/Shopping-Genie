@@ -248,7 +248,7 @@ def page_parser_amazon(link):
 # @return  The price of a single item, in $.00 format
 def page_parser_bandh(link):
     result = requests.get(link, headers=headers, timeout=None)
-
+    print(link)
     #print(result.status_code)
 
     src = result.content
@@ -272,7 +272,11 @@ def page_parser_bandh(link):
 
     # Brand
     tag = soup.find('img', {"data-selenium": "authorizeDealerBrandImage"})
-    brand = tag["alt"]
+    if tag == None:
+        tag = soup.find('a', {"data-selenium": "authorizedDealerLink"})
+        brand = tag.span.get_text()
+    else:
+        brand = tag["alt"]
     #print(brand)
 
     result = {
