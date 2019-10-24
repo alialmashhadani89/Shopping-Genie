@@ -41,14 +41,53 @@ def search_parser_bandh(data):
 # ===================================
 # Functions for parsing the actual product pages
 
+def bestbuy_brand_table_parser(tags):
+    #tags = soup.find_all('div', {"class": "category-wrapper row"})
+    brand_in_general = False
+
+    for x in tags:
+        if x.div.h3.get_text() == "General":
+            general_tag = x
+            break
+    specs_table = general_tag.find('div', {"class": "specs-table col-xs-9"})
+    ul = specs_table.ul.find_all('li')
+    for x in ul:
+        y = x.find('div', {"class": "title-container col-xs-6 v-fw-medium"})
+        z = y.find('div', {"class": "row-title"})
+        if z.get_text().strip() == "Brand":
+            brand_in_general = True
+            row = x
+            break
+
+    if brand_in_general:
+        return row
+    else:
+        brand_in_other = False
+        for x in tags:
+            if x.div.h3.get_text() == "Other":
+                other_tag = x
+                break
+        specs_table = other_tag.find('div', {"class": "specs-table col-xs-9"})
+        ul = specs_table.ul.find_all('li')
+        for x in ul:
+            y = x.find('div', {"class": "title-container col-xs-6 v-fw-medium"})
+            z = y.find('div', {"class": "row-title"})
+            if z.get_text().strip() == "Brand":
+                other_in_general = True
+                row = x
+                break
+        return row
+
+
 # @pre
 # @post
 # @param  data  The source/html of an http request to a particular item page
 # @return  The price of a single item, in $.00 format
 def page_parser_bestbuy(link):
+    #print(link)
     result = requests.get(link, headers=headers, timeout=None, allow_redirects=True)
 
-    print(result.status_code)
+    #print(result.status_code)
 
     src = result.content
     soup = BeautifulSoup(src, 'lxml')
@@ -59,37 +98,35 @@ def page_parser_bestbuy(link):
     # </div>
     tag = soup.find('div', {"class": "sku-title"})
     item_name = tag.h1.get_text()
-    print(item_name)
+    #print(item_name)
 
     # Image Link
     # <img draggable="false" class="primary-image zoomable" src="thejuice">
 
     tag = soup.find('img', {"class": "primary-image"})
     image_link = tag["src"]
-    print(image_link)
+    #print(image_link)
 
     # Brand
     tags = soup.find_all('div', {"class": "category-wrapper row"})
-    for x in tags:
-        if x.div.h3.get_text() == "General":
-            parent_tag = x
-            break
-    specs_table = parent_tag.find('div', {"class": "specs-table col-xs-9"})
-    ul = specs_table.ul.find_all('li')
-    for x in ul:
-        y = x.find('div', {"class": "title-container col-xs-6 v-fw-medium"})
-        z = y.find('div', {"class": "row-title"})
-        if z.get_text().strip() == "Brand":
-            row = x
-            break
+    row = bestbuy_brand_table_parser(tags)
 
     brand = row.find('div', {"class": "row-value col-xs-6 v-fw-regular"}).get_text()
-    print(brand)
+    #print(brand)
 
     # Price
     tag = soup.find('div', {"class": "priceView-hero-price priceView-customer-price"})
-    price = tag.span.get_text().strip("$")
-    print(price)
+    if tag == None:
+        print("Item is no longer available")
+        return
+    pre_price = tag.span.get_text()
+    if pre_price == None:
+        # Problem
+        print("Item no longer available")
+        return
+    else:
+        price = pre_price.strip("$").replace(",","")
+    #print(price)
 
     result = {
         "price": price,
@@ -212,7 +249,7 @@ def page_parser_amazon(link):
 def page_parser_bandh(link):
     result = requests.get(link, headers=headers, timeout=None)
 
-    print(result.status_code)
+    #print(result.status_code)
 
     src = result.content
 
@@ -221,22 +258,22 @@ def page_parser_bandh(link):
     # Price
     tag = soup.find('div', {"data-selenium": "pricingPrice"})
     price = tag.get_text().strip('$').replace(",","")
-    print(price)
+   # print(price)
 
     # Item Name
     tag = soup.find('h1', {"data-selenium": "productTitle"})
     item_name = tag.get_text()
-    print(item_name)
+    #print(item_name)
 
     # Image Link
     tag = soup.find('img', {"data-selenium": "inlineMediaMainImage"})
     image_link = tag["src"]
-    print(image_link)
+    #print(image_link)
 
     # Brand
     tag = soup.find('img', {"data-selenium": "authorizeDealerBrandImage"})
     brand = tag["alt"]
-    print(brand)
+    #print(brand)
 
     result = {
         "price": price,

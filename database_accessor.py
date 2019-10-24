@@ -1,10 +1,12 @@
 import mysql.connector
+from db_credentials import getCredentials
 
+creds = getCredentials()
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="ss1517",
-    passwd="passtext",
-    database="shopping_genie"
+    host=creds["host"],
+    user=creds["user"],
+    passwd=creds["passwd"],
+    database=creds["database"]
 )
 
 
@@ -18,7 +20,6 @@ def insertOneIntoResultTable(result):
     mycursor = mydb.cursor(buffered=True)
 
     sid = findSellerIdByName(result["seller"])
-    print(sid)
     if sid != None:
         result["seller"] = sid[0]
     else:
@@ -26,15 +27,12 @@ def insertOneIntoResultTable(result):
         result["seller"] = findSellerIdByName(result["seller"])[0]
 
     bid = findBrandIdByName(result["brand"])
-    print(bid)
     if bid != None:
         result["brand"] = bid[0]
     else:
         insertOneIntoBrandTable(result["brand"])
         result["brand"] = findBrandIdByName(result["brand"])[0]
 
-
-    print(result["price"])
     
     sql = "INSERT INTO results(price, url, name, image_link, bid, sid, qid) VALUES (%s, %s, %s, %s, %s, %s, %s);"
     val = (result["price"], result["url"], result["item_name"], result["image_link"], result["brand"], result["seller"], "7",)

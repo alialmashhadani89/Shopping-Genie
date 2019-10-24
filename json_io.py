@@ -10,6 +10,7 @@ from urllib.request import urlopen
 import webbrowser
 from googleapiclient.discovery import build
 from web_scraping import *
+from database_accessor import insertOneIntoQueryTable
 
 # base url for the 3 website we using for the project.
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
@@ -36,6 +37,7 @@ def search_results_bestbuy(search_term):
     #print(response.text)
     response = requests.get(bestbuy_base_url+search_term,headers=user_agent,allow_redirects=True).text
     #wesite_response_link(response)
+    website_bb_info(bestbuy_base_url+search_term, search_term)
 
 def search_results_walmart(search_term):
     #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
@@ -51,11 +53,11 @@ def search_results_amazon(search_term):
     #wesite_response_link(response)
 
 def search_results_bh(search_term):
-    #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True)
+    response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True)
     # print(response.text)
     #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
     #wesite_bh_info(bh_base_url+search_term)
-    website_bh_info(bh_base_url+search_term , search_term)
+    #website_bh_info(bh_base_url+search_term , search_term)
 
 
 
@@ -65,10 +67,10 @@ def api():
     search = request.args.get('search')
 
     # to search straight in in each website.
-    #search_results_bestbuy(search)
+    search_results_bestbuy(search)
     #search_results_walmart(search)
     #search_results_amazon(search)
-    search_results_bh(search)
+    #search_results_bh(search)
 
     return json.dumps({"search": search})
 
