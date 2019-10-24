@@ -10,7 +10,8 @@ from urllib.request import urlopen
 import webbrowser
 from googleapiclient.discovery import build
 from web_scraping import *
-from item_page_scraping_utilities import *
+from item_page_scraping_utilitie import *
+
 
 # base url for the 3 website we using for the project.
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
