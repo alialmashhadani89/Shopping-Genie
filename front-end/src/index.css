@@ -1,0 +1,24 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Arial;
+  margin-left: 10px;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  align-items: stretch;
+  display: flex;
+}
+
+* {
+  box-sizing: border-box;
+  /*margin-left: 3px;*/
+}
