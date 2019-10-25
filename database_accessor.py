@@ -1,11 +1,14 @@
 import mysql.connector
+from db_credentials import getCredentials
 
+creds = getCredentials()
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="tekken1989",
-    database="test"
+    host=creds["host"],
+    user=creds["user"],
+    passwd=creds["passwd"],
+    database=creds["database"]
 )
+
 
 # ============
 # Result Table
@@ -16,25 +19,23 @@ def insertOneIntoResultTable(result):
 
     mycursor = mydb.cursor(buffered=True)
 
-    sid = findSellerIdByName(result["seller"])[0]
+    sid = findSellerIdByName(result["seller"])
     if sid != None:
-        result["seller"] = sid
+        result["seller"] = sid[0]
     else:
         insertOneIntoSellerTable(result["seller"])
         result["seller"] = findSellerIdByName(result["seller"])[0]
 
-    bid = findBrandIdByName(result["brand"])[0]
+    bid = findBrandIdByName(result["brand"])
     if bid != None:
-        result["brand"] = bid
+        result["brand"] = bid[0]
     else:
         insertOneIntoBrandTable(result["brand"])
         result["brand"] = findBrandIdByName(result["brand"])[0]
 
-
-
     
-    sql = "INSERT INTO results(price, url, item_name, image_link, bid, sid, qid) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-    val = (result["price"], result["url"], result["item_name"], result["image_link"], result["brand"], result["seller"], "1")
+    sql = "INSERT INTO results(price, url, name, image_link, bid, sid, qid) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+    val = (result["price"], result["url"], result["item_name"], result["image_link"], result["brand"], result["seller"], "7",)
     mycursor.execute(sql, val)
 
     mydb.commit()
@@ -54,7 +55,10 @@ def findResultsByQueryId(query_id):
 
     for x in output:
         print(x)
-        
+
+def findResultPricesByQueryId(query_id):
+    print("bottom text")
+
 # ===========
 # Query Table
 # ===========
