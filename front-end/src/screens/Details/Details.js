@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo2.png";
+import logo from "../../images/logo6.png";
 import SearchBar from "../../components/SearchBar";
 import moment from "moment-timezone";
-//import "./Details.css";
+import bestbuylogo from "../../images/bb.png";
+import bhlogo from "../../images/bh.png";
+import amazonlogo from "../../images/aa.png";
+import walmartlogo from "../../images/wm.png";
 
 const View = styled.div({
   display: "flex"
@@ -47,7 +50,7 @@ const RouteItem = styled.a(({ selected }) => ({
 }));
 
 const Image = styled.img({
-  width: 100,
+  width: 250,
   height: 100
 });
 
@@ -100,11 +103,19 @@ const ResultsImage = styled.img({
   height: 50
 });
 
+function checklogo(storeName) {
+  if (storeName.trim() == "B&H") {
+    return bhlogo;
+  } else {
+    return bestbuylogo;
+  }
+}
+
 const RenderItem = ({
   image,
   brand,
   itemName,
-  price,
+  itemPrice,
   prediction,
   predictionDate,
   logo,
@@ -116,11 +127,11 @@ const RenderItem = ({
     </td>
     <td>{brand} </td>
     <td>{itemName} </td>
-    <td>{price} </td>
+    <td>{itemPrice} </td>
     <td>{prediction} </td>
     <td>{moment(predictionDate).format("MM/YYYY")} </td>
     <td>
-      <ResultsImage src={logo} />
+      <ResultsImage src={checklogo(storeName)} />
     </td>
     <td>{storeName} </td>
   </tr>

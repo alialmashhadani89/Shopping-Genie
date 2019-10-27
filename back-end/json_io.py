@@ -93,21 +93,3 @@ def catch_all(path):
 if __name__ == '__main__':
     # run!
     app.run(debug=True)
-
-
-"""""
-#The tags that comes with the search output. 
-
-kind 
-title ----------- (good)
-htmlTitle 
-link ------------ (good)
-displayLink ----- (good)
-snippet 
-htmlSnippet 
-cacheId
-formattedUrl
-htmlFormattedUrl
-pagemap
-
-"""""
