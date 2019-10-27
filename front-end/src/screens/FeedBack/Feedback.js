@@ -1,12 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import aboutbanner from "../../images/about-banner2.png";
-import grouppic from "../../images/group-pic.png";
-import sallypic from "../../images/sally.jpg";
-import stevenpic from "../../images/steven.jpg";
-import alipic from "../../images/ali.jpg";
-
-import "./AboutPage.css";
+import feedbackbanner from "../../images/feedback_banner.jpg";
+import "./FeedBack.css";
 
 const View = styled.div({
   display: "flex"
@@ -60,30 +55,26 @@ const Image = styled.img({
   height: 100
 });
 
-const AboutPage = () => {
+const FeedBackPage = () => {
   return (
     <MainContainer>
       <NavBar>
         <RoutesContainer>
-          <RouteItem href="/home">FronPage</RouteItem>
+          <RouteItem href="/home">Home</RouteItem>
           <RouteItem href="/details">Details</RouteItem>
-          <RouteItem selected href="/about">
-            Aboutpage
+          <RouteItem href="/about">About</RouteItem>
+          <RouteItem selected href="/feedback">
+            FeedBack
           </RouteItem>
-          <RouteItem href="/feedback">FeedBackPage</RouteItem>
-          <RouteItem href="/contact">ContactPage</RouteItem>
+          <RouteItem href="/contact">Contact</RouteItem>
         </RoutesContainer>
       </NavBar>
       <Content>
         <image>
-          <Image src={aboutbanner} />
-          <Image src={grouppic} />
-          <Image src={sallypic} />
-          <Image src={stevenpic} />
-          <Image src={alipic} />
+          <Image src={feedbackbanner} />
         </image>
       </Content>
     </MainContainer>
   );
 };
-export default AboutPage;
+export default FeedBackPage;

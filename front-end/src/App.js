@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import FrontPage from "./screens/FrontPage/FrontPage";
 import Details from "./screens/Details/Details";
-import FeedBackPage from "./screens/FeedBackPage/FeedbackPage";
-import AboutPage from "./screens/AboutPage/AboutPage";
-import ContactPage from "./screens/ContactPage/ContactPage";
+import FeedBack from "./screens/FeedBack/Feedback";
+import About from "./screens/About/About";
+import Contact from "./screens/Contact/Contact";
 
 export default function App() {
   return (
@@ -14,16 +14,16 @@ export default function App() {
             renders the first one that matches the current URL. */}
       <Switch>
         <Route path="/about">
-          <AboutPage />
+          <About />
         </Route>
         <Route path="/details">
           <Details />
         </Route>
         <Route path="/feedback">
-          <FeedBackPage />
+          <FeedBack />
         </Route>
         <Route path="/contact">
-          <ContactPage />
+          <Contact />
         </Route>
         <Route path="/">
           <FrontPage />
