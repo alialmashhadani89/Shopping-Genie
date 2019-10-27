@@ -1,6 +1,8 @@
 .DS_STORE
 node_modules
 scripts/flow/*/.flowconfig
+back-end/static/*
+back-end/template/*
 *~
 *.pyc
 .grunt

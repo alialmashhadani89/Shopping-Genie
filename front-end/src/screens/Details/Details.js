@@ -131,7 +131,7 @@ const Details = () => {
   const [results, setResults] = useState([]);
 
   const getResults = term => {
-    fetch(`http://localhost:5000/api/results?search=${search}`)
+    fetch(`/api/results?search=${search}`)
       .then(res => res.json())
       .then(res => {
         if (Array.isArray(res)) setResults(res);

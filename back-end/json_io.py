@@ -84,34 +84,10 @@ def results():
     return json.dumps(get_results(search))
 
 
-@app.route('/')
-def output():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
     return render_template('index.html')
-
-
-@app.route('/about')
-def aboutpage():
-    return render_template('about.html')
-
-
-@app.route('/index')
-def indexpage():
-    return render_template('index.html')
-
-
-@app.route('/contact')
-def contactpage():
-    return render_template('contact.html')
-
-
-@app.route('/feedback')
-def feedbackpage():
-    return render_template('feedback.html')
-
-
-@app.route('/detail_page')
-def detailpage():
-    return render_template('detail_page.html')
 
 
 if __name__ == '__main__':

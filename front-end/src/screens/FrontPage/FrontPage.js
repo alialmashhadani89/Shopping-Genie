@@ -11,9 +11,7 @@ async function submitForm(e, history) {
   if (new_searchValue.split(" ").length < 2)
     alert("Please enter more than one keyword.");
   else {
-    const results = await fetch(
-      "http://localhost:5000/api/search?search=" + searchValue
-    );
+    const results = await fetch(`/api/search?search=${searchValue}`);
 
     history.push("/details");
   }
