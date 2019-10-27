@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo2.png";
 import SearchBar from "../../components/SearchBar";
-// import "./Details.css";
+import moment from "moment-timezone";
+//import "./Details.css";
 
 const View = styled.div({
   display: "flex"
@@ -10,10 +11,10 @@ const View = styled.div({
 
 const MainContainer = styled(View)({
   flex: 1,
-  backgroundColor: "aquamarine",
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  overflowX: "hidden"
 });
 
 const NavBar = styled(View)({
@@ -59,42 +60,91 @@ const Content = styled(View)({
 
 const SearchBarContainer = styled(View)({
   height: 50,
-  marginTop: 100,
+  marginTop: 20,
   justifyContent: "center"
 });
 
 const ResultsContainer = styled(View)({
   flex: 1,
   marginTop: 30,
-  alignItems: "center",
+  alignItems: "stretch",
   justifyContent: "center"
 });
 
 const Table = styled.table({
-  flex: 1,
-  marginLeft: 30,
-  marginRight: 30
+  borderCollapse: "collapse",
+  display: "block",
+  borderColor: "#000",
+  "& *": {
+    boxSizing: "border-box"
+  },
+  "& th:hover": {
+    backgroundColor: "#ddd"
+  },
+  "& th, & td": {
+    border: "4px solid #ddd",
+    padding: 15
+  },
+  "& th": {
+    textAlign: "center",
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: "dodgerblue",
+    color: "white"
+  }
 });
 
-const RenderItem = ({ image, price, name, model, logo }) => (
+const TableBody = styled.tbody({});
+
+const ResultsImage = styled.img({
+  height: 50
+});
+
+const RenderItem = ({
+  image,
+  brand,
+  itemName,
+  price,
+  prediction,
+  predictionDate,
+  logo,
+  storeName
+}) => (
   <tr>
-    <td>{image} </td>
+    <td>
+      <ResultsImage src={image} />
+    </td>
+    <td>{brand} </td>
+    <td>{itemName} </td>
     <td>{price} </td>
-    <td>{name} </td>
-    <td>{model} </td>
-    <td>{logo} </td>
+    <td>{prediction} </td>
+    <td>{moment(predictionDate).format("MM/YYYY")} </td>
+    <td>
+      <ResultsImage src={logo} />
+    </td>
+    <td>{storeName} </td>
   </tr>
 );
 
 const Details = () => {
+  const [search, setSearch] = useState("");
   const [results, setResults] = useState([]);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/results")
+  const getResults = term => {
+    fetch(`http://localhost:5000/api/results?search=${search}`)
       .then(res => res.json())
       .then(res => {
         if (Array.isArray(res)) setResults(res);
       });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+    getResults(search);
+  };
+
+  useEffect(() => {
+    getResults(search);
   }, []);
   return (
     <MainContainer>
@@ -115,39 +165,48 @@ const Details = () => {
 
       <Content>
         <SearchBarContainer>
-          <SearchBar />
+          <SearchBar
+            value={search}
+            onSubmit={onSubmit}
+            onChange={setSearch}
+            placeholder="Search Price Genie to save your time and money..."
+          />
         </SearchBarContainer>
         <ResultsContainer>
           <Table id="products">
             <thead>
               <tr>
                 <th>
-                  {" "}
-                  <h4> Product Picture </h4>{" "}
+                  <h5> Item Image </h5>
                 </th>
                 <th>
-                  {" "}
-                  <h4> Price Detail </h4>{" "}
+                  <h5> Product Brand </h5>
                 </th>
                 <th>
-                  {" "}
-                  <h4> Product Name </h4>{" "}
+                  <h5> Product Name </h5>
                 </th>
                 <th>
-                  {" "}
-                  <h4> Prediction Model </h4>{" "}
+                  <h5> Price </h5>
                 </th>
                 <th>
-                  {" "}
-                  <h4> Store Logo </h4>{" "}
+                  <h5> Prediction </h5>
+                </th>
+                <th>
+                  <h5> Prediction Date </h5>
+                </th>
+                <th>
+                  <h5> Store Logo </h5>
+                </th>
+                <th>
+                  <h5> Store Name </h5>
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <TableBody>
               {results.map(item => (
                 <RenderItem key={item.id} {...item} />
               ))}
-            </tbody>
+            </TableBody>
           </Table>
         </ResultsContainer>
       </Content>

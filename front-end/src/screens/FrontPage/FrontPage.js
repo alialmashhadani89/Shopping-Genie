@@ -12,7 +12,7 @@ async function submitForm(e, history) {
     alert("Please enter more than one keyword.");
   else {
     const results = await fetch(
-      "http://localhost:5000/api?search=" + searchValue
+      "http://localhost:5000/api/search?search=" + searchValue
     );
 
     history.push("/details");
@@ -45,7 +45,7 @@ const FrontPage = () => {
         </h3>
         <ul className="menu">
           <li>
-            <a href="index">Home</a>
+            <a href="home">Home</a>
           </li>
           <li>
             <a href="about">About</a>

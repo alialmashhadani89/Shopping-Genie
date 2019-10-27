@@ -55,6 +55,11 @@ h3 {
   padding: 10px 60px;
 }
 
+.menu li a:hover {
+  background-color: lightgray;
+  color: green;
+}
+
 .container {
   margin-top: 0px;
   width: 850px;
@@ -62,7 +67,7 @@ h3 {
 }
 
 input {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255);
   border: none;
   position: relative;
   display: block;
@@ -73,8 +78,8 @@ input {
   margin: 0 auto;
   padding: 10px;
   color: #333;
-  -webkit-box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
+  /* -webkit-box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.5); */
 }
 
 .glyphicon-search {
