@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import ContctUsBanner from "../../images/contact-us-banner.jpg";
+import logo from "../../images/logo6.png";
 
 const View = styled.div({
   display: "flex"
@@ -49,10 +50,23 @@ const RouteItem = styled.a(({ selected }) => ({
   }
 }));
 
+const LogoImage = styled.img({
+  width: 250,
+  height: 100
+});
+
+const Image = styled.img({
+  width: 2000,
+  height: 400
+});
+
 const ContactPage = () => {
   return (
     <MainContainer>
       <NavBar>
+        <NavBarImageContainer>
+          <LogoImage src={logo} />
+        </NavBarImageContainer>
         <RoutesContainer>
           <RouteItem href="/home">Home</RouteItem>
           <RouteItem href="/details">Details</RouteItem>
@@ -64,7 +78,13 @@ const ContactPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <image></image>
+        <image>
+          <Image src={ContctUsBanner} />
+        </image>
+        <h2 color="black">How can we help you?</h2>
+        <h4>Please contact us, if you have any questions.</h4>
+        <h4>Call-US: 888-888-8888</h4>
+        <h4>Email: xxxxxx@price_genie.com</h4>
       </Content>
     </MainContainer>
   );

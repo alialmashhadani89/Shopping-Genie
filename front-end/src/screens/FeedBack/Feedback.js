@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
+import logo from "../../images/logo6.png";
 import feedbackbanner from "../../images/feedback_banner.jpg";
-import "./FeedBack.css";
+//import "./FeedBack.css";
 
 const View = styled.div({
   display: "flex"
@@ -9,8 +10,8 @@ const View = styled.div({
 
 const Content = styled(View)({
   flex: 1,
-  alignItems: "stretch",
-  flexDirection: "column",
+  //alignItems: "stretch",
+  //flexDirection: "column",
   justifyContent: "flex-start"
 });
 
@@ -50,15 +51,42 @@ const RouteItem = styled.a(({ selected }) => ({
   }
 }));
 
-const Image = styled.img({
-  width: 100,
+const LogoImage = styled.img({
+  width: 250,
   height: 100
+});
+
+const Image = styled.img({
+  paddingLeft: 20,
+  width: 700,
+  height: 400
+});
+
+const H2 = styled.h2({
+  marginTop: 425,
+  color: "black",
+  marginLeft: -1070
+});
+
+const H3 = styled.h3({
+  marginTop: 475,
+  color: "black",
+  marginLeft: -455
+});
+
+const H22 = styled.h2({
+  margintop: 500,
+  marginleft: 700,
+  color: "black"
 });
 
 const FeedBackPage = () => {
   return (
     <MainContainer>
       <NavBar>
+        <NavBarImageContainer>
+          <LogoImage src={logo} />
+        </NavBarImageContainer>
         <RoutesContainer>
           <RouteItem href="/home">Home</RouteItem>
           <RouteItem href="/details">Details</RouteItem>
@@ -73,6 +101,9 @@ const FeedBackPage = () => {
         <image>
           <Image src={feedbackbanner} />
         </image>
+        <H22>Please fill out the form below.</H22>
+        <H2>Do you have something to tell us?</H2>
+        <H3>Please send us the direct message through the right box --></H3>
       </Content>
     </MainContainer>
   );
