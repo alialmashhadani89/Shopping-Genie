@@ -28,4 +28,5 @@ chrome-user-data
 
 # Flask
 __pycache__
+venv
 db_credentials.py

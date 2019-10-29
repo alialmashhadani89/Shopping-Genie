@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import ContctUsBanner from "../../images/contact-us-banner.jpg";
-import logo from "../../images/logo6.png";
+import logo from "../../images/logo3.png";
 
 const View = styled.div({
   display: "flex"

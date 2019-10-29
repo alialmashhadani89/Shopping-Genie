@@ -3,7 +3,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: Arial;
-  margin-left: 10px;
 }
 
 code {
@@ -16,9 +15,4 @@ code {
   height: 100vh;
   align-items: stretch;
   display: flex;
-}
-
-* {
-  box-sizing: border-box;
-  /*margin-left: 3px;*/
 }

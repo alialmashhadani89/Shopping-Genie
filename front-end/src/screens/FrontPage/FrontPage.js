@@ -1,7 +1,10 @@
 import React from "react";
+import styled from "@emotion/styled";
+import { useState, useEffect } from "react";
+import SearchBar from "../../components/SearchBar";
+import logo from "../../images/logo3.png";
 import { useHistory } from "react-router-dom";
-import genie from "../../images/geniegif.gif";
-import "./FrontPage.css";
+import backgoundpic from "../../images/paralax.jpg";
 
 async function submitForm(e, history) {
   e.preventDefault();
@@ -17,70 +20,122 @@ async function submitForm(e, history) {
   }
 }
 
+const View = styled.div({
+  display: "flex"
+});
+
+const MainContainer = styled(View)({
+  flex: 1,
+  justifyContent: "flex-start",
+  alignItems: "stretch",
+  flexDirection: "column",
+  overflowX: "hidden",
+  overflowY: "hidden",
+  backgroundImage: `url(${backgoundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
+});
+
+const NavBar = styled(View)({
+  height: 100,
+  flexDirection: "row",
+  alignItems: "center"
+});
+
+const NavBarImageContainer = styled(View)({
+  marginLeft: 20
+});
+
+const RoutesContainer = styled(View)({
+  backgroundColor: "grey",
+  flex: 1,
+  marginLeft: 20,
+  flexDirection: "row",
+  justifyContent: "flex-start",
+  alignItems: "center"
+});
+
+const RouteItem = styled.a(({ selected }) => ({
+  padding: "15px 15px",
+  backgroundColor: selected ? "orange" : "transparent",
+  color: "white",
+  "&:hover": {
+    backgroundColor: selected ? "orange" : "lightgrey",
+    color: selected ? "white" : "green"
+  }
+}));
+
+const Image = styled.img({
+  width: 250,
+  height: 100,
+  marginTop: 10
+});
+
+const Content = styled(View)({
+  flex: 1,
+  alignItems: "stretch",
+  flexDirection: "column",
+  justifyContent: "flex-start"
+});
+
+const SearchBarContainer = styled(View)({
+  height: 50,
+  top: 100,
+  marginTop: 250,
+  justifyContent: "center"
+});
+
 const FrontPage = () => {
   const history = useHistory();
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+
+  const getResults = term => {
+    fetch(`/api/results?search=${search}`)
+      .then(res => res.json())
+      .then(res => {
+        if (Array.isArray(res)) setResults(res);
+      });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+    getResults(search);
+  };
+
+  useEffect(() => {
+    getResults(search);
+  }, []);
+
   return (
-    <div className="main-container">
-      <header>
-        <img
-          alt="Genie"
-          src={genie}
-          width="156"
-          height="166"
-          align="left"
-          style={{
-            WebkitTransform: "scaleX(-1)",
-            transform: "scaleX(-1)"
-          }}
-        />
-        <img src={genie} width="156" height="166" align="right" />
-        <h2>Shopping Genie</h2>
-        <br />
-        <h3>
-          Time & Money in your hands.
-          <br />
-          Try me and I will gain full control of your day and wallet!
-        </h3>
-        <ul className="menu">
-          <li>
-            <a href="home">Home</a>
-          </li>
-          <li>
-            <a href="about">About</a>
-          </li>
-          <li>
-            <a href="feedback">Feedback</a>
-          </li>
-          <li>
-            <a href="contact">Contact</a>
-          </li>
-        </ul>
-      </header>
-      <div className="bg">
-        <div className="container">
-          <form
-            onSubmit={e => submitForm(e, history)}
-            id="search-form"
-            autoComplete="off"
-          >
-            <div className="input-group">
-              <input
-                id="search-term"
-                type="text"
-                className="form-control frontpage-input"
-                placeholder="Search Price Genie to save your time and money..."
-                name="search"
-              />
-              <div className="input-group-btn">
-                <button className="btn btn-default" type="submit">
-                  <i className="glyphicon glyphicon-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <MainContainer>
+      <NavBar>
+        <NavBarImageContainer>
+          <Image src={logo} />
+        </NavBarImageContainer>
+        <RoutesContainer>
+          <RouteItem selected href="/home">
+            Home
+          </RouteItem>
+          <RouteItem href="/details">Details</RouteItem>
+          <RouteItem href="/about">About</RouteItem>
+          <RouteItem href="/feedback">Feedback</RouteItem>
+          <RouteItem href="/contact">Contact</RouteItem>
+        </RoutesContainer>
+      </NavBar>
+      <Content>
+        <SearchBarContainer>
+          <SearchBar
+            value={search}
+            onSubmit={onSubmit}
+            onChange={setSearch}
+            placeholder="Search Price Genie to save your time and money..."
+          />
+        </SearchBarContainer>
+      </Content>
+    </MainContainer>
   );
 };
 

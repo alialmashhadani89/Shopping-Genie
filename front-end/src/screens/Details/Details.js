@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo6.png";
+import logo from "../../images/logo3.png";
 import SearchBar from "../../components/SearchBar";
 import moment from "moment-timezone";
 import bestbuylogo from "../../images/bb.png";
@@ -116,9 +116,8 @@ const RenderItem = ({
   brand,
   itemName,
   itemPrice,
-  prediction,
+  predictionPrice,
   predictionDate,
-  logo,
   storeName
 }) => (
   <tr>
@@ -128,7 +127,7 @@ const RenderItem = ({
     <td>{brand} </td>
     <td>{itemName} </td>
     <td>{itemPrice} </td>
-    <td>{prediction} </td>
+    <td>{predictionPrice} </td>
     <td>{moment(predictionDate).format("MM/YYYY")} </td>
     <td>
       <ResultsImage src={checklogo(storeName)} />
@@ -200,7 +199,7 @@ const Details = () => {
                   <h5> Price </h5>
                 </th>
                 <th>
-                  <h5> Prediction </h5>
+                  <h5> Prediction Price </h5>
                 </th>
                 <th>
                   <h5> Prediction Date </h5>

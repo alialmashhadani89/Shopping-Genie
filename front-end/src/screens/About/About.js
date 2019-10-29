@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo6.png";
+import logo from "../../images/logo3.png";
 import aboutbanner from "../../images/about-banner2.png";
 import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
@@ -57,24 +57,58 @@ const RouteItem = styled.a(({ selected }) => ({
 const Image = styled.img({
   width: 500,
   height: 400,
-  float: "right",
-  marginLeft: 400
+  float: "left",
+  marginLeft: 30
 });
 const Image2 = styled.img({
   width: 500,
   height: 400,
+  float: "right",
+  marginRight: 70
+});
+
+const ImageAli = styled.img({
+  width: 300,
+  height: 400,
   float: "left",
-  marginRight: -200
+  marginLeft: 40,
+  marginTop: 30
+});
+
+const ImageSteven = styled.img({
+  width: 300,
+  height: 400,
+  float: "center",
+  marginTop: 40,
+  marginLeft: 250
+});
+
+const ImageSally = styled.img({
+  width: 300,
+  height: 400,
+  float: "right",
+  marginTop: 40,
+  marginRight: 120
+});
+
+const TextAli = styled.text({
+  float: "left",
+  marginLeft: 40
+});
+
+const TextSteven = styled.text({
+  float: "left",
+  marginLeft: 160
+});
+
+const TextSally = styled.text({
+  float: "right",
+  marginRight: 10
 });
 
 const LogoImage = styled.img({
   width: 250,
   height: 100
-});
-
-const H4 = styled.h4({
-  color: "black",
-  marginRight: "50"
 });
 
 const AboutPage = () => {
@@ -95,14 +129,42 @@ const AboutPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <H4>
-          <h4> Who We Are? </h4>
-          <h4> We are developers, problem-solvers, and challengers!</h4>
-        </H4>
+        <text style={{ marginLeft: 30 }}>
+          <h2>
+            <b> Who We Are? </b>
+          </h2>
+          <h3> We are developers, problem-solvers, and challengers!</h3>
+        </text>
         <image>
-          <Image src={aboutbanner} />
-          <Image2 src={grouppic} />
+          <Image src={grouppic} />
+          <Image2 src={aboutbanner} />
         </image>
+
+        <image>
+          <ImageAli src={alipic} />
+          <ImageSteven src={stevenpic} />
+          <ImageSally src={sallypic} />
+        </image>
+        <text>
+          <TextAli>
+            <b>
+              <h2>Ali Almashhadani</h2>
+              <h3>[Back-End Developer & AI,Database]</h3>
+            </b>
+          </TextAli>
+          <TextSteven>
+            <b>
+              <h2>Steven Santana</h2>
+              <h3>[Back-End Developer & Database]</h3>
+            </b>
+          </TextSteven>
+          <TextSally>
+            <b>
+              <h2>Sally Xuan</h2>
+              <h3>[Front-End Developer & QA Engineer]</h3>
+            </b>
+          </TextSally>
+        </text>
       </Content>
     </MainContainer>
   );

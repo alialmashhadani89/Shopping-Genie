@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo6.png";
+import logo from "../../images/logo3.png";
 import feedbackbanner from "../../images/feedback_banner.jpg";
 //import "./FeedBack.css";
 

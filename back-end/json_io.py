@@ -70,7 +70,7 @@ def search():
     search = request.args.get('search')
 
     # to search straight in in each website.
-    # search_results_bestbuy(search)
+    search_results_bestbuy(search)
     # search_results_walmart(search)
     # search_results_amazon(search)
     results = search_results_bh(search)

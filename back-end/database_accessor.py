@@ -132,18 +132,18 @@ def findBrandIdByName(name):
 # to get the result to the backend
 
 
-def get_results(term='', count=20):
+def get_results(term=' '):
     cursor = mydb.cursor(buffered=True)
-
+    term = term.replace(' ', '%')
     sql = """
         SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as prediction,\
             DATE_FORMAT(NOW(), '%Y-%m-%d %T.%f') as predictionDate, min(r.price) as itemPrice,\
-            'https://www.freepnglogos.com/uploads/new-google-logo-transparent--14.png' as logo, s.name as storeName\
+            s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
-        WHERE r.name like %s\
+        WHERE r.name like concat('%',%s,'%')\
         group by s.name;
         """
-    val = ('%' + term + '%',)
+    val = (term,)
 
     cursor.execute(sql, val)
 
