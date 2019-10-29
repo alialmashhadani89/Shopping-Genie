@@ -2,7 +2,19 @@
 
 ## Installation
 
-TODO: Add installation instructions
+### Back-End
+Please run the following command on the folder of the back-end
+```sh
+pip install requirements.txt
+```
+
+### Front-End
+1. Please install npm that will come with node.js
+2. Please install react using the following command
+```sh
+npm install --save react
+npm install --save react-dom
+```
 
 ## Running
 
