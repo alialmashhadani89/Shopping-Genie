@@ -6,7 +6,6 @@ import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
 import stevenpic from "../../images/steven.jpg";
 import alipic from "../../images/ali.jpg";
-import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -23,9 +22,7 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column",
-  backgroundImage: `url(${backgoundpic})`,
-  height: 1250
+  flexDirection: "column"
 });
 
 const NavBar = styled(View)({
@@ -96,20 +93,17 @@ const ImageSally = styled.img({
 
 const TextAli = styled.text({
   float: "left",
-  marginLeft: 40,
-  color: "white"
+  marginLeft: 40
 });
 
 const TextSteven = styled.text({
   float: "left",
-  marginLeft: 160,
-  color: "white"
+  marginLeft: 160
 });
 
 const TextSally = styled.text({
   float: "right",
-  marginRight: 50,
-  color: "white"
+  marginRight: 50
 });
 
 const LogoImage = styled.img({
@@ -136,7 +130,7 @@ const AboutPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <text style={{ marginLeft: 30, color: "white", marginTop: 40 }}>
+        <text style={{ marginLeft: 30, marginTop: 40 }}>
           <h2>
             <b> Who We Are? </b>
           </h2>

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo13.png";
 import feedbackbanner from "../../images/feedback_banner.jpg";
-import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -19,14 +18,7 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column",
-  overflowX: "hidden",
-  overflowY: "hidden",
-  backgroundImage: `url(${backgoundpic})`,
-  backgroundSize: "cover",
-  overflow: "hidden",
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center"
+  flexDirection: "column"
 });
 
 const NavBar = styled(View)({
@@ -73,22 +65,18 @@ const Image = styled.img({
 const H2 = styled.h2({
   marginTop: 450,
   color: "black",
-  marginLeft: -1070,
-  color: "white"
+  marginLeft: -1070
 });
 
 const H3 = styled.h3({
   marginTop: 500,
   color: "black",
-  marginLeft: -455,
-  color: "white"
+  marginLeft: -455
 });
 
 const H22 = styled.h2({
   margintop: 500,
-  marginleft: 800,
-  color: "black",
-  color: "white"
+  marginleft: 800
 });
 
 const FeedBackPage = () => {

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import ContctUsBanner from "../../images/contact-us-banner.jpg";
 import logo from "../../images/logo13.png";
-import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -19,14 +18,7 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column",
-  overflowX: "hidden",
-  overflowY: "hidden",
-  backgroundImage: `url(${backgoundpic})`,
-  backgroundSize: "cover",
-  overflow: "hidden",
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center"
+  flexDirection: "column"
 });
 
 const NavBar = styled(View)({
@@ -72,8 +64,7 @@ const Image = styled.img({
 });
 
 const Text = styled.text({
-  marginLeft: 20,
-  color: "white"
+  marginLeft: 20
 });
 
 const ContactPage = () => {

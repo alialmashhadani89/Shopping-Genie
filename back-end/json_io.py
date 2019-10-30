@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from web_scraping import *
 from database_accessor import get_results, get_data_ai
 from flask_cors import CORS
+from flask_mail import Mail
 
 
 # base url for the 3 website we using for the project.
