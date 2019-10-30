@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import ContctUsBanner from "../../images/contact-us-banner.jpg";
-import logo from "../../images/logo3.png";
+import logo from "../../images/logo13.png";
+import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -18,7 +19,14 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  overflowX: "hidden",
+  overflowY: "hidden",
+  backgroundImage: `url(${backgoundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
@@ -52,12 +60,20 @@ const RouteItem = styled.a(({ selected }) => ({
 
 const LogoImage = styled.img({
   width: 250,
-  height: 100
+  height: 130,
+  marginTop: 30
 });
 
 const Image = styled.img({
-  width: 2000,
-  height: 400
+  width: 1300,
+  height: 450,
+  marginLeft: 20,
+  marginTop: 40
+});
+
+const Text = styled.text({
+  marginLeft: 20,
+  color: "white"
 });
 
 const ContactPage = () => {
@@ -81,10 +97,12 @@ const ContactPage = () => {
         <image>
           <Image src={ContctUsBanner} />
         </image>
-        <h2 color="black">How can we help you?</h2>
-        <h4>Please contact us, if you have any questions.</h4>
-        <h4>Call-US: 888-888-8888</h4>
-        <h4>Email: xxxxxx@price_genie.com</h4>
+        <Text>
+          <h2>How can we help you?</h2>
+          <h4>Please contact us, if you have any questions.</h4>
+          <h4>Call-US: 888-888-8888</h4>
+          <h4>Email: xxxxxx@price_genie.com</h4>
+        </Text>
       </Content>
     </MainContainer>
   );

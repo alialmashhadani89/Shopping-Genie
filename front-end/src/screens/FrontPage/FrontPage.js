@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
-import logo from "../../images/logo3.png";
+import logo from "../../images/logo13.png";
 import { useHistory } from "react-router-dom";
 import backgoundpic from "../../images/paralax.jpg";
 
@@ -69,8 +69,8 @@ const RouteItem = styled.a(({ selected }) => ({
 
 const Image = styled.img({
   width: 250,
-  height: 100,
-  marginTop: 10
+  height: 130,
+  marginTop: 30
 });
 
 const Content = styled(View)({

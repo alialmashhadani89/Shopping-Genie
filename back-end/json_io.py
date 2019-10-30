@@ -9,7 +9,7 @@ from flask_assets import Bundle, Environment
 from jinja2 import TemplateNotFound
 from urllib.request import urlopen
 from web_scraping import *
-from database_accessor import get_results
+from database_accessor import get_results, get_data_ai
 from flask_cors import CORS
 
 
@@ -81,6 +81,9 @@ def search():
 @app.route('/api/results')
 def results():
     search = request.args.get('search')
+    # giving the seatch term to get the prices of the product.
+    predication_price = get_data_ai(search)
+    print(predication_price)
     return json.dumps(get_results(search))
 
 

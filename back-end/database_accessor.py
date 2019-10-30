@@ -1,5 +1,6 @@
 import mysql.connector
 from db_credentials import getCredentials
+from ai_prediction import get_redication_price
 
 creds = getCredentials()
 mydb = mysql.connector.connect(
@@ -137,7 +138,7 @@ def get_results(term=' '):
     term = term.replace(' ', '%')
     sql = """
         SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as prediction,\
-            DATE_FORMAT(NOW(), '%Y-%m-%d %T.%f') as predictionDate, min(r.price) as itemPrice,\
+            DATE_FORMAT(NOW()+ INTERVAL 1 MONTH, '%Y-%m-%d %T.%f') as predictionDate, min(r.price) as itemPrice,\
             s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
         WHERE r.name like concat('%',%s,'%')\
@@ -150,3 +151,13 @@ def get_results(term=' '):
     columns = cursor.description
 
     return [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
+
+
+def get_data_ai(term=' '):
+    cursor = mydb.cursor(buffered=True)
+    term = term.replace(' ', '%')
+    sql = "Select price from results where name like concat('%',%s,'%')"
+    val = (term,)
+    cursor.execute(sql, val)
+    table_rows = cursor.fetchall()
+    return get_redication_price(table_rows)

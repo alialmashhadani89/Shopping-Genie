@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo3.png";
+import logo from "../../images/logo13.png";
 import aboutbanner from "../../images/about-banner2.png";
 import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
 import stevenpic from "../../images/steven.jpg";
 import alipic from "../../images/ali.jpg";
+import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -22,7 +23,9 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  backgroundImage: `url(${backgoundpic})`,
+  height: 1250
 });
 
 const NavBar = styled(View)({
@@ -88,27 +91,31 @@ const ImageSally = styled.img({
   height: 400,
   float: "right",
   marginTop: 40,
-  marginRight: 120
+  marginRight: 150
 });
 
 const TextAli = styled.text({
   float: "left",
-  marginLeft: 40
+  marginLeft: 40,
+  color: "white"
 });
 
 const TextSteven = styled.text({
   float: "left",
-  marginLeft: 160
+  marginLeft: 160,
+  color: "white"
 });
 
 const TextSally = styled.text({
   float: "right",
-  marginRight: 10
+  marginRight: 50,
+  color: "white"
 });
 
 const LogoImage = styled.img({
   width: 250,
-  height: 100
+  height: 130,
+  marginTop: 30
 });
 
 const AboutPage = () => {
@@ -129,15 +136,15 @@ const AboutPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <text style={{ marginLeft: 30 }}>
+        <text style={{ marginLeft: 30, color: "white", marginTop: 40 }}>
           <h2>
             <b> Who We Are? </b>
           </h2>
           <h3> We are developers, problem-solvers, and challengers!</h3>
         </text>
         <image>
-          <Image src={grouppic} />
-          <Image2 src={aboutbanner} />
+          <Image src={grouppic} style={{ marginTop: 45 }} />
+          <Image2 src={aboutbanner} style={{ marginTop: 45 }} />
         </image>
 
         <image>

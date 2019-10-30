@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo3.png";
+import logo from "../../images/logo13.png";
 import feedbackbanner from "../../images/feedback_banner.jpg";
-//import "./FeedBack.css";
+import backgoundpic from "../../images/111.png";
 
 const View = styled.div({
   display: "flex"
@@ -19,7 +19,14 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  overflowX: "hidden",
+  overflowY: "hidden",
+  backgroundImage: `url(${backgoundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
@@ -59,25 +66,29 @@ const LogoImage = styled.img({
 const Image = styled.img({
   paddingLeft: 20,
   width: 700,
-  height: 400
+  height: 400,
+  marginTop: 20
 });
 
 const H2 = styled.h2({
-  marginTop: 425,
+  marginTop: 450,
   color: "black",
-  marginLeft: -1070
+  marginLeft: -1070,
+  color: "white"
 });
 
 const H3 = styled.h3({
-  marginTop: 475,
+  marginTop: 500,
   color: "black",
-  marginLeft: -455
+  marginLeft: -455,
+  color: "white"
 });
 
 const H22 = styled.h2({
   margintop: 500,
-  marginleft: 700,
-  color: "black"
+  marginleft: 800,
+  color: "black",
+  color: "white"
 });
 
 const FeedBackPage = () => {

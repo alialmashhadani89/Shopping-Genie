@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo3.png";
+import logo from "../../images/logo13.png";
 import SearchBar from "../../components/SearchBar";
 import moment from "moment-timezone";
 import bestbuylogo from "../../images/bb.png";
