@@ -9,7 +9,7 @@ mydb = mysql.connector.connect(
     database=creds["database"]
 )
 
-
+# =
 # ============
 # Result Table
 # ============
@@ -39,7 +39,7 @@ def insertOneIntoResultTable(result):
     mycursor.execute(sql, val)
 
     mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
+    print(mycursor.rowcount, " Result record inserted.")
 
 # Make InsertMany for Result
 
@@ -70,7 +70,7 @@ def insertOneIntoQueryTable(query):
     mycursor.execute(sql, val)
 
     mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
+    print(mycursor.rowcount, " Query record inserted.")
 
 # ============
 # Seller Table
