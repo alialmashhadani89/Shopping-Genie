@@ -30,3 +30,4 @@ chrome-user-data
 __pycache__
 venv
 db_credentials.py
+mail_credentations.py

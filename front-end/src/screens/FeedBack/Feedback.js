@@ -99,7 +99,9 @@ const FeedBackPage = () => {
           <p>Email:</p>
           <input type="text" style={{ width: "500px", height: "35px" }} />
           <p>Message</p>
-          <textarea rows="18" cols="67" />
+          <textarea rows="15" cols="67" />
+          <p />
+          <input type="submit" value="Submit" style={{ width: "100px" }} />
         </form>
       </Content>
     </MainContainer>

@@ -12,6 +12,7 @@ from web_scraping import *
 from database_accessor import get_results, get_data_ai
 from flask_cors import CORS
 from flask_mail import Mail, Message
+from mail_credentations import getCredentials
 
 
 # base url for the 3 website we using for the project.
@@ -97,14 +98,15 @@ def catch_all(path):
 
 @app.route('/feebbackmail')
 def sendmail():
+    creds = getCredentials()
     mail_settings = {
-        "MAIL_SERVER": 'smtp.gmail.com',
-        "MAIL_PORT": 465,
-        "MAIL_USE_TLS": False,
-        "MAIL_USE_SSL": True,
-        "MAIL_USERNAME": 'pricegenie0499@gmail.com',
-        "MAIL_PASSWORD": 'shoppinggenie499',
-        "MAIL_DEFAULT_SENDER": 'pricegenie0499@gmail.com'
+        "MAIL_SERVER": creds["MAIL_SERVER"],
+        "MAIL_PORT": creds["MAIL_PORT"],
+        "MAIL_USE_TLS": creds["MAIL_USE_TLS"],
+        "MAIL_USE_SSL": creds["MAIL_USE_SSL"],
+        "MAIL_USERNAME": creds["MAIL_USERNAME"],
+        "MAIL_PASSWORD": creds["MAIL_PASSWORD"],
+        "MAIL_DEFAULT_SENDER": creds["MAIL_DEFAULT_SENDER"]
     }
 
     app.config.update(mail_settings)
