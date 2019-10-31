@@ -62,29 +62,14 @@ const Image = styled.img({
   marginTop: 20
 });
 
-const H2 = styled.h2({
-  marginTop: 450,
-  color: "black",
-  marginLeft: -1070
-});
-
-const H3 = styled.h3({
-  marginTop: 500,
-  color: "black",
-  marginLeft: -455
-});
-
-const H22 = styled.h2({
-  margintop: 500,
-  marginleft: 800
-});
-
 const FeedBackPage = () => {
   return (
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <LogoImage src={logo} />
+          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+            <LogoImage src={logo} />
+          </RouteItem>
         </NavBarImageContainer>
         <RoutesContainer>
           <RouteItem href="/home">Home</RouteItem>
@@ -99,10 +84,23 @@ const FeedBackPage = () => {
       <Content>
         <image>
           <Image src={feedbackbanner} />
+          <h2 style={{ marginLeft: "20px" }}>
+            Do you have something to tell us?
+          </h2>
+          <h3 style={{ marginLeft: "20px" }}>
+            Please send us your feed back by filling the from on the right.
+          </h3>
         </image>
-        <H22>Please fill out the form below.</H22>
-        <H2>Do you have something to tell us?</H2>
-        <H3>Please send us the direct message through the right box --></H3>
+
+        <form style={{ marginLeft: "50px" }}>
+          <h2>Please fill out the form below.</h2>
+          <p>Name:</p>
+          <input type="text" style={{ width: "500px", height: "35px" }} />
+          <p>Email:</p>
+          <input type="text" style={{ width: "500px", height: "35px" }} />
+          <p>Message</p>
+          <textarea rows="18" cols="67" />
+        </form>
       </Content>
     </MainContainer>
   );

@@ -49,7 +49,7 @@ const RouteItem = styled.a(({ selected }) => ({
   }
 }));
 
-const Image = styled.img({
+const LogoImage = styled.img({
   width: 250,
   height: 100
 });
@@ -160,7 +160,9 @@ const Details = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <Image src={logo} />
+          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+            <LogoImage src={logo} />
+          </RouteItem>
         </NavBarImageContainer>
         <RoutesContainer>
           <RouteItem href="/home">Home</RouteItem>

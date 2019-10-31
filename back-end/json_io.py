@@ -11,7 +11,7 @@ from urllib.request import urlopen
 from web_scraping import *
 from database_accessor import get_results, get_data_ai
 from flask_cors import CORS
-from flask_mail import Mail
+from flask_mail import Mail, Message
 
 
 # base url for the 3 website we using for the project.
@@ -28,6 +28,7 @@ user_agent = {
 
 app = Flask(__name__)
 CORS(app)
+
 
 css = Bundle('style.css', output='styles/main.css')
 
@@ -92,6 +93,30 @@ def results():
 @app.route('/<path:path>')
 def catch_all(path):
     return render_template('index.html')
+
+
+@app.route('/feebbackmail')
+def sendmail():
+    mail_settings = {
+        "MAIL_SERVER": 'smtp.gmail.com',
+        "MAIL_PORT": 465,
+        "MAIL_USE_TLS": False,
+        "MAIL_USE_SSL": True,
+        "MAIL_USERNAME": 'pricegenie0499@gmail.com',
+        "MAIL_PASSWORD": 'shoppinggenie499',
+        "MAIL_DEFAULT_SENDER": 'pricegenie0499@gmail.com'
+    }
+
+    app.config.update(mail_settings)
+    mail = Mail(app)
+    with app.app_context():
+        msg = Message(subject="Hello",
+                      sender=app.config.get("pricegenie0499@gmail.com"),
+                      # replace with your email for testing
+                      recipients=["pricegenie0499@gmail.com"],
+                      body="This is a test email I sent with Gmail and Python!")
+        mail.send(msg)
+        return "Message has been sent!"
 
 
 if __name__ == '__main__':
