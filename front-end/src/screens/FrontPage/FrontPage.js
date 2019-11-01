@@ -6,20 +6,6 @@ import logo from "../../images/logo15.png";
 import { useHistory } from "react-router-dom";
 import backgoundpic from "../../images/paralax.jpg";
 
-async function submitForm(e, history) {
-  e.preventDefault();
-  const searchInput = document.getElementById("search-term");
-  const searchValue = searchInput.value;
-  const new_searchValue = searchValue.trim();
-  if (new_searchValue.split(" ").length < 2)
-    alert("Please enter more than one keyword.");
-  else {
-    const results = await fetch(`/api/search?search=${searchValue}`);
-
-    history.push("/details");
-  }
-}
-
 const View = styled.div({
   display: "flex"
 });
@@ -90,24 +76,21 @@ const SearchBarContainer = styled(View)({
 const FrontPage = () => {
   const history = useHistory();
   const [search, setSearch] = useState("");
-  const [results, setResults] = useState([]);
 
-  const getResults = term => {
-    fetch(`/api/results?search=${search}`)
-      .then(res => res.json())
-      .then(res => {
-        if (Array.isArray(res)) setResults(res);
-      });
+  const getResults = async term => {
+    const splittedSearhc = term.trim();
+    if (splittedSearhc.split(" ").length < 2)
+      alert("Please enter more than one keyword.");
+    else {
+      await fetch(`/api/search?search=${term}`);
+      history.push("/details", { term });
+    }
   };
 
   const onSubmit = e => {
     e.preventDefault();
     getResults(search);
   };
-
-  useEffect(() => {
-    getResults(search);
-  }, []);
 
   return (
     <MainContainer>

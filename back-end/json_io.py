@@ -44,7 +44,7 @@ def search_results_bestbuy(search_term):
     response = requests.get(bestbuy_base_url+search_term,
                             headers=user_agent, allow_redirects=True).text
     # wesite_response_link(response)
-    website_bb_info(bestbuy_base_url+search_term, search_term)
+    return website_bb_info(bestbuy_base_url+search_term, search_term)
 
 
 def search_results_walmart(search_term):
@@ -84,10 +84,25 @@ def search():
 @app.route('/api/results')
 def results():
     search = request.args.get('search')
+    results = get_results(search)
+    if (len(results) == 0):
+        search_results_bestbuy(search)
+        search_results_bh(search)
+        results = get_results(search)
     # giving the seatch term to get the prices of the product.
-    predication_price = get_data_ai(search)
-    print(predication_price)
-    return json.dumps(get_results(search))
+    predictions = [{"brand": "B&H", "prediction": 0.80},
+                   {"brand": "Best Buy", "prediction": 0.10}]
+    for i in range(len(results)):
+        result = results[i]
+        print(result)
+        for x in predictions:
+            print(x)
+            if x["brand"] == result["storeName"]:
+                result.update({"prediction": x["prediction"]})
+        results[i] = result
+    #predication_price = get_data_ai(search)
+    # print(predication_price)
+    return json.dumps(results)
 
 
 @app.route('/', defaults={'path': ''})

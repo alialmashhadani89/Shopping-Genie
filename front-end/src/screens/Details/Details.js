@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
+import moment from "moment-timezone";
+import { useHistory } from "react-router-dom";
+
 import logo from "../../images/logo14.png";
 import SearchBar from "../../components/SearchBar";
-import moment from "moment-timezone";
 import bestbuylogo from "../../images/bb.png";
 import bhlogo from "../../images/bh.png";
 import amazonlogo from "../../images/aa.png";
@@ -118,7 +120,7 @@ const RenderItem = ({
   brand,
   itemName,
   itemPrice,
-  predictionPrice,
+  prediction,
   predictionDate,
   storeName
 }) => (
@@ -129,7 +131,7 @@ const RenderItem = ({
     <td>{brand} </td>
     <td>{itemName} </td>
     <td>{itemPrice} </td>
-    <td>{predictionPrice} </td>
+    <td>{prediction} </td>
     <td>{moment(predictionDate).format("MM/YYYY")} </td>
     <td>
       <ResultsImage src={checklogo(storeName)} />
@@ -139,11 +141,14 @@ const RenderItem = ({
 );
 
 const Details = () => {
-  const [search, setSearch] = useState("");
+  const {
+    location: { state }
+  } = useHistory();
+  const [search, setSearch] = useState((state && state.term) || "");
   const [results, setResults] = useState([]);
 
   const getResults = term => {
-    fetch(`/api/results?search=${search}`)
+    fetch(`/api/results?search=${term}`)
       .then(res => res.json())
       .then(res => {
         if (Array.isArray(res)) setResults(res);
