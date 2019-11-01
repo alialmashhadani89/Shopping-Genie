@@ -10,12 +10,8 @@ from urllib.request import urlopen
 import webbrowser
 from googleapiclient.discovery import build
 from web_scraping import *
-<<<<<<< HEAD
-from item_page_scraping_utilitie import *
-
-=======
 from database_accessor import insertOneIntoQueryTable
->>>>>>> c6a6facd87a8f4618f7d815a9bd6e68f68218cc2
+
 
 # base url for the 3 website we using for the project.
 bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
@@ -38,31 +34,16 @@ assets.register('main_css', css)
 
 
 def search_results_bestbuy(search_term):
-    #response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
-    #print(response.text)
-    response = requests.get(bestbuy_base_url+search_term,headers=user_agent,allow_redirects=True).text
-    #wesite_response_link(response)
     website_bb_info(bestbuy_base_url+search_term, search_term)
 
 def search_results_walmart(search_term):
-    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
-    #print(response.text)
-    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    #wesite_response_link(response)
-    page_parser_walmart(walmart_base_url+search_term)
+    website_wm_info(walmart_base_url+search_term, search_term)
 
 def search_results_amazon(search_term):
-    #response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
-    #print(response.text)
-    response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    #wesite_response_link(response)
+    website_am_info(amazon_base_url+search_term, search_term)
 
 def search_results_bh(search_term):
-    response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True)
-    # print(response.text)
-    #response = requests.get(bh_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    #wesite_bh_info(bh_base_url+search_term)
-    #website_bh_info(bh_base_url+search_term , search_term)
+    website_bh_info(bh_base_url+search_term, search_term)
 
 
 
@@ -73,9 +54,9 @@ def api():
 
     # to search straight in in each website.
     search_results_bestbuy(search)
-    #search_results_walmart(search)
-    #search_results_amazon(search)
-    #search_results_bh(search)
+    search_results_walmart(search)
+    search_results_amazon(search)
+    search_results_bh(search)
 
     return json.dumps({"search": search})
 
