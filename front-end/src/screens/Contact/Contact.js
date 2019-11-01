@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import ContctUsBanner from "../../images/contact-us-banner.jpg";
-import logo from "../../images/logo13.png";
+import logo from "../../images/logo14.png";
 
 const View = styled.div({
   display: "flex"
@@ -18,7 +18,8 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  backgroundColor: "#83d7fe"
 });
 
 const NavBar = styled(View)({
@@ -51,15 +52,16 @@ const RouteItem = styled.a(({ selected }) => ({
 }));
 
 const LogoImage = styled.img({
-  width: 250,
-  height: 100
+  width: 300,
+  height: 135,
+  marginTop: 5
 });
 
 const Image = styled.img({
   width: 1300,
   height: 450,
   marginLeft: 20,
-  marginTop: 40
+  marginTop: 25
 });
 
 const Text = styled.text({
@@ -71,7 +73,7 @@ const ContactPage = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>

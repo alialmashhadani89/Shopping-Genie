@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
-import logo from "../../images/logo13.png";
+import logo from "../../images/logo15.png";
 import { useHistory } from "react-router-dom";
 import backgoundpic from "../../images/paralax.jpg";
 
@@ -68,8 +68,9 @@ const RouteItem = styled.a(({ selected }) => ({
 }));
 
 const LogoImage = styled.img({
-  width: 250,
-  height: 100
+  width: 300,
+  height: 135,
+  marginTop: 5
 });
 
 const Content = styled(View)({
@@ -112,7 +113,7 @@ const FrontPage = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>

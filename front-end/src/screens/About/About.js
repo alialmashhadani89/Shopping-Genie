@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo13.png";
+import logo from "../../images/logo14.png";
 import aboutbanner from "../../images/about-banner2.png";
 import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
@@ -22,7 +22,10 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  backgroundColor: "#83d7fe",
+  position: "absolute",
+  width: "100%"
 });
 
 const NavBar = styled(View)({
@@ -107,8 +110,9 @@ const TextSally = styled.text({
 });
 
 const LogoImage = styled.img({
-  width: 250,
-  height: 100
+  width: 300,
+  height: 135,
+  marginTop: 5
 });
 
 const AboutPage = () => {
@@ -116,7 +120,7 @@ const AboutPage = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>

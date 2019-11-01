@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo13.png";
+import logo from "../../images/logo15.png";
 import feedbackbanner from "../../images/feedback_banner.jpg";
 
 const View = styled.div({
@@ -18,7 +18,8 @@ const MainContainer = styled(View)({
   flex: 1,
   justifyContent: "flex-start",
   alignItems: "stretch",
-  flexDirection: "column"
+  flexDirection: "column",
+  backgroundColor: "#83d7fe"
 });
 
 const NavBar = styled(View)({
@@ -51,23 +52,47 @@ const RouteItem = styled.a(({ selected }) => ({
 }));
 
 const LogoImage = styled.img({
-  width: 250,
-  height: 100
+  width: 300,
+  height: 135,
+  marginTop: 5
 });
 
 const Image = styled.img({
   paddingLeft: 20,
   width: 700,
   height: 400,
-  marginTop: 20
+  marginTop: 25
 });
 
 const FeedBackPage = () => {
+  const [nameInput, setNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [contentInput, setContentInput] = useState("");
+
+  const sendFeedBack = e => {
+    e.preventDefault();
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    fetch("/api/feedbackmail", {
+      headers,
+      method: "POST",
+      body: JSON.stringify({
+        name: nameInput,
+        email: emailInput,
+        content: contentInput
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.message);
+      });
+  };
+
   return (
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
@@ -92,14 +117,26 @@ const FeedBackPage = () => {
           </h3>
         </image>
 
-        <form style={{ marginLeft: "50px" }}>
+        <form onSubmit={sendFeedBack} style={{ marginLeft: "50px" }}>
           <h2>Please fill out the form below.</h2>
           <p>Name:</p>
-          <input type="text" style={{ width: "500px", height: "35px" }} />
+          <input
+            type="text"
+            onChange={e => setNameInput(e.target.value)}
+            style={{ width: "500px", height: "35px" }}
+          />
           <p>Email:</p>
-          <input type="text" style={{ width: "500px", height: "35px" }} />
+          <input
+            type="text"
+            onChange={e => setEmailInput(e.target.value)}
+            style={{ width: "500px", height: "35px" }}
+          />
           <p>Message</p>
-          <textarea rows="15" cols="67" />
+          <textarea
+            onChange={e => setContentInput(e.target.value)}
+            rows="15"
+            cols="67"
+          />
           <p />
           <input type="submit" value="Submit" style={{ width: "100px" }} />
         </form>

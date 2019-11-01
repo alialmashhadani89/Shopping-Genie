@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo13.png";
+import logo from "../../images/logo14.png";
 import SearchBar from "../../components/SearchBar";
 import moment from "moment-timezone";
 import bestbuylogo from "../../images/bb.png";
@@ -17,7 +17,8 @@ const MainContainer = styled(View)({
   justifyContent: "flex-start",
   alignItems: "stretch",
   flexDirection: "column",
-  overflowX: "hidden"
+  overflowX: "hidden",
+  backgroundColor: "#83d7fe"
 });
 
 const NavBar = styled(View)({
@@ -50,8 +51,9 @@ const RouteItem = styled.a(({ selected }) => ({
 }));
 
 const LogoImage = styled.img({
-  width: 250,
-  height: 100
+  width: 300,
+  height: 135,
+  marginTop: 5
 });
 
 const Content = styled(View)({
@@ -160,7 +162,7 @@ const Details = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "white" }}>
+          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>

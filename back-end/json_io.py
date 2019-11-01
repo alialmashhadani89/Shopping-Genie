@@ -96,8 +96,9 @@ def catch_all(path):
     return render_template('index.html')
 
 
-@app.route('/feebbackmail')
+@app.route('/api/feedbackmail', methods=["POST"])
 def sendmail():
+    data = request.get_json(force=True)
     creds = getCredentials()
     mail_settings = {
         "MAIL_SERVER": creds["MAIL_SERVER"],
@@ -112,13 +113,14 @@ def sendmail():
     app.config.update(mail_settings)
     mail = Mail(app)
     with app.app_context():
-        msg = Message(subject="Hello",
-                      sender=app.config.get("pricegenie0499@gmail.com"),
+        msg = Message(subject="Feedback",
                       # replace with your email for testing
                       recipients=["pricegenie0499@gmail.com"],
-                      body="This is a test email I sent with Gmail and Python!")
+                      # this is where we will put the content of the email.
+                      body=data['name'] + "; \n" + data['email'] + "; \n" + data['content'])
         mail.send(msg)
-        return "Message has been sent!"
+        # we can put alert that mail has been sent.
+        return json.dumps({"message": "Message sent successfully"})
 
 
 if __name__ == '__main__':
