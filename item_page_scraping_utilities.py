@@ -5,6 +5,7 @@ import requests
 from json_io import user_agent
 from database_accessor import insertOneIntoResultTable
 headers = user_agent
+referer = "https://google.com"
 
 # ===================================
 # Functions for parsing the actual product pages
@@ -213,13 +214,14 @@ def page_parser_amazon(link):
 # @post  A valid result will be inserted into the database
 # @param  link  The link of the item page to scrape.
 def page_parser_bandh(link):
-    result = requests.get(link, headers=headers, timeout=None)
-    #print(link)
-    #print(result.status_code)
+    result = requests.get(link, headers=headers, timeout=None, allow_redirects=True)
+    print(link)
+    print(result.status_code)
 
     src = result.content
 
     soup = BeautifulSoup(src, 'lxml')
+    print(soup)
 
     # Price
     tag = soup.find('div', {"data-selenium": "pricingPrice"})
