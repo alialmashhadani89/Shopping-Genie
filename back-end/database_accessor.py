@@ -11,6 +11,7 @@ mydb = mysql.connector.connect(
 )
 
 
+# =
 # ============
 # Result Table
 # ============
@@ -40,7 +41,7 @@ def insertOneIntoResultTable(result):
     mycursor.execute(sql, val)
 
     mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
+    print(mycursor.rowcount, " Result record inserted.")
 
 # Make InsertMany for Result
 
@@ -75,7 +76,7 @@ def insertOneIntoQueryTable(query):
     mycursor.execute(sql, val)
 
     mydb.commit()
-    print(mycursor.rowcount, "record inserted.")
+    print(mycursor.rowcount, " Query record inserted.")
 
 # ============
 # Seller Table
@@ -129,7 +130,6 @@ def findBrandIdByName(name):
     mydb.commit()
 
     return mycursor.fetchone()
-
 # to get the result to the backend
 
 
@@ -137,8 +137,8 @@ def get_results(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
     sql = """
-        SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as prediction,\
-            DATE_FORMAT(NOW()+ INTERVAL 1 MONTH, '%Y-%m-%d %T.%f') as predictionDate, min(r.price) as itemPrice,\
+        SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
+            DATE_FORMAT(NOW()+ INTERVAL 1 MONTH, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
             s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
         WHERE r.name like concat('%',%s,'%')\
@@ -156,7 +156,9 @@ def get_results(term=' '):
 def get_data_ai(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
-    sql = "Select price from results where name like concat('%',%s,'%')"
+    # sql = "select t1.price as price ,t2.name as store_name from results t1 join sellers \
+    #        t2 on t1.sid = t2.id and t1.name like concat('%',%s,'%');"
+    sql = "select price from results where name like concat('%',%s,'%');"
     val = (term,)
     cursor.execute(sql, val)
     table_rows = cursor.fetchall()

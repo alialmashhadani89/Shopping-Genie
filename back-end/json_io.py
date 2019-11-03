@@ -31,54 +31,41 @@ app = Flask(__name__)
 CORS(app)
 
 
-css = Bundle('style.css', output='styles/main.css')
+#css = Bundle('style.css', output='styles/main.css')
 
-assets = Environment(app)
+#assets = Environment(app)
 
-assets.register('main_css', css)
+#assets.register('main_css', css)
 
 
 def search_results_bestbuy(search_term):
-    #response = requests.get(bestbuy_base_url + search_term, headers=user_agent, allow_redirects=True)
-    # print(response.text)
-    response = requests.get(bestbuy_base_url+search_term,
-                            headers=user_agent, allow_redirects=True).text
-    # wesite_response_link(response)
-    return website_bb_info(bestbuy_base_url+search_term, search_term)
+    website_bb_info(bestbuy_base_url+search_term, search_term)
 
 
 def search_results_walmart(search_term):
-    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True)
-    # print(response.text)
-    #response = requests.get(walmart_base_url + search_term, headers=user_agent, allow_redirects=True).text
-    # wesite_response_link(response)
-    page_parser_walmart(walmart_base_url+search_term)
+    website_wm_info(walmart_base_url+search_term, search_term)
 
 
 def search_results_amazon(search_term):
-    #response = requests.get(amazon_base_url + search_term, headers=user_agent, allow_redirects=True)
-    # print(response.text)
-    response = requests.get(amazon_base_url + search_term,
-                            headers=user_agent, allow_redirects=True).text
-    # wesite_response_link(response)
+    website_am_info(amazon_base_url+search_term, search_term)
 
 
 def search_results_bh(search_term):
-    return website_bh_info(bh_base_url+search_term, search_term)
+    website_bh_info(bh_base_url+search_term, search_term)
 
 
 # the main API
-@app.route('/api/search')
-def search():
+@app.route('/api')
+def api():
     search = request.args.get('search')
 
     # to search straight in in each website.
     search_results_bestbuy(search)
-    # search_results_walmart(search)
-    # search_results_amazon(search)
-    results = search_results_bh(search)
+    search_results_walmart(search)
+    search_results_amazon(search)
+    search_results_bh(search)
 
-    return json.dumps({"results": results})
+    return json.dumps({"search": search})
 
 
 @app.route('/api/results')
@@ -88,20 +75,30 @@ def results():
     if (len(results) == 0):
         search_results_bestbuy(search)
         search_results_bh(search)
+        search_results_walmart(search)
+        search_results_amazon(search)
         results = get_results(search)
+
+    predication_price = get_data_ai(search)
+    for resultlist in results:
+        resultlist["predictionPrice"] = str(
+            "$" + ' '.join(map(str, predication_price)))
+        print(resultlist)
     # giving the seatch term to get the prices of the product.
-    predictions = [{"brand": "B&H", "prediction": 0.80},
-                   {"brand": "Best Buy", "prediction": 0.10}]
+    """
+    predictions = [{"brand": "B&H", "prediction": "0"},
+                   {"brand": "Best Buy", "prediction": "$0"},
+                   {"brand": "Amazon", "prediction": "0"},
+                   {"brand": "Walmart", "prediction": "0"}]
+    
     for i in range(len(results)):
         result = results[i]
-        print(result)
         for x in predictions:
-            print(x)
             if x["brand"] == result["storeName"]:
-                result.update({"prediction": x["prediction"]})
+                result.update(
+                    {"prediction": str("$" + ' '.join(map(str, predication_price)))})
         results[i] = result
-    #predication_price = get_data_ai(search)
-    # print(predication_price)
+    """
     return json.dumps(results)
 
 
@@ -129,10 +126,9 @@ def sendmail():
     mail = Mail(app)
     with app.app_context():
         msg = Message(subject="Feedback",
-                      # replace with your email for testing
                       recipients=["pricegenie0499@gmail.com"],
                       # this is where we will put the content of the email.
-                      body=data['name'] + "; \n" + data['email'] + "; \n" + data['content'])
+                      body=data['name'] + ", \n\n" + data['email'] + "; \n\n" + data['content'])
         mail.send(msg)
         # we can put alert that mail has been sent.
         return json.dumps({"message": "Message sent successfully"})

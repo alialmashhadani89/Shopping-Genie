@@ -85,6 +85,9 @@ const FeedBackPage = () => {
       .then(res => res.json())
       .then(res => {
         alert(res.message);
+        document.getElementById("inputname").value = "";
+        document.getElementById("inputemail").value = "";
+        document.getElementById("inputtext").value = "";
       });
   };
 
@@ -121,18 +124,21 @@ const FeedBackPage = () => {
           <h2>Please fill out the form below.</h2>
           <p>Name:</p>
           <input
+            id="inputname"
             type="text"
             onChange={e => setNameInput(e.target.value)}
             style={{ width: "500px", height: "35px" }}
           />
           <p>Email:</p>
           <input
+            id="inputemail"
             type="text"
             onChange={e => setEmailInput(e.target.value)}
             style={{ width: "500px", height: "35px" }}
           />
           <p>Message</p>
           <textarea
+            id="inputtext"
             onChange={e => setContentInput(e.target.value)}
             rows="15"
             cols="67"

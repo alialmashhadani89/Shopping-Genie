@@ -110,8 +110,12 @@ const ResultsImage = styled.img({
 function checklogo(storeName) {
   if (storeName.trim() == "B&H") {
     return bhlogo;
-  } else {
+  } else if (storeName.trim() == "Amazon") {
+    return amazonlogo;
+  } else if (storeName.trim() == "Best Buy") {
     return bestbuylogo;
+  } else {
+    return walmartlogo;
   }
 }
 
@@ -120,7 +124,7 @@ const RenderItem = ({
   brand,
   itemName,
   itemPrice,
-  prediction,
+  predictionPrice,
   predictionDate,
   storeName
 }) => (
@@ -131,7 +135,7 @@ const RenderItem = ({
     <td>{brand} </td>
     <td>{itemName} </td>
     <td>{itemPrice} </td>
-    <td>{prediction} </td>
+    <td>{predictionPrice} </td>
     <td>{moment(predictionDate).format("MM/YYYY")} </td>
     <td>
       <ResultsImage src={checklogo(storeName)} />
