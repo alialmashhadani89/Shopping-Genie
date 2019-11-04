@@ -48,7 +48,7 @@ def check_item_bb(item_name, search_term):
 
     if "for" in full_item_name:
         check_number -= 1
-    if "refurbished" in full_item_name:
+    if "refurbished" in full_item_name or "pre-owned" in full_item_name:
         check_number = 0
     if check_number >= 2:
         return True
@@ -160,8 +160,11 @@ def website_bh_info_helping(response, search_term):
         if check_item(item_brand, item_name, search_term):
             if i > 15:
                 break
-            page_parser_bandh(link)
-            i+=1
+            outcome = page_parser_bandh(link)
+            if outcome:
+                i+=1
+            else:
+                print("Not Available")
         else:
             print("Not relevant")
 
@@ -248,26 +251,7 @@ def website_wm_info(search_term):
     # if not then we will stop the search.
     if search_guard_wm(response,search_term):
 
-        # If only one page
-
-#        button = None
-#        if button == None:
-#            print("One Page")
         website_wm_info_helping(response, search_term)
-#        else:
-#            print("Many Page")
-#            page_number_list = soup.find('ul', class_="paginator-list")
-#            page_number = page_number_list.find_all('a')
-
-            # getting the links
-#            for link in page_number:
-#                if link.has_attr('href'):
-#                    link_list.append(link['href'])
-
-            # getting in info
-#            for links in link_list:
-#                response = requests.get(links, headers=user_agent, allow_redirects=True).text
-#                website_wm_info_helping(response, search_term)
     else:
         print("We are sorry! The item you looking for is not in the Walmart store")
 
