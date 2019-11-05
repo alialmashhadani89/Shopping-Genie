@@ -14,8 +14,8 @@ bh_base_url = "https://www.bhphotovideo.com/c/search?sts=ma&N=0&pn=1&Ntt="
 
 def check_item(item_brand, item_name, search_term):
     check_number = 0
-    print(item_brand)
-    print(item_name)
+    #print(item_brand)
+    #print(item_name)
     full_item_name = str(item_brand).lower() + " " + str(item_name).lower()
     for word in search_term.split():
         if len(word) >= 2:
@@ -25,6 +25,8 @@ def check_item(item_brand, item_name, search_term):
 
     if "for" in full_item_name:
         check_number -= 1
+    if "refurbished" in full_item_name:
+        check_number = 0
 
     if check_number >= 2:
         return True
@@ -52,7 +54,7 @@ def check_item_bb(item_name, search_term):
 
 def check_item_wm(item_name, search_term):
     check_number = 0
-    full_item_name = str(item_name[0]).lower()
+    full_item_name = str(item_name).lower()
     for word in search_term.split():
         if len(word) >= 2:
             score = full_item_name.count(word)
@@ -61,6 +63,8 @@ def check_item_wm(item_name, search_term):
 
     if "for" in full_item_name:
         check_number -= 1
+    if "refurbished" in full_item_name:
+        check_number = 0
     if check_number >= 2:
         return True
     else:
@@ -73,10 +77,7 @@ def check_item_am(item_name, search_term):
 
     for word in search_term.split():
         #print(word)
-
         if len(word)>=2:
-            #   if str(word).lower() in full_item_name:
-            #        check_number += 1
             score = full_item_name.count(word)
             #print(score)
             if score == 1:
@@ -120,10 +121,11 @@ def search_guard_bb(response, search_term):
 def search_guard_wm(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all('a', {"class": "product-title-link line-clamp line-clamp-2"})
+    print(len(anchors))
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
-    if check_item_wm(item_name, search_term):
+    if check_item_wm(item_name[0], search_term):
         return True
     else:
         return False
@@ -150,8 +152,6 @@ def website_bh_info_helping(response, search_term):
                       "name": a.find('span', {"itemprop": "name"}).get_text(),
                       "brand": a.find('span', {"itemprop": "brand"}).get_text()})
 
-    #item_brand = soup.find_all('span', itemprop="brand")
-    #item_name = soup.find_all('span', itemprop="name")
 
     i = 0
     for link in links:
@@ -228,21 +228,27 @@ def website_bb_info(search_term):
 #===Walmart===
 # getting the info from the website.
 def website_wm_info_helping(response, search_term):
-    #print("Walmart Helping Info")
+
     # Cannot use check item because for bestbuy, brand name is not accessable at this stage
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all('a', {"class": "product-title-link line-clamp line-clamp-2"})
     links = []
-   # print(len(anchors))
     for anchor in anchors:
-        links.append("https://www.walmart.com" + anchor["href"])
+        links.append({"url": "https://www.walmart.com" + anchor["href"],
+                     "name": anchor.span.get_text()})
 
     i = 0
     for link in links:
-        if i > 15:
-            break
-        page_parser_walmart(link)
-        i+=1
+        if check_item_wm(link["name"], search_term):
+            if i > 15:
+                break
+            outcome = page_parser_walmart(link["url"])
+            if outcome:
+                i+=1
+            else:
+                print("Not valid")
+        else:
+            print("Not relevant")
 
 # get the response and convert it into lxml format.
 def website_wm_info(search_term):
@@ -264,12 +270,10 @@ def website_wm_info(search_term):
 def website_am_info_helping(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
 
-    # The specific sibling to avoid is "a-row a-spacing-micro"
     headers = soup.find_all('h2', {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
 
     links = []
 
-    # MUST FILTER OUt SPONSERED CONTENT. CHECK SIBLING. IF HAS "micro spacing" nonsense, dont accept
     for header in headers:
         if header.find_previous_sibling('a') == None:
             links.append( { "url": "https://www.amazon.com" + header.a["href"],
@@ -281,15 +285,14 @@ def website_am_info_helping(response, search_term):
                 break
             outcome = page_parser_amazon(link["url"])
             if outcome:
-                #print("Link#: " + str(i))
                 i+=1
             else:
-                print("OUT OF STOCK OR OTHER")
+                print("Not valid")
 
         else:
-            print("NOT VALID")
+            print("Not relevant")
 
-        #print("======")
+
 # get the response and convert it into lxml format.
 def website_am_info(search_term):
     link = amazon_base_url + search_term

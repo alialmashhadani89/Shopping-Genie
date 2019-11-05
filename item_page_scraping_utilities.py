@@ -106,7 +106,6 @@ def page_parser_bestbuy(link):
 # @param  link  The link of the item page to be scraped.
 def page_parser_walmart(link):
     result = requests.get(link, headers=headers, stream=False)
-    #print("Walmart Item Scraper")
     #print(result.status_code)
     #print(link)
     src = result.content
@@ -155,6 +154,8 @@ def page_parser_walmart(link):
         "seller": "Walmart"}
 
     insertOneIntoResultTable(result)
+
+    return True
 
 
 # @pre
