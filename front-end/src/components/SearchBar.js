@@ -46,11 +46,11 @@ const Input = styled.input({
 const ButtonContainer = styled.div({});
 
 const Button = styled.button({
-  backgroundColor: "orange",
+  backgroundColor: "#cc2900",
   width: "100px",
   padding: "12.5px",
   height: "52px",
-  color: "#333",
+  color: "white",
   borderTopLeftRadius: 0,
   borderBottomLeftRadius: 0,
   borderTopRightRadius: 4,

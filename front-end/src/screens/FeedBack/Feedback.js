@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-import feedbackbanner from "../../images/feedback_banner.jpg";
+import backgroundpic from "../../images/feedback1.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -19,11 +19,15 @@ const MainContainer = styled(View)({
   justifyContent: "flex-start",
   alignItems: "stretch",
   flexDirection: "column",
-  backgroundColor: "#83d7fe"
+  backgroundImage: `url(${backgroundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
-  height: 100,
+  height: 150,
   flexDirection: "row",
   alignItems: "center"
 });
@@ -33,7 +37,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  backgroundColor: "grey",
+  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -42,13 +46,13 @@ const RoutesContainer = styled(View)({
 });
 
 const RouteItem = styled.a(({ selected }) => ({
-  padding: "15px 15px",
-  backgroundColor: selected ? "orange" : "transparent",
+  padding: "20px 20px",
+  //backgroundColor: selected ? "orange" : "black",
   color: "white",
-  "&:hover": {
-    backgroundColor: selected ? "orange" : "lightgrey",
-    color: selected ? "white" : "green"
-  }
+  //"&:hover": {
+    //backgroundColor: selected ? "orange" : "transparent",
+    //color: selected ? "white" : "green"
+  //}
 }));
 
 const LogoImage = styled.img({
@@ -57,12 +61,6 @@ const LogoImage = styled.img({
   marginTop: 5
 });
 
-const Image = styled.img({
-  paddingLeft: 20,
-  width: 700,
-  height: 400,
-  marginTop: 25
-});
 
 const FeedBackPage = () => {
   const [nameInput, setNameInput] = useState("");
@@ -95,7 +93,7 @@ const FeedBackPage = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
+          <RouteItem href="/home">
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
@@ -110,41 +108,43 @@ const FeedBackPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <image>
-          <Image src={feedbackbanner} />
-          <h2 style={{ marginLeft: "20px" }}>
-            Do you have something to tell us?
-          </h2>
-          <h3 style={{ marginLeft: "20px" }}>
-            Please send us your feed back by filling the from on the right.
-          </h3>
-        </image>
 
-        <form onSubmit={sendFeedBack} style={{ marginLeft: "50px" }}>
-          <h2>Please fill out the form below.</h2>
+          <h2 style={{ marginLeft: "60px", color: "white"}}>
+            <p>Do you have something to tell us?</p>
+
+            <p>Please send us your feed back by</p>
+            <p>filling the form on the right.</p>
+          </h2>
+
+
+        <form onSubmit={sendFeedBack} style={{ marginLeft: "320px", marginRight: "20PX", color: "white"}}>
+          <h2>Please Fill Out the Form Below.</h2>
           <p>Name:</p>
           <input
             id="inputname"
             type="text"
             onChange={e => setNameInput(e.target.value)}
-            style={{ width: "500px", height: "35px" }}
+            style={{ width: "500px", height: "35px", color: "black" }}
           />
+          <p></p>
           <p>Email:</p>
           <input
             id="inputemail"
             type="text"
             onChange={e => setEmailInput(e.target.value)}
-            style={{ width: "500px", height: "35px" }}
+            style={{ width: "500px", height: "35px", color: "black"}}
           />
-          <p>Message</p>
+          <p></p>
+          <p>Message:</p>
           <textarea
             id="inputtext"
             onChange={e => setContentInput(e.target.value)}
+            style={{width: "500px", color: "black"}}
             rows="15"
             cols="67"
           />
           <p />
-          <input type="submit" value="Submit" style={{ width: "100px" }} />
+          <input type="submit" value="Submit" style={{ width: "100px", color: "black" }} />
         </form>
       </Content>
     </MainContainer>

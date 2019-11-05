@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
 import logo from "../../images/logo15.png";
 import { useHistory } from "react-router-dom";
-import backgoundpic from "../../images/paralax.jpg";
+import backgoundpic from "../../images/home.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -25,7 +25,7 @@ const MainContainer = styled(View)({
 });
 
 const NavBar = styled(View)({
-  height: 100,
+  height: 150,
   flexDirection: "row",
   alignItems: "center"
 });
@@ -35,7 +35,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  backgroundColor: "grey",
+  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -44,13 +44,13 @@ const RoutesContainer = styled(View)({
 });
 
 const RouteItem = styled.a(({ selected }) => ({
-  padding: "15px 15px",
-  backgroundColor: selected ? "orange" : "transparent",
-  color: "white",
-  "&:hover": {
-    backgroundColor: selected ? "orange" : "lightgrey",
-    color: selected ? "white" : "green"
-  }
+  padding: "20px 20px",
+  //backgroundColor: selected ? "orange" : "transparent",
+  color: "black",
+  //"&:hover": {
+    //backgroundColor: selected ? "orange" : "lightgrey",
+    //color: selected ? "white" : "green"
+  //}
 }));
 
 const LogoImage = styled.img({
@@ -68,8 +68,8 @@ const Content = styled(View)({
 
 const SearchBarContainer = styled(View)({
   height: 50,
-  top: 100,
-  marginTop: 250,
+  top: 20,
+  marginTop: 20,
   justifyContent: "center"
 });
 
@@ -106,7 +106,7 @@ const FrontPage = () => {
           </RouteItem>
           <RouteItem href="/details">Details</RouteItem>
           <RouteItem href="/about">About</RouteItem>
-          <RouteItem href="/feedback">Feedback</RouteItem>
+          <RouteItem href="/feedback">FeedBack</RouteItem>
           <RouteItem href="/contact">Contact</RouteItem>
         </RoutesContainer>
       </NavBar>

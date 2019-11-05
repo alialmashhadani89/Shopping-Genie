@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import ContctUsBanner from "../../images/contact-us-banner.jpg";
-import logo from "../../images/logo14.png";
+import logo from "../../images/logo15.png";
+import backgroundpic from "../../images/contact1.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -19,11 +19,15 @@ const MainContainer = styled(View)({
   justifyContent: "flex-start",
   alignItems: "stretch",
   flexDirection: "column",
-  backgroundColor: "#83d7fe"
+  backgroundImage: `url(${backgroundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
-  height: 100,
+  height: 150,
   flexDirection: "row",
   alignItems: "center"
 });
@@ -33,7 +37,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -42,13 +45,13 @@ const RoutesContainer = styled(View)({
 });
 
 const RouteItem = styled.a(({ selected }) => ({
-  padding: "15px 15px",
-  backgroundColor: selected ? "orange" : "transparent",
-  color: "white",
-  "&:hover": {
-    backgroundColor: selected ? "orange" : "lightgrey",
-    color: selected ? "white" : "green"
-  }
+  padding: "20px 20px",
+  //backgroundColor: selected ? "orange" : "transparent",
+  color: "black",
+  //"&:hover": {
+    //backgroundColor: selected ? "orange" : "lightgrey",
+    //color: selected ? "white" : "green"
+  //}
 }));
 
 const LogoImage = styled.img({
@@ -73,7 +76,7 @@ const ContactPage = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
+          <RouteItem href="/home">
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
@@ -88,14 +91,14 @@ const ContactPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <image>
-          <Image src={ContctUsBanner} />
-        </image>
         <Text>
-          <h2>How can we help you?</h2>
-          <h4>Please contact us, if you have any questions.</h4>
-          <h4>Call-US: 888-888-8888</h4>
-          <h4>Email: xxxxxx@price_genie.com</h4>
+        <h2 style={{ marginLeft: "850px", color: "black"}}>
+          How Can We Help You?</h2>
+          <h4 style={{ marginLeft: "850px", color: "black"}}>
+          Please contact us, if you have any questions.
+          <p>Call-US: 888-888-8888</p>
+          <p>Email: pricegenie0499@gmail.com</p>
+          </h4>
         </Text>
       </Content>
     </MainContainer>

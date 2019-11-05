@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
+import backgroundpic from "../../images/detail7.jpg";
 
-import logo from "../../images/logo14.png";
+import logo from "../../images/logo15.png";
 import SearchBar from "../../components/SearchBar";
 import bestbuylogo from "../../images/bb.png";
 import bhlogo from "../../images/bh.png";
@@ -20,11 +21,15 @@ const MainContainer = styled(View)({
   alignItems: "stretch",
   flexDirection: "column",
   overflowX: "hidden",
-  backgroundColor: "#83d7fe"
+  backgroundImage: `url(${backgroundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
-  height: 100,
+  height: 150,
   flexDirection: "row",
   alignItems: "center"
 });
@@ -34,7 +39,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -43,13 +47,13 @@ const RoutesContainer = styled(View)({
 });
 
 const RouteItem = styled.a(({ selected }) => ({
-  padding: "15px 15px",
-  backgroundColor: selected ? "orange" : "transparent",
-  color: "white",
-  "&:hover": {
-    backgroundColor: selected ? "orange" : "lightgrey",
-    color: selected ? "white" : "green"
-  }
+  padding: "20px 20px",
+  //backgroundColor: selected ? "orange" : "transparent",
+  color: "black",
+  //"&:hover": {
+    //backgroundColor: selected ? "orange" : "lightgrey",
+    //color: selected ? "white" : "green"
+  //}
 }));
 
 const LogoImage = styled.img({
@@ -96,8 +100,8 @@ const Table = styled.table({
     textAlign: "center",
     paddingTop: 20,
     paddingBottom: 20,
-    backgroundColor: "dodgerblue",
-    color: "white"
+    backgroundColor: "#ffad99",
+    color: "black"
   }
 });
 
@@ -171,7 +175,7 @@ const Details = () => {
     <MainContainer>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
+          <RouteItem href="/home">
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
@@ -181,7 +185,7 @@ const Details = () => {
             Details
           </RouteItem>
           <RouteItem href="/about">About</RouteItem>
-          <RouteItem href="/feedback">Feedback</RouteItem>
+          <RouteItem href="/feedback">FeedBack</RouteItem>
           <RouteItem href="/contact">Contact</RouteItem>
         </RoutesContainer>
       </NavBar>

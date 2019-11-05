@@ -1,11 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
-import logo from "../../images/logo14.png";
-import aboutbanner from "../../images/about-banner2.png";
+import logo from "../../images/logo15.png";
+//import aboutbanner from "../../images/about-banner2.png";
 import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
 import stevenpic from "../../images/steven.jpg";
 import alipic from "../../images/ali.jpg";
+import backgroundpic from "../../images/about5.jpg";
+
+//import React, { component } from 'react'
+//import HorizontalScroll from 'react-scroll-horizontal'
 
 const View = styled.div({
   display: "flex"
@@ -23,13 +27,15 @@ const MainContainer = styled(View)({
   justifyContent: "flex-start",
   alignItems: "stretch",
   flexDirection: "column",
-  backgroundColor: "#83d7fe",
-  position: "absolute",
-  width: "100%"
+  backgroundImage: `url(${backgroundpic})`,
+  backgroundSize: "cover",
+  overflow: "hidden",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center"
 });
 
 const NavBar = styled(View)({
-  height: 100,
+  height: 150,
   flexDirection: "row",
   alignItems: "center"
 });
@@ -39,7 +45,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -48,20 +53,20 @@ const RoutesContainer = styled(View)({
 });
 
 const RouteItem = styled.a(({ selected }) => ({
-  padding: "15px 15px",
-  backgroundColor: selected ? "orange" : "transparent",
-  color: "white",
-  "&:hover": {
-    backgroundColor: selected ? "orange" : "lightgrey",
-    color: selected ? "white" : "green"
-  }
+  padding: "20px 20px",
+  //backgroundColor: selected ? "orange" : "transparent",
+  color: "black",
+  //"&:hover": {
+    //backgroundColor: selected ? "orange" : "lightgrey",
+    //color: selected ? "white" : "green"
+  //}
 }));
 
 const Image = styled.img({
   width: 500,
   height: 400,
   float: "left",
-  marginLeft: 30
+  marginLeft: 50
 });
 const Image2 = styled.img({
   width: 500,
@@ -74,7 +79,7 @@ const ImageAli = styled.img({
   width: 300,
   height: 400,
   float: "left",
-  marginLeft: 40,
+  marginLeft: 50,
   marginTop: 30
 });
 
@@ -83,7 +88,7 @@ const ImageSteven = styled.img({
   height: 400,
   float: "center",
   marginTop: 40,
-  marginLeft: 250
+  marginLeft: 180
 });
 
 const ImageSally = styled.img({
@@ -96,17 +101,17 @@ const ImageSally = styled.img({
 
 const TextAli = styled.text({
   float: "left",
-  marginLeft: 40
+  marginLeft: 50
 });
 
 const TextSteven = styled.text({
   float: "left",
-  marginLeft: 160
+  marginLeft: 80
 });
 
 const TextSally = styled.text({
   float: "right",
-  marginRight: 50
+  marginRight: 120
 });
 
 const LogoImage = styled.img({
@@ -117,10 +122,10 @@ const LogoImage = styled.img({
 
 const AboutPage = () => {
   return (
-    <MainContainer>
+    <MainContainer style={{ width: "800px", height: "1400px"}}>
       <NavBar>
         <NavBarImageContainer>
-          <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
+          <RouteItem href="/home">
             <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
@@ -135,23 +140,31 @@ const AboutPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <text style={{ marginLeft: 30, marginTop: 40 }}>
+        <text style={{ marginLeft: 50, marginTop: 40, color: "black" }}>
           <h2>
             <b> Who We Are? </b>
           </h2>
           <h3> We are developers, problem-solvers, and challengers!</h3>
         </text>
-        <image>
-          <Image src={grouppic} style={{ marginTop: 45 }} />
-          <Image2 src={aboutbanner} style={{ marginTop: 45 }} />
-        </image>
+
 
         <image>
-          <ImageAli src={alipic} />
-          <ImageSteven src={stevenpic} />
-          <ImageSally src={sallypic} />
+          <Image src={grouppic} style={{ marginTop: 25 }} />
         </image>
-        <text>
+
+        <text style={{marginLeft: "780px", marginTop: "-480px", color: "black"}}>
+        <h3> We are dreamers, and we desire to have a positive impact
+        <p> on peoples lives through computers. </p>
+        </h3>
+        </text>
+
+
+        <image>
+          <ImageAli src={alipic} style={{marginTop:"450px"}} />
+          <ImageSteven src={stevenpic} style={{marginTop: "450px"}}/>
+          <ImageSally src={sallypic} style={{marginTop: "450px"}} />
+        </image>
+        <text style={{color:"black"}}>
           <TextAli>
             <b>
               <h2>Ali Almashhadani</h2>
@@ -167,7 +180,7 @@ const AboutPage = () => {
           <TextSally>
             <b>
               <h2>Sally Xuan</h2>
-              <h3>[Front-End Developer & QA Engineer]</h3>
+              <h3>[Front-End Developer & Design]</h3>
             </b>
           </TextSally>
         </text>
