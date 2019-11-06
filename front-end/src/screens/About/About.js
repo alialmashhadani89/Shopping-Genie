@@ -1,15 +1,11 @@
 import React from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-//import aboutbanner from "../../images/about-banner2.png";
 import grouppic from "../../images/group-pic.png";
 import sallypic from "../../images/sally.jpg";
 import stevenpic from "../../images/steven.jpg";
 import alipic from "../../images/ali.jpg";
-import backgroundpic from "../../images/about5.jpg";
-
-//import React, { component } from 'react'
-//import HorizontalScroll from 'react-scroll-horizontal'
+import backgroundpic from "../../images/about.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -45,6 +41,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
+  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -55,10 +52,10 @@ const RoutesContainer = styled(View)({
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
   //backgroundColor: selected ? "orange" : "transparent",
-  color: "black",
+  color: "black"
   //"&:hover": {
-    //backgroundColor: selected ? "orange" : "lightgrey",
-    //color: selected ? "white" : "green"
+  //  backgroundColor: selected ? "orange" : "lightgrey",
+  //  color: selected ? "white" : "green"
   //}
 }));
 
@@ -122,7 +119,7 @@ const LogoImage = styled.img({
 
 const AboutPage = () => {
   return (
-    <MainContainer style={{ width: "800px", height: "1400px"}}>
+    <MainContainer style={{ width: "800px", height: "1400px" }}>
       <NavBar>
         <NavBarImageContainer>
           <RouteItem href="/home">
@@ -147,24 +144,26 @@ const AboutPage = () => {
           <h3> We are developers, problem-solvers, and challengers!</h3>
         </text>
 
-
         <image>
           <Image src={grouppic} style={{ marginTop: 25 }} />
         </image>
 
-        <text style={{marginLeft: "780px", marginTop: "-480px", color: "black"}}>
-        <h3> We are dreamers, and we desire to have a positive impact
-        <p> on peoples lives through computers. </p>
-        </h3>
+        <text
+          style={{ marginLeft: "780px", marginTop: "-480px", color: "black" }}
+        >
+          <h3>
+            {" "}
+            We are dreamers, and we desire to have a positive impact
+            <p> on peoples lives through computers. </p>
+          </h3>
         </text>
 
-
         <image>
-          <ImageAli src={alipic} style={{marginTop:"450px"}} />
-          <ImageSteven src={stevenpic} style={{marginTop: "450px"}}/>
-          <ImageSally src={sallypic} style={{marginTop: "450px"}} />
+          <ImageAli src={alipic} style={{ marginTop: "450px" }} />
+          <ImageSteven src={stevenpic} style={{ marginTop: "450px" }} />
+          <ImageSally src={sallypic} style={{ marginTop: "450px" }} />
         </image>
-        <text style={{color:"black"}}>
+        <text style={{ color: "black" }}>
           <TextAli>
             <b>
               <h2>Ali Almashhadani</h2>

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
 import logo from "../../images/logo15.png";
 import { useHistory } from "react-router-dom";
-import backgoundpic from "../../images/home.jpg";
+import backgoundpic from "../../images/home.jpeg";
 
 const View = styled.div({
   display: "flex"
@@ -25,9 +25,10 @@ const MainContainer = styled(View)({
 });
 
 const NavBar = styled(View)({
-  height: 150,
+  height: 100,
   flexDirection: "row",
-  alignItems: "center"
+  alignItems: "center",
+  marginTop: "10px"
 });
 
 const NavBarImageContainer = styled(View)({
@@ -35,7 +36,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  //backgroundColor: "grey",
+  // backgroundColor: "black",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -46,10 +47,10 @@ const RoutesContainer = styled(View)({
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
   //backgroundColor: selected ? "orange" : "transparent",
-  color: "black",
+  color: "white"
   //"&:hover": {
-    //backgroundColor: selected ? "orange" : "lightgrey",
-    //color: selected ? "white" : "green"
+  // backgroundColor: selected ? "orange" : "lightgrey",
+  // color: selected ? "white" : "green"
   //}
 }));
 
@@ -69,7 +70,7 @@ const Content = styled(View)({
 const SearchBarContainer = styled(View)({
   height: 50,
   top: 20,
-  marginTop: 20,
+  marginTop: 130,
   justifyContent: "center"
 });
 
@@ -116,7 +117,7 @@ const FrontPage = () => {
             value={search}
             onSubmit={onSubmit}
             onChange={setSearch}
-            placeholder="Search Price Genie to save your time and money..."
+            placeholder="Search Shopping Genie to save time and money..."
           />
         </SearchBarContainer>
       </Content>

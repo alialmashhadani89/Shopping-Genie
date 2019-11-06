@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
-import backgroundpic from "../../images/detail7.jpg";
+import backgroundpic from "../../images/detail.jpg";
 
 import logo from "../../images/logo15.png";
 import SearchBar from "../../components/SearchBar";
@@ -39,6 +39,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
+  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -49,10 +50,10 @@ const RoutesContainer = styled(View)({
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
   //backgroundColor: selected ? "orange" : "transparent",
-  color: "black",
+  color: "black"
   //"&:hover": {
-    //backgroundColor: selected ? "orange" : "lightgrey",
-    //color: selected ? "white" : "green"
+  //  backgroundColor: selected ? "orange" : "lightgrey",
+  // color: selected ? "white" : "green"
   //}
 }));
 
@@ -86,14 +87,16 @@ const Table = styled.table({
   borderCollapse: "collapse",
   display: "block",
   borderColor: "#000",
+
   "& *": {
     boxSizing: "border-box"
   },
   "& th:hover": {
-    backgroundColor: "#ddd"
+    backgroundColor: "#dda"
   },
   "& th, & td": {
-    border: "4px solid #ddd",
+    backgroundColor: "#ddd",
+    border: "4px solid #000",
     padding: 15
   },
   "& th": {
@@ -196,7 +199,7 @@ const Details = () => {
             value={search}
             onSubmit={onSubmit}
             onChange={setSearch}
-            placeholder="Search Price Genie to save your time and money..."
+            placeholder="Search Shopping Genie to save time and money..."
           />
         </SearchBarContainer>
         <ResultsContainer>

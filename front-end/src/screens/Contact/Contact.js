@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-import backgroundpic from "../../images/contact1.jpg";
+import backgroundpic from "../../images/contact.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -37,6 +37,7 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
+  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -47,10 +48,10 @@ const RoutesContainer = styled(View)({
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
   //backgroundColor: selected ? "orange" : "transparent",
-  color: "black",
+  color: "black"
   //"&:hover": {
-    //backgroundColor: selected ? "orange" : "lightgrey",
-    //color: selected ? "white" : "green"
+  // backgroundColor: selected ? "orange" : "lightgrey",
+  //color: selected ? "white" : "green"
   //}
 }));
 
@@ -77,10 +78,10 @@ const ContactPage = () => {
       <NavBar>
         <NavBarImageContainer>
           <RouteItem href="/home">
-            <LogoImage src={logo} />
+            <LogoImage src={logo} style={{ marginLeft: "-40px" }} />
           </RouteItem>
         </NavBarImageContainer>
-        <RoutesContainer>
+        <RoutesContainer style={{ marginLeft: "130px" }}>
           <RouteItem href="/home">Home</RouteItem>
           <RouteItem href="/details">Details</RouteItem>
           <RouteItem href="/about"> About</RouteItem>
@@ -92,12 +93,13 @@ const ContactPage = () => {
       </NavBar>
       <Content>
         <Text>
-        <h2 style={{ marginLeft: "850px", color: "black"}}>
-          How Can We Help You?</h2>
-          <h4 style={{ marginLeft: "850px", color: "black"}}>
-          Please contact us, if you have any questions.
-          <p>Call-US: 888-888-8888</p>
-          <p>Email: pricegenie0499@gmail.com</p>
+          <h2 style={{ marginLeft: "850px", color: "black" }}>
+            How Can We Help You?
+          </h2>
+          <h4 style={{ marginLeft: "850px", color: "black" }}>
+            Please contact us, if you have any questions.
+            <p>Call-US: 888-888-8888</p>
+            <p>Email: pricegenie0499@gmail.com</p>
           </h4>
         </Text>
       </Content>

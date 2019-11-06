@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-import backgroundpic from "../../images/feedback1.jpg";
+import backgroundpic from "../../images/feedback.jpeg";
 
 const View = styled.div({
   display: "flex"
@@ -47,11 +47,11 @@ const RoutesContainer = styled(View)({
 
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
-  //backgroundColor: selected ? "orange" : "black",
-  color: "white",
+  //backgroundColor: selected ? "orange" : "transparent",
+  color: "white"
   //"&:hover": {
-    //backgroundColor: selected ? "orange" : "transparent",
-    //color: selected ? "white" : "green"
+  // backgroundColor: selected ? "orange" : "transparent",
+  // color: selected ? "white" : "green"
   //}
 }));
 
@@ -60,7 +60,6 @@ const LogoImage = styled.img({
   height: 135,
   marginTop: 5
 });
-
 
 const FeedBackPage = () => {
   const [nameInput, setNameInput] = useState("");
@@ -108,16 +107,17 @@ const FeedBackPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
+        <h2 style={{ marginLeft: "60px", color: "white" }}>
+          <p>Do you have something to tell us?</p>
 
-          <h2 style={{ marginLeft: "60px", color: "white"}}>
-            <p>Do you have something to tell us?</p>
+          <p>Please send us your feed back by</p>
+          <p>filling the form on the right.</p>
+        </h2>
 
-            <p>Please send us your feed back by</p>
-            <p>filling the form on the right.</p>
-          </h2>
-
-
-        <form onSubmit={sendFeedBack} style={{ marginLeft: "320px", marginRight: "20PX", color: "white"}}>
+        <form
+          onSubmit={sendFeedBack}
+          style={{ marginLeft: "320px", marginRight: "20PX", color: "white" }}
+        >
           <h2>Please Fill Out the Form Below.</h2>
           <p>Name:</p>
           <input
@@ -132,19 +132,23 @@ const FeedBackPage = () => {
             id="inputemail"
             type="text"
             onChange={e => setEmailInput(e.target.value)}
-            style={{ width: "500px", height: "35px", color: "black"}}
+            style={{ width: "500px", height: "35px", color: "black" }}
           />
           <p></p>
           <p>Message:</p>
           <textarea
             id="inputtext"
             onChange={e => setContentInput(e.target.value)}
-            style={{width: "500px", color: "black"}}
+            style={{ width: "500px", color: "black" }}
             rows="15"
             cols="67"
           />
           <p />
-          <input type="submit" value="Submit" style={{ width: "100px", color: "black" }} />
+          <input
+            type="submit"
+            value="Submit"
+            style={{ width: "100px", color: "black" }}
+          />
         </form>
       </Content>
     </MainContainer>

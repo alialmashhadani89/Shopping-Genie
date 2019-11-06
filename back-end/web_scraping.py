@@ -1,3 +1,4 @@
+
 from bs4 import BeautifulSoup
 import requests
 import re
@@ -5,14 +6,27 @@ from json_io import user_agent
 from item_page_scraping_utilities import *
 
 
+# Base URLs for the websites
+bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
+amazon_base_url = "https://www.amazon.com/s?k="
+walmart_base_url = "https://www.walmart.com/search/?query="
+bh_base_url = "https://www.bhphotovideo.com/c/search?sts=ma&N=0&pn=1&Ntt="
+
+
 def check_item(item_brand, item_name, search_term):
     check_number = 0
-    full_item_name = str(item_brand[0].text).lower(
-    ) + " " + str(item_name[0].text).lower()
+    print(item_brand)
+    print(item_name)
+    full_item_name = str(item_brand).lower() + " " + str(item_name).lower()
     for word in search_term.split():
         if len(word) >= 2:
-            if str(word).lower() in full_item_name:
+            score = full_item_name.count(word)
+            if score == 1:
                 check_number += 1
+
+    if "for" in full_item_name:
+        check_number -= 1
+
     if check_number >= 2:
         return True
     else:
@@ -22,11 +36,17 @@ def check_item(item_brand, item_name, search_term):
 def check_item_bb(item_name, search_term):
     print(item_name)
     check_number = 0
-    full_item_name = str(item_name[0]).lower()
+    full_item_name = str(item_name).lower()
     for word in search_term.split():
         if len(word) >= 2:
-            if str(word).lower() in full_item_name:
+            score = full_item_name.count(word)
+            if score == 1:
                 check_number += 1
+
+    if "for" in full_item_name:
+        check_number -= 1
+    if "refurbished" in full_item_name or "pre-owned" in full_item_name:
+        check_number = 0
     if check_number >= 2:
         return True
     else:
@@ -38,8 +58,12 @@ def check_item_wm(item_name, search_term):
     full_item_name = str(item_name[0]).lower()
     for word in search_term.split():
         if len(word) >= 2:
-            if str(word).lower() in full_item_name:
+            score = full_item_name.count(word)
+            if score == 1:
                 check_number += 1
+
+    if "for" in full_item_name:
+        check_number -= 1
     if check_number >= 2:
         return True
     else:
@@ -64,6 +88,8 @@ def check_item_am(item_name, search_term):
 
     if "for" in full_item_name:
         check_number -= 1
+    if "renewed" in full_item_name or "refurbished" in full_item_name:
+        check_number = 0
     if check_number >= 2:
         return True
     else:
@@ -75,9 +101,13 @@ def check_item_am(item_name, search_term):
 
 def search_guard_bh(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
-    item_name = soup.find_all('span', itemprop="name")
-    item_brand = soup.find_all('span', itemprop="brand")
-    if check_item(item_brand, item_name, search_term):
+    anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
+    links = []
+    for a in anchors:
+        links.append({"url": a["href"],
+                      "name": a.find('span', {"itemprop": "name"}).get_text(),
+                      "brand": a.find('span', {"itemprop": "brand"}).get_text()})
+    if check_item(links[0]["brand"], links[0]["name"], search_term):
         return True
     else:
         return False
@@ -89,7 +119,7 @@ def search_guard_bb(response, search_term):
     item_name = []
     for header in name_headers:
         item_name.append(header.a.get_text())
-    if check_item_bb(item_name, search_term):
+    if check_item_bb(item_name[0], search_term):
         return True
     else:
         return False
@@ -128,27 +158,31 @@ def website_bh_info_helping(response, search_term):
     anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
     links = []
     for a in anchors:
-        links.append(a["href"])
+        links.append({"url": a["href"],
+                      "name": a.find('span', {"itemprop": "name"}).get_text(),
+                      "brand": a.find('span', {"itemprop": "brand"}).get_text()})
 
-    item_brand = soup.find_all('span', itemprop="brand")
-    item_name = soup.find_all('span', itemprop="name")
+    #item_brand = soup.find_all('span', itemprop="brand")
+    #item_name = soup.find_all('span', itemprop="name")
 
     i = 0
     for link in links:
-        if check_item(item_brand, item_name, search_term):
+        if check_item(link["brand"], link["name"], search_term):
             if i > 15:
                 break
-            page_parser_bandh(link)
-            i += 1
+            outcome = page_parser_bandh(link["url"])
+            if outcome:
+                i += 1
+            else:
+                print("Not Available")
         else:
             print("Not relevant")
 
 # get the response and convert it into lxml format.
 
 
-def website_bh_info(link, search_term):
-    # list that will store all the links needed
-    link_list = []
+def website_bh_info(search_term):
+    link = bh_base_url + search_term
 
     # Opening the pages and check how many page numbers
     response = requests.get(link, headers=user_agent,
@@ -173,22 +207,27 @@ def website_bb_info_helping(response, search_term):
     headers = soup.find_all('h4', {"class": "sku-header"})
     links = []
     for header in headers:
-        links.append("https://www.bestbuy.com" + header.a["href"])
+        links.append({"url": "https://www.bestbuy.com" + header.a["href"],
+                      "name": header.a.get_text()})
 
     i = 0
     for link in links:
-        if i > 15:
-            break
-        outcome = page_parser_bestbuy(link)
-        if outcome:
-            i += 1
+        if check_item_bb(link["name"], search_term):
+            if i > 15:
+                break
+            outcome = page_parser_bestbuy(link["url"])
+            if outcome:
+                i += 1
+            else:
+                print("Not available")
+        else:
+            print("Not relevant")
 
 # get the response and convert it into lxml format.
 
 
-def website_bb_info(link, search_term):
-    # list that will store all the links needed
-    link_list = []
+def website_bb_info(search_term):
+    link = bestbuy_base_url + search_term
 
     # Opening the pages and check how many page numbers
     response = requests.get(link, headers=user_agent,
@@ -209,13 +248,13 @@ def website_bb_info(link, search_term):
 
 
 def website_wm_info_helping(response, search_term):
-    print("Walmart Helping Info")
+    #print("Walmart Helping Info")
     # Cannot use check item because for bestbuy, brand name is not accessable at this stage
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all(
         'a', {"class": "product-title-link line-clamp line-clamp-2"})
     links = []
-    print(len(anchors))
+   # print(len(anchors))
     for anchor in anchors:
         links.append("https://www.walmart.com" + anchor["href"])
 
@@ -229,10 +268,8 @@ def website_wm_info_helping(response, search_term):
 # get the response and convert it into lxml format.
 
 
-def website_wm_info(link, search_term):
-    # list that will store all the links needed
-    print(link)
-    link_list = []
+def website_wm_info(search_term):
+    link = walmart_base_url + search_term
 
     # Opening the pages and check how many page numbers
     response = requests.get(link, headers=user_agent,
@@ -242,26 +279,7 @@ def website_wm_info(link, search_term):
     # if not then we will stop the search.
     if search_guard_wm(response, search_term):
 
-        # If only one page
-
-        #        button = None
-        #        if button == None:
-        #            print("One Page")
         website_wm_info_helping(response, search_term)
-#        else:
-#            print("Many Page")
-#            page_number_list = soup.find('ul', class_="paginator-list")
-#            page_number = page_number_list.find_all('a')
-
-        # getting the links
-#            for link in page_number:
-#                if link.has_attr('href'):
-#                    link_list.append(link['href'])
-
-        # getting in info
-#            for links in link_list:
-#                response = requests.get(links, headers=user_agent, allow_redirects=True).text
-#                website_wm_info_helping(response, search_term)
     else:
         print("We are sorry! The item you looking for is not in the Walmart store")
 
@@ -275,23 +293,20 @@ def website_am_info_helping(response, search_term):
     # The specific sibling to avoid is "a-row a-spacing-micro"
     headers = soup.find_all(
         'h2', {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
-    item_name = soup.find_all(
-        'span', {"class": "a-size-medium a-color-base a-text-normal"})
 
     links = []
 
     # MUST FILTER OUt SPONSERED CONTENT. CHECK SIBLING. IF HAS "micro spacing" nonsense, dont accept
     for header in headers:
-        # and header.find_previous_sibling('a')["class"]!= "a-row a-spacing-micro":
         if header.find_previous_sibling('a') == None:
-            links.append({"link": "https://www.amazon.com" + header.a["href"],
+            links.append({"url": "https://www.amazon.com" + header.a["href"],
                           "name": header.a.span.get_text()})
     i = 0
     for link in links:
         if check_item_am(link["name"], search_term):
             if i > 15:
                 break
-            outcome = page_parser_amazon(link["link"])
+            outcome = page_parser_amazon(link["url"])
             if outcome:
                 # print("Link#: " + str(i))
                 i += 1
@@ -305,8 +320,8 @@ def website_am_info_helping(response, search_term):
 # get the response and convert it into lxml format.
 
 
-def website_am_info(link, search_term):
-
+def website_am_info(search_term):
+    link = amazon_base_url + search_term
     # Opening the pages and check how many page numbers
     response = requests.get(link, headers=user_agent,
                             allow_redirects=True).text

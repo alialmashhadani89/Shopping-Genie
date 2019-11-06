@@ -231,10 +231,12 @@ def page_parser_bandh(link):
     src = result.content
 
     soup = BeautifulSoup(src, 'lxml')
-    print(soup)
+    # print(soup)
 
     # Price
     tag = soup.find('div', {"data-selenium": "pricingPrice"})
+    if tag == None:
+        return False
     price = tag.get_text().strip('$').replace(",", "")
    # print(price)
 

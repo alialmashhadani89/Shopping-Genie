@@ -141,10 +141,11 @@ def get_results(term=' '):
             DATE_FORMAT(NOW()+ INTERVAL 1 MONTH, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
             s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
+        and r.price in (select min(price) from results where name like concat('%',%s,'%') group by sid)\
         WHERE r.name like concat('%',%s,'%')\
         group by s.name;
         """
-    val = (term,)
+    val = (term, term,)
 
     cursor.execute(sql, val)
 
@@ -156,10 +157,9 @@ def get_results(term=' '):
 def get_data_ai(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
-    # sql = "select t1.price as price ,t2.name as store_name from results t1 join sellers \
-    #        t2 on t1.sid = t2.id and t1.name like concat('%',%s,'%');"
     sql = "select price from results where name like concat('%',%s,'%');"
     val = (term,)
     cursor.execute(sql, val)
+    #cursor.execute("select price from results;")
     table_rows = cursor.fetchall()
     return get_redication_price(table_rows)
