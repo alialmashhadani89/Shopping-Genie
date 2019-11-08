@@ -77,6 +77,9 @@ def page_parser_bestbuy(link):
     #print(brand)
 
     # Price
+    if soup.find('span', {"class": "priceView-subscription-units"}):
+        print("A Subscription-based Item")
+        return False
     tag = soup.find('div', {"class": "priceView-hero-price priceView-customer-price"})
     if tag == None:
         print("Item is no longer available")
@@ -107,7 +110,13 @@ def page_parser_bestbuy(link):
 def page_parser_walmart(link):
     result = requests.get(link, headers=headers, stream=False)
     #print(result.status_code)
-    #print(link)
+    prelink = result.url
+    if "?wpa_bd=" in prelink:
+        link = prelink[0:prelink.index("?wpa_bd=")]
+    else:
+        link = prelink
+    print(link)
+
     src = result.content
     soup = BeautifulSoup(src, 'lxml')
 
