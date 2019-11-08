@@ -3,13 +3,13 @@ import styled from "@emotion/styled";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
 import backgroundpic from "../../images/detail.jpg";
-
 import logo from "../../images/logo15.png";
 import SearchBar from "../../components/SearchBar";
 import bestbuylogo from "../../images/bb.png";
 import bhlogo from "../../images/bh.png";
 import amazonlogo from "../../images/aa.png";
 import walmartlogo from "../../images/wm.png";
+import MDSpinner from "react-md-spinner";
 
 const View = styled.div({
   display: "flex"
@@ -108,11 +108,19 @@ const Table = styled.table({
   }
 });
 
+
 const TableBody = styled.tbody({});
 
 const ResultsImage = styled.img({
   height: 50
 });
+
+function checkSpin(results){
+  if(results.length == 0){
+    return <MDSpinner className="spinner" size={50} style={{marginLeft:"400px", marginTop:"30px"}} />
+  }
+}
+
 
 function checklogo(storeName) {
   if (storeName.trim() == "B&H") {
@@ -174,6 +182,8 @@ const Details = () => {
   useEffect(() => {
     getResults(search);
   }, []);
+  
+
   return (
     <MainContainer>
       <NavBar>

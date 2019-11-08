@@ -2,9 +2,10 @@
 
 from bs4 import BeautifulSoup
 import requests
-from json_io import user_agent
+
 from database_accessor import insertOneIntoResultTable
-headers = user_agent
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
 referer = "https://google.com"
 
 # ===================================
@@ -112,7 +113,6 @@ def page_parser_bestbuy(link):
 
 def page_parser_walmart(link):
     result = requests.get(link, headers=headers, stream=False)
-    #print("Walmart Item Scraper")
     # print(result.status_code)
     # print(link)
     src = result.content
@@ -161,6 +161,8 @@ def page_parser_walmart(link):
         "seller": "Walmart"}
 
     insertOneIntoResultTable(result)
+
+    return True
 
 
 # @pre

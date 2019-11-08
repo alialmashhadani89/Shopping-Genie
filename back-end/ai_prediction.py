@@ -7,8 +7,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sqlalchemy import create_engine
-import pymysql
 
 import os
 
@@ -23,9 +21,7 @@ from tensorflow.keras.layers import Dropout
 
 
 def get_redication_price(pricesdb):
-    # Importing the training set
-    # dataset_train = pd.read_csv('Google_Stock_Price_Train.csv')
-    # training_set = dataset_train.iloc[:, 1:2].values
+   
     training_set = pd.DataFrame(pricesdb)
 
     sc = MinMaxScaler(feature_range=(0, 1))
@@ -33,12 +29,7 @@ def get_redication_price(pricesdb):
     # Creating a data structure with 60 timesteps and 1 output
     X_train = []
     y_train = []
-    """
-    for i in range(60, 1258):
-        X_train.append(training_set_scaled[i-60:i, 0])
-        y_train.append(training_set_scaled[i, 0])
-    X_train, y_train = np.array(X_train), np.array(y_train)
-    """
+    
     for i in range(20, len(training_set_scaled)):
         X_train.append(training_set_scaled[i-20:i, 0])
         y_train.append(training_set_scaled[i, 0])
@@ -85,25 +76,17 @@ def get_redication_price(pricesdb):
 
     # Part 3 - Making the predictions and visualising the results
 
-    # Getting the real stock price of 2017
-    dataset_test = pd.read_csv('Google_Stock_Price_Test.csv')
+    # Getting the real stock price of 2017 - need to work on it.
+    dataset_test = pd.read_csv('prices.csv')
     real_stock_price = dataset_test.iloc[:, 0:1].values
 
-    # Getting the predicted stock price of 2017
-    # dataset_total = pd.concat(
-    #    (dataset_train['Open'], dataset_test['Open']), axis=0)
-
+    # Getting the predicted stock price of 2017 - need work on it. 
     dataset_total = pd.concat((training_set, dataset_test['Price']), axis=0)
-    # inputs = dataset_total[len(dataset_total) - len(dataset_test) - 60:].values
     inputs = dataset_total[len(dataset_total) - len(dataset_test) - 10:].values
     inputs = inputs.reshape(-1, 1)
     inputs = sc.transform(inputs)
     X_test = []
-    """
-    for i in range(60, 80):
-        X_test.append(inputs[i-60:i, 0])
-    X_test = np.array(X_test)
-    """
+ 
     for i in range(20, len(inputs)):
         X_test.append(inputs[i-20:i, 0])
     X_test = np.array(X_test)
@@ -112,14 +95,4 @@ def get_redication_price(pricesdb):
     # where is the final price will be
     predicted_stock_price = sc.inverse_transform(predicted_stock_price)
     return predicted_stock_price[len(predicted_stock_price)-1]
-    """
-    # Visualising the results
-    plt.plot(real_stock_price, color='red', label='Real Google Stock Price')
-    plt.plot(predicted_stock_price, color='blue',
-             label='Predicted Google Stock Price')
-    plt.title('Google Stock Price Prediction')
-    plt.xlabel('Time')
-    plt.ylabel('Google Stock Price')
-    plt.legend()
-    plt.show()
-    """
+    
