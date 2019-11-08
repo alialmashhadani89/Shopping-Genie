@@ -12,85 +12,52 @@ amazon_base_url = "https://www.amazon.com/s?k="
 walmart_base_url = "https://www.walmart.com/search/?query="
 bh_base_url = "https://www.bhphotovideo.com/c/search?sts=ma&N=0&pn=1&Ntt="
 
-def check_item(item_brand, item_name, search_term):
-    check_number = 0
-    #print(item_brand)
-    #print(item_name)
-    full_item_name = str(item_brand).lower() + " " + str(item_name).lower()
-    for word in search_term.split():
-        if len(word) >= 2:
-            score = full_item_name.count(word)
-            if score == 1:
-                check_number += 1
+d_list = ["for"]
+k_list_am = ["refurbished", "renewed"]
+k_list_bh = ["refurbished"]
+k_list_wm = ["refurbished"]
+k_list_bb = ["refurbished", "pre-owned"]
 
-    if "for" in full_item_name:
-        check_number -= 1
-    if "refurbished" in full_item_name:
-        check_number = 0
+def decrementScore(term_list, item_name):
+    anti_score = 0
 
-    if check_number >= 2:
-        return True
-    else:
-        return False
+    for word in term_list:
+        if word in item_name:
+            anti_score += 1
 
-def check_item_bb(item_name, search_term):
-    print(item_name)
-    check_number = 0
-    full_item_name = str(item_name).lower()
-    for word in search_term.split():
-        if len(word) >= 2:
-            score = full_item_name.count(word)
-            if score == 1:
-                check_number += 1
+    print("Anti-score: " + str(anti_score))
+    return anti_score
 
-    if "for" in full_item_name:
-        check_number -= 1
-    if "refurbished" in full_item_name or "pre-owned" in full_item_name:
-        check_number = 0
-    if check_number >= 2:
-        return True
-    else:
-        return False
 
-def check_item_wm(item_name, search_term):
+def killScore(term_list, item_name):
+    for word in term_list:
+        if word in item_name:
+            return True
+            print("IT DEAD")
+
+    return False
+
+def check_item_uni(item_name, search_term, d_list, k_list):
     check_number = 0
     full_item_name = str(item_name).lower()
     for word in search_term.split():
-        if len(word) >= 2:
-            score = full_item_name.count(word)
-            if score == 1:
-                check_number += 1
-
-    if "for" in full_item_name:
-        check_number -= 1
-    if "refurbished" in full_item_name:
-        check_number = 0
-    if check_number >= 2:
-        return True
-    else:
-        return False
-
-def check_item_am(item_name, search_term):
-    check_number = 0
-    full_item_name = str(item_name).lower()
-    #print(full_item_name)
-
-    for word in search_term.split():
-        #print(word)
         if len(word)>=2:
             score = full_item_name.count(word)
-            #print(score)
             if score == 1:
                 check_number += 1
 
-    if "for" in full_item_name:
-        check_number -= 1
-    if "renewed" in full_item_name or "refurbished" in full_item_name:
+    check_number -= decrementScore(d_list, full_item_name)
+    if killScore(k_list, full_item_name):
         check_number = 0
+
+    print("Final Score: " + str(check_number))
     if check_number >= 2:
         return True
     else:
         return False
+    # decrementList
+    # deadlist 
+    
 
 # if the item not in the store, it will reject the search.
 # in that case, we will save time and stop getting wrong items in out date bases.
@@ -102,7 +69,8 @@ def search_guard_bh(response, search_term):
         links.append({"url": a["href"],
                       "name": a.find('span', {"itemprop": "name"}).get_text(),
                       "brand": a.find('span', {"itemprop": "brand"}).get_text()})
-    if check_item(links[0]["brand"], links[0]["name"], search_term):
+    #if check_item(links[0]["brand"], links[0]["name"], search_term):
+    if check_item_uni(links[0]["name"], search_term, d_list, k_list_bh):
         return True
     else:
         return False
@@ -113,7 +81,8 @@ def search_guard_bb(response, search_term):
     item_name = []
     for header in name_headers:
         item_name.append(header.a.get_text())
-    if check_item_bb(item_name[0], search_term):
+    #if check_item_bb(item_name[0], search_term):
+    if check_item_uni(item_name[0], search_term, d_list, k_list_bb):
         return True
     else:
         return False
@@ -125,7 +94,8 @@ def search_guard_wm(response, search_term):
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
-    if check_item_wm(item_name[0], search_term):
+    #if check_item_wm(item_name[0], search_term):
+    if check_item_uni(item_name[0], search_term, d_list, k_list_wm):
         return True
     else:
         return False
@@ -136,10 +106,13 @@ def search_guard_am(response, search_term):
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
-    if check_item_am(item_name[0], search_term):
-        return True
-    else:
-        return False
+    #if check_item_am(item_name[0], search_term):
+    i = 0
+    while i < 3:
+        if check_item_uni(item_name[i], search_term, d_list, k_list_am):
+            return True
+        i+=1
+    return False
 
 # ====B&H====
 # getting the info from the website.
@@ -155,7 +128,8 @@ def website_bh_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        if check_item(link["brand"], link["name"], search_term):
+        #if check_item(link["brand"], link["name"], search_term):
+        if check_item_uni(link["name"], search_term, d_list, k_list_bh):
             if i > 15:
                 break
             outcome = page_parser_bandh(link["url"])
@@ -197,7 +171,8 @@ def website_bb_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        if check_item_bb(link["name"], search_term):
+        #if check_item_bb(link["name"], search_term):
+        if check_item_uni(link["name"], search_term, d_list, k_list_bb):
             if i > 15:
                 break
             outcome = page_parser_bestbuy(link["url"])
@@ -239,7 +214,8 @@ def website_wm_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        if check_item_wm(link["name"], search_term):
+        #if check_item_wm(link["name"], search_term):
+        if check_item_uni(link["name"], search_term, d_list, k_list_wm):
             if i > 15:
                 break
             outcome = page_parser_walmart(link["url"])
@@ -280,7 +256,8 @@ def website_am_info_helping(response, search_term):
                             "name": header.a.span.get_text()})
     i = 0
     for link in links:
-        if check_item_am(link["name"], search_term):
+        #if check_item_am(link["name"], search_term):
+        if check_item_uni(link["name"], search_term, d_list, k_list_am):
             if i > 15:
                 break
             outcome = page_parser_amazon(link["url"])
