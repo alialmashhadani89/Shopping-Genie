@@ -108,23 +108,24 @@ const Table = styled.table({
   }
 });
 
-
 const TableBody = styled.tbody({});
 
 const ResultsImage = styled.img({
   height: 50
 });
 
-function checkSpin(results){
-  if(results.length == 0){
+function checkSpin(results) {
+  if (results.length == 0) {
     //return <MDSpinner className="spinner" size={50} style={{marginLeft:"400px", marginTop:"30px"}} />
     //{checkSpin(results) ? <MDSpinner /> : <RenderItem results={data} />}
+    //{results.map(item => (
+    //  <RenderItem key={item.id} {...item} />
+    //  ))}
     return true;
-  }else{
+  } else {
     return false;
   }
 }
-
 
 function checklogo(storeName) {
   if (storeName.trim() == "B&H") {
@@ -171,7 +172,6 @@ const Details = () => {
   const [results, setResults] = useState([]);
 
   const getResults = term => {
-    
     fetch(`/api/results?search=${term}`)
       .then(res => res.json())
       .then(res => {
@@ -182,12 +182,12 @@ const Details = () => {
   const onSubmit = e => {
     e.preventDefault();
     getResults(search);
+    setResults([]);
   };
 
   useEffect(() => {
     getResults(search);
   }, []);
-  
 
   return (
     <MainContainer>
@@ -248,10 +248,14 @@ const Details = () => {
               </tr>
             </thead>
             <TableBody>
-            
-              {results.map(item => (
-                <RenderItem key={item.id} {...item} />
-              ))}
+              {checkSpin(results) ? (
+                <MDSpinner
+                  size={50}
+                  style={{ marginTop: "50px", marginLeft: "50px" }}
+                />
+              ) : (
+                results.map(item => <RenderItem key={item.id} {...item} />)
+              )}
             </TableBody>
           </Table>
         </ResultsContainer>
