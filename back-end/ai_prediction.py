@@ -91,8 +91,9 @@ def get_redication_price(pricesdb):
         X_test.append(inputs[i-20:i, 0])
     X_test = np.array(X_test)
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
-    predicted_stock_price = regressor.predict(X_test)
+    predicted_price = regressor.predict(X_test)
+
     # where is the final price will be
-    predicted_stock_price = sc.inverse_transform(predicted_stock_price)
-    return predicted_stock_price[len(predicted_stock_price)-1]
+    predicted_price = sc.inverse_transform(predicted_price)
+    return predicted_price[len(predicted_price)-1]
     

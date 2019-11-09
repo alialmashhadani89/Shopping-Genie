@@ -117,7 +117,11 @@ const ResultsImage = styled.img({
 
 function checkSpin(results){
   if(results.length == 0){
-    return <MDSpinner className="spinner" size={50} style={{marginLeft:"400px", marginTop:"30px"}} />
+    //return <MDSpinner className="spinner" size={50} style={{marginLeft:"400px", marginTop:"30px"}} />
+    //{checkSpin(results) ? <MDSpinner /> : <RenderItem results={data} />}
+    return true;
+  }else{
+    return false;
   }
 }
 
@@ -167,6 +171,7 @@ const Details = () => {
   const [results, setResults] = useState([]);
 
   const getResults = term => {
+    
     fetch(`/api/results?search=${term}`)
       .then(res => res.json())
       .then(res => {
@@ -243,6 +248,7 @@ const Details = () => {
               </tr>
             </thead>
             <TableBody>
+            
               {results.map(item => (
                 <RenderItem key={item.id} {...item} />
               ))}

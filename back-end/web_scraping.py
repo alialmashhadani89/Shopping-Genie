@@ -17,51 +17,66 @@ user_agent = {
 
 
 
-d_list = ["for"]
+d_list = ["for"] # Words for which to decrement the link score
+# Words for which to kill the link score
 k_list_am = ["refurbished", "renewed"]
 k_list_bh = ["refurbished"]
 k_list_wm = ["refurbished"]
 k_list_bb = ["refurbished", "pre-owned"]
 
+
+# @pre  A link is being pre-evaluated
+# @post  The number by which to detract from a link's score will be given
+# @param  term_list  A list of words that would incur a one point penalty to a link's score
+# @param  item_name  The item_name of the link in question
+# @return  A number to be subtracted from the given link's score
 def decrementScore(term_list, item_name):
     anti_score = 0
-
     for word in term_list:
         if word in item_name:
             anti_score += 1
 
-    print("Anti-score: " + str(anti_score))
+    #print("Anti-score: " + str(anti_score))
     return anti_score
 
-
+# @pre  A link is being pre-evaluated
+# @post  A judgement shall be rendered
+# @param  term_list  A list of words for which to declare a link invalid
+# @param  item_name  The item name of the link in question
+# @return  True if invalid, False if Okay
 def killScore(term_list, item_name):
     for word in term_list:
         if word in item_name:
             return True
-            print("IT DEAD")
+            #print("IT DEAD")
 
     return False
 
+# @pre  A link is being pre-evaluated
+# @post  A judgement on whether or not to parse the link will be made
+# @param  item_name  The item name of the link in question
+# @param  search_term  The words searched for the given query
+# @param  d_list  A list of words with which to decrement a link's score
+# @param  k_list  A list of words for which to tank a link's score
+# @return  True if link is valid, otherwise False
 def check_item_uni(item_name, search_term, d_list, k_list):
-    check_number = 0
+    score = 0
     full_item_name = str(item_name).lower()
     for word in search_term.split():
         if len(word)>=2:
-            score = full_item_name.count(word)
-            if score == 1:
-                check_number += 1
+            count_num = full_item_name.count(word)
+            if count_num == 1:
+                score += 1
 
-    check_number -= decrementScore(d_list, full_item_name)
+    score -= decrementScore(d_list, full_item_name)
     if killScore(k_list, full_item_name):
-        check_number = 0
+        score = 0
 
-    print("Final Score: " + str(check_number))
-    if check_number >= 2:
+    print("Final Score: " + str(score))
+    if score >= 2:
         return True
     else:
         return False
-    # decrementList
-    # deadlist 
     
 
 # if the item not in the store, it will reject the search.
