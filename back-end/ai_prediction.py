@@ -20,8 +20,8 @@ from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dropout
 
 
-def get_redication_price(pricesdb):
-   
+def get_redication_price(pricesdb, future_prices):
+
     training_set = pd.DataFrame(pricesdb)
 
     sc = MinMaxScaler(feature_range=(0, 1))
@@ -29,9 +29,9 @@ def get_redication_price(pricesdb):
     # Creating a data structure with 60 timesteps and 1 output
     X_train = []
     y_train = []
-    
-    for i in range(20, len(training_set_scaled)):
-        X_train.append(training_set_scaled[i-20:i, 0])
+
+    for i in range(10, len(training_set_scaled)):
+        X_train.append(training_set_scaled[i-10:i, 0])
         y_train.append(training_set_scaled[i, 0])
     X_train, y_train = np.array(X_train), np.array(y_train)
 
@@ -74,21 +74,21 @@ def get_redication_price(pricesdb):
 
     regressor = load_model('price_prediction.h5')
 
-    # Part 3 - Making the predictions and visualising the results
+    # Part 3 - Making the predictions
 
-    # Getting the real stock price of 2017 - need to work on it.
-    dataset_test = pd.read_csv('prices.csv')
-    real_stock_price = dataset_test.iloc[:, 0:1].values
+    # Getting the prices to work with for the next 10 days.
+    future_predication = pd.DataFrame(future_prices)
 
-    # Getting the predicted stock price of 2017 - need work on it. 
-    dataset_total = pd.concat((training_set, dataset_test['Price']), axis=0)
-    inputs = dataset_total[len(dataset_total) - len(dataset_test) - 10:].values
+    # formating the prices so we can start the predication
+    dataset_total = pd.concat((training_set, future_predication), axis=0)
+    inputs = dataset_total[len(dataset_total) -
+                           len(future_predication) - 10:].values
     inputs = inputs.reshape(-1, 1)
     inputs = sc.transform(inputs)
     X_test = []
- 
-    for i in range(20, len(inputs)):
-        X_test.append(inputs[i-20:i, 0])
+
+    for i in range(10, len(inputs)):
+        X_test.append(inputs[i-10:i, 0])
     X_test = np.array(X_test)
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
     predicted_price = regressor.predict(X_test)
@@ -96,4 +96,3 @@ def get_redication_price(pricesdb):
     # where is the final price will be
     predicted_price = sc.inverse_transform(predicted_price)
     return predicted_price[len(predicted_price)-1]
-    

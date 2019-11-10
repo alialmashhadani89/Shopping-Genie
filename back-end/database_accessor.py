@@ -162,4 +162,7 @@ def get_data_ai(term=' '):
     cursor.execute(sql, val)
     #cursor.execute("select price from results;")
     table_rows = cursor.fetchall()
-    return get_redication_price(table_rows)
+    sql2 = "select price from results where name like concat('%',%s,'%') order by id desc limit 10;"
+    cursor.execute(sql2, val)
+    future_prices = cursor.fetchall()
+    return get_redication_price(table_rows, future_prices)
