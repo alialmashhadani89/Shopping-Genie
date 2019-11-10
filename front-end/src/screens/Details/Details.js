@@ -116,11 +116,6 @@ const ResultsImage = styled.img({
 
 function checkSpin(results) {
   if (results.length == 0) {
-    //return <MDSpinner className="spinner" size={50} style={{marginLeft:"400px", marginTop:"30px"}} />
-    //{checkSpin(results) ? <MDSpinner /> : <RenderItem results={data} />}
-    //{results.map(item => (
-    //  <RenderItem key={item.id} {...item} />
-    //  ))}
     return true;
   } else {
     return false;
@@ -247,16 +242,23 @@ const Details = () => {
                 </th>
               </tr>
             </thead>
-            <TableBody>
-              {checkSpin(results) ? (
-                <MDSpinner
-                  size={50}
-                  style={{ marginTop: "50px", marginLeft: "50px" }}
-                />
-              ) : (
-                results.map(item => <RenderItem key={item.id} {...item} />)
-              )}
-            </TableBody>
+
+            {checkSpin(results) ? (
+              <MDSpinner
+                size={50}
+                style={{
+                  marginTop: "50px",
+                  marginLeft: "390px"
+                }}
+              />
+            ) : (
+              <TableBody>
+                {" "}
+                {results.map(item => (
+                  <RenderItem key={item.id} {...item} />
+                ))}
+              </TableBody>
+            )}
           </Table>
         </ResultsContainer>
       </Content>
