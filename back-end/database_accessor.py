@@ -138,7 +138,7 @@ def get_results(term=' '):
     term = term.replace(' ', '%')
     sql = """
         SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
-            DATE_FORMAT(NOW()+ INTERVAL 1 MONTH, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
+            DATE_FORMAT(NOW()+ INTERVAL 10 DAY, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
             s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
         and r.price in (select min(price) from results where name like concat('%',%s,'%') group by sid)\

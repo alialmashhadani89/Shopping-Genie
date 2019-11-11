@@ -15,7 +15,6 @@ from flask_mail import Mail, Message
 from mail_credentations import getCredentials
 
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -46,7 +45,6 @@ def api():
     search_results_walmart(search)
     search_results_amazon(search)
     search_results_bh(search)
-
     return json.dumps({"search": search})
 
 
@@ -66,20 +64,6 @@ def results():
         resultlist["predictionPrice"] = str(
             "$" + "{:.2f}".format(predication_price))
     # giving the seatch term to get the prices of the product.
-    """
-    predictions = [{"brand": "B&H", "prediction": "0"},
-                   {"brand": "Best Buy", "prediction": "$0"},
-                   {"brand": "Amazon", "prediction": "0"},
-                   {"brand": "Walmart", "prediction": "0"}]
-
-    for i in range(len(results)):
-        result = results[i]
-        for x in predictions:
-            if x["brand"] == result["storeName"]:
-                result.update(
-                    {"prediction": str("$" + ' '.join(map(str, predication_price)))})
-        results[i] = result
-    """
     return json.dumps(results)
 
 
