@@ -10,7 +10,7 @@ https://www.python.org/downloads/release/python-365/
 
 Please run the following command on the folder of the back-end
 ```sh
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Front-End
