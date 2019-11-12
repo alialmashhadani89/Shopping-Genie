@@ -57,11 +57,14 @@ def killScore(term_list, item_name):
 def check_item_uni(item_name, search_term, d_list, k_list):
     score = 0
     full_item_name = str(item_name).lower()
-    for word in search_term.split():
-        if len(word)>=2:
-            count_num = full_item_name.count(word)
-            if count_num == 1:
-                score += 1
+    #for word in search_term.split():
+    #    if len(word)>=2:
+    #        count_num = full_item_name.count(word)
+    #        if count_num == 1:
+    #            score += 1
+    if search_term in full_item_name:
+        score = 2
+
 
     score -= decrementScore(d_list, full_item_name)
     if killScore(k_list, full_item_name):
