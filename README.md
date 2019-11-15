@@ -3,9 +3,14 @@
 ## Installation
 
 ### Back-End
+The back-End has been tested on pythong 3.6.8. Please follow the link for instaltion.
+```
+https://www.python.org/downloads/release/python-365/
+```
+
 Please run the following command on the folder of the back-end
 ```sh
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Front-End
