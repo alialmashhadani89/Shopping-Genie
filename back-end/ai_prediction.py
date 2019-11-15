@@ -20,12 +20,15 @@ from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dropout
 
 
-def get_redication_price(pricesdb, future_prices):
+def get_predication(input_data, future_prices):
 
-    training_set = pd.DataFrame(pricesdb)
+    input_data = pd.DataFrame(input_data)
 
     sc = MinMaxScaler(feature_range=(0, 1))
-    training_set_scaled = sc.fit_transform(training_set)
+
+    # training_set_scaled = sc.fit_transform(training_set)
+    training_set_scaled = sc.fit_transform(input_data)
+
     # Creating a data structure with 60 timesteps and 1 output
     X_train = []
     y_train = []
@@ -80,7 +83,7 @@ def get_redication_price(pricesdb, future_prices):
     future_predication = pd.DataFrame(future_prices)
 
     # formating the prices so we can start the predication
-    dataset_total = pd.concat((training_set, future_predication), axis=0)
+    dataset_total = pd.concat((input_data, future_predication), axis=0)
     inputs = dataset_total[len(dataset_total) -
                            len(future_predication) - 10:].values
     inputs = inputs.reshape(-1, 1)
@@ -95,4 +98,21 @@ def get_redication_price(pricesdb, future_prices):
 
     # where is the final price will be
     predicted_price = sc.inverse_transform(predicted_price)
-    return predicted_price[len(predicted_price)-1]
+    return str(float(' '.join(map(str, predicted_price[len(predicted_price)-1]))))
+
+
+def get_redication_price(pricesdb, future_prices):
+
+    store_list = ['Best Buy', 'Amazon', 'B&H', "Walmart"]
+    predication_list = []
+
+    training_set = pd.DataFrame(pricesdb)
+    # print(len(training_set[training_set[1] == 'Walmart']))
+
+    for store in store_list:
+        data = training_set[training_set[1] == store]
+        print('here')
+        if (len(data) != 0):
+            predication_list.append(
+                get_predication((data[0]), future_prices))
+    return predication_list

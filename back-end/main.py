@@ -13,6 +13,7 @@ from database_accessor import get_results, get_data_ai
 from flask_cors import CORS
 from flask_mail import Mail, Message
 from mail_credentations import getCredentials
+import datetime
 
 
 app = Flask(__name__)
@@ -51,18 +52,25 @@ def api():
 @app.route('/api/results')
 def results():
     search = request.args.get('search')
+    todayDate = str(datetime.date.today())
     results = get_results(search)
-    if (len(results) == 0):
+
+    for resultlist in results:
+        tableDate = str(resultlist["todayDateTable"])
+
+    if tableDate != todayDate:
         search_results_bestbuy(search)
         search_results_bh(search)
         search_results_walmart(search)
         search_results_amazon(search)
         results = get_results(search)
 
-    predication_price = float(' '.join(map(str, get_data_ai(search))))
+    predication_price_list = get_data_ai(search)
+    index = 0
     for resultlist in results:
         resultlist["predictionPrice"] = str(
-            "$" + "{:.2f}".format(predication_price))
+            "$" + "{:.2f}".format(float(predication_price_list[index])))
+        index += 1
     # giving the seatch term to get the prices of the product.
     return json.dumps(results)
 
