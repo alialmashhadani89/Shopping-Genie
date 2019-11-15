@@ -54,6 +54,7 @@ def results():
     search = request.args.get('search')
     todayDate = str(datetime.date.today())
     results = get_results(search)
+    tableDate = '2000-01-01'
 
     for resultlist in results:
         tableDate = str(resultlist["todayDateTable"])
@@ -66,11 +67,15 @@ def results():
         results = get_results(search)
 
     predication_price_list = get_data_ai(search)
-    index = 0
-    for resultlist in results:
-        resultlist["predictionPrice"] = str(
-            "$" + "{:.2f}".format(float(predication_price_list[index])))
-        index += 1
+
+    for resultlist, index in zip(results, range(len(predication_price_list))):
+        if float(predication_price_list[index]) == 0:
+            resultlist["predictionPrice"] = 'Not Enough Data'
+            resultlist["predictionDate"] = 'No Date'
+        else:
+            resultlist["predictionPrice"] = str(
+                "$" + "{:.2f}".format(float(predication_price_list[index])))
+
     # giving the seatch term to get the prices of the product.
     return json.dumps(results)
 

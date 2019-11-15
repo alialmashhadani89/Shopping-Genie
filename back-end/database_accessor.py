@@ -143,7 +143,7 @@ def get_results(term=' '):
         s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
         and r.price in (select min(price) from results where name like concat('%',%s,'%') group by sid)\
-        or DATE_FORMAT(date,'%Y-%m-%d') in (select max(DATE_FORMAT(date,'%Y-%m-%d')) from results group by r.sid)\
+        or DATE_FORMAT(date,'%Y-%m-%d') in (select max(DATE_FORMAT(date,'%Y-%m-%d')) from results where r.bid = b.id group by r.sid)\
         WHERE r.name like concat('%',%s,'%')\
         group by s.name;
         """

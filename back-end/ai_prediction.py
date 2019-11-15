@@ -100,6 +100,10 @@ def get_predication(input_data, future_prices):
     predicted_price = sc.inverse_transform(predicted_price)
     return str(float(' '.join(map(str, predicted_price[len(predicted_price)-1]))))
 
+# the main function inside the ai
+# the main function has all the data for each store
+# we will do at most 4 ai predication and atless one
+
 
 def get_redication_price(pricesdb, future_prices):
 
@@ -107,12 +111,12 @@ def get_redication_price(pricesdb, future_prices):
     predication_list = []
 
     training_set = pd.DataFrame(pricesdb)
-    # print(len(training_set[training_set[1] == 'Walmart']))
 
     for store in store_list:
         data = training_set[training_set[1] == store]
-        print('here')
-        if (len(data) != 0):
+        if (len(data) > 10):
             predication_list.append(
                 get_predication((data[0]), future_prices))
+        else:
+            predication_list.append('0')
     return predication_list
