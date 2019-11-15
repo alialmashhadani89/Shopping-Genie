@@ -57,6 +57,7 @@ def killScore(term_list, item_name):
 def check_item_uni(item_name, search_term, d_list, k_list):
     score = 0
     full_item_name = str(item_name).lower()
+    #print(full_item_name)
     if search_term in full_item_name:
         score = 2
 
@@ -84,9 +85,10 @@ def search_guard_bh(response, search_term):
     anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
     links = []
     for a in anchors:
+        #print(a["href"])
+        #print(a.find('span', {"itemprop": "name"}).get_text())
         links.append({"url": a["href"],
-                      "name": a.find('span', {"itemprop": "name"}).get_text(),
-                      "brand": a.find('span', {"itemprop": "brand"}).get_text()})
+                      "name": a.find('span', {"itemprop": "name"}).get_text()})
     if check_item_uni(links[0]["name"], search_term, d_list, k_list_bh):
         return True
     else:
@@ -116,7 +118,7 @@ def search_guard_bb(response, search_term):
 def search_guard_wm(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all('a', {"class": "product-title-link line-clamp line-clamp-2"})
-    print(len(anchors))
+    #print(len(anchors))
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
@@ -143,6 +145,14 @@ def search_guard_am(response, search_term):
         i+=1
     return False
 
+#def search_guard_uni(response, search_term):
+#    soup = BeautifulSoup(response, 'lxml')
+#    containers = [] # fix this
+#    item_name = []
+#    for item in containers:
+#        item_name.append(item.get_text()) # also sketch
+#        if
+
 # ====B&H====
 # getting the info from the website.
 # @pre  A search page has been cleared for parsing
@@ -155,8 +165,7 @@ def website_bh_info_helping(response, search_term):
     links = []
     for a in anchors:
         links.append({"url": a["href"],
-                      "name": a.find('span', {"itemprop": "name"}).get_text(),
-                      "brand": a.find('span', {"itemprop": "brand"}).get_text()})
+                      "name": a.find('span', {"itemprop": "name"}).get_text()   })
 
 
     i = 0
@@ -168,9 +177,11 @@ def website_bh_info_helping(response, search_term):
             if outcome:
                 i+=1
             else:
-                print("Not Available")
+                z = 0
+                #print("Not Available")
         else:
-            print("Not relevant")
+            z = 0
+            #print("Not relevant")
 
 # @pre  A web search has begun
 # @post  Results will possibly be gathered.
@@ -217,9 +228,11 @@ def website_bb_info_helping(response, search_term):
             if outcome:
                 i += 1
             else:
-                print("Not available")
+                z = 0
+                #print("Not available")
         else:
-            print("Not relevant")
+            z = 0
+            #print("Not relevant")
 
 # get the response and convert it into lxml format.
 # @pre  A web search has begun
@@ -266,9 +279,11 @@ def website_wm_info_helping(response, search_term):
             if outcome:
                 i+=1
             else:
-                print("Not valid")
+                z = 0
+                #print("Not valid")
         else:
-            print("Not relevant")
+            z = 0
+            #print("Not relevant")
 
 # get the response and convert it into lxml format.
 # @pre  A web search has begun
@@ -315,10 +330,12 @@ def website_am_info_helping(response, search_term):
             if outcome:
                 i+=1
             else:
-                print("Not valid")
+                z = 0
+                #print("Not valid")
 
         else:
-            print("Not relevant")
+            z = 0
+            #print("Not relevant")
 
 
 # get the response and convert it into lxml format.
