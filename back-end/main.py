@@ -55,16 +55,28 @@ def results():
     todayDate = str(datetime.date.today())
     results = get_results(search)
     tableDate = '2000-01-01'
-
+    '''
     for resultlist in results:
         tableDate = str(resultlist["todayDateTable"])
+    '''
 
-    if tableDate != todayDate:
+    if len(results) == 0:
         search_results_bestbuy(search)
         search_results_bh(search)
         search_results_walmart(search)
         search_results_amazon(search)
         results = get_results(search)
+    else:
+        for resultlist in results:
+            if str(resultlist['storeName']) == 'Best Buy' and todayDate != resultlist['todayDateTable']:
+                search_results_bestbuy(search)
+            elif str(resultlist['storeName']) == 'B&H' and todayDate != resultlist['todayDateTable']:
+                search_results_bh(search)
+            elif str(resultlist['storeName']) == 'Amazon' and todayDate != resultlist['todayDateTable']:
+                search_results_amazon(search)
+            elif str(resultlist['storeName']) == 'Walmart' and todayDate != resultlist['todayDateTable']:
+                search_results_walmart(search)
+            results = get_results(search)
 
     predication_price_list = get_data_ai(search)
 

@@ -110,13 +110,18 @@ def get_redication_price(pricesdb, future_prices):
     store_list = ['Best Buy', 'Amazon', 'B&H', "Walmart"]
     predication_list = []
 
-    training_set = pd.DataFrame(pricesdb)
+    if (len(pricesdb) == 0):
+        predication_list = ['0'] * 4
+        return predication_list
+    else:
 
-    for store in store_list:
-        data = training_set[training_set[1] == store]
-        if (len(data) > 10):
-            predication_list.append(
-                get_predication((data[0]), future_prices))
-        else:
-            predication_list.append('0')
-    return predication_list
+        training_set = pd.DataFrame(pricesdb)
+
+        for store in store_list:
+            data = training_set[training_set[1] == store]
+            if (len(data) > 10):
+                predication_list.append(
+                    get_predication((data[0]), future_prices))
+            else:
+                predication_list.append('0')
+        return predication_list
