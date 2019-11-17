@@ -154,11 +154,19 @@ def search_guard_am(response, search_term):
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
     i = 0
-    while i < 3:
-        if check_item_uni(item_name[i], search_term, d_list, k_list_am):
-            return True
-        i += 1
-    return False
+    for name in item_name:
+        if i < 3:
+            if check_item_uni(name, search_term, d_list, k_list_am):
+                return True
+            i += 1
+        else:
+            return False
+
+    #while i < 3:
+    #    if check_item_uni(item_name[i], search_term, d_list, k_list_am):
+    #        return True
+    #    i += 1
+    #return False
 
 # def search_guard_uni(response, search_term):
 #    soup = BeautifulSoup(response, 'lxml')
