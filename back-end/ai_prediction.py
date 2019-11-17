@@ -33,8 +33,8 @@ def get_predication(input_data, future_prices):
     X_train = []
     y_train = []
 
-    for i in range(10, len(training_set_scaled)):
-        X_train.append(training_set_scaled[i-10:i, 0])
+    for i in range(20, len(training_set_scaled)):
+        X_train.append(training_set_scaled[i-20:i, 0])
         y_train.append(training_set_scaled[i, 0])
     X_train, y_train = np.array(X_train), np.array(y_train)
 
@@ -85,13 +85,14 @@ def get_predication(input_data, future_prices):
     # formating the prices so we can start the predication
     dataset_total = pd.concat((input_data, future_predication), axis=0)
     inputs = dataset_total[len(dataset_total) -
-                           len(future_predication) - 10:].values
+                           len(future_predication) - 20:].values
     inputs = inputs.reshape(-1, 1)
     inputs = sc.transform(inputs)
     X_test = []
 
-    for i in range(10, len(inputs)):
-        X_test.append(inputs[i-10:i, 0])
+    # reshaping the data
+    for i in range(20, len(inputs)):
+        X_test.append(inputs[i-20:i, 0])
     X_test = np.array(X_test)
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
     predicted_price = regressor.predict(X_test)
@@ -106,22 +107,20 @@ def get_predication(input_data, future_prices):
 
 
 def get_redication_price(pricesdb, future_prices):
-
     store_list = ['Best Buy', 'Amazon', 'B&H', "Walmart"]
-    predication_list = []
-
+    predication_list = {}
     if (len(pricesdb) == 0):
         predication_list = ['0'] * 4
-        return predication_list
-    else:
 
+    else:
         training_set = pd.DataFrame(pricesdb)
 
         for store in store_list:
             data = training_set[training_set[1] == store]
-            if (len(data) > 10):
-                predication_list.append(
-                    get_predication((data[0]), future_prices))
+            if (len(data) > 20):
+                predication_list.update(
+                    {store: get_predication((data[0]), future_prices)})
             else:
-                predication_list.append('0')
-        return predication_list
+                predication_list.update({store: '0'})
+
+    return predication_list

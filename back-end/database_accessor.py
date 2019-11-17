@@ -136,9 +136,9 @@ def findBrandIdByName(name):
 def get_results(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
-    sql = """
+    dataQuery = """
         SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
-        MAX(DATE_FORMAT(date,'%Y-%m-%d')) as todayDateTable,\
+        max(DATE_FORMAT(date,'%Y-%m-%d')) as todayDateTable,\
         DATE_FORMAT(NOW()+ INTERVAL 30 DAY, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
         s.name as storeName\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
@@ -149,9 +149,11 @@ def get_results(term=' '):
         """
     val = (term, term,)
 
-    cursor.execute(sql, val)
+    cursor.execute(dataQuery, val)
 
     columns = cursor.description
+
+    cursor.close()
 
     return [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
 
@@ -159,13 +161,12 @@ def get_results(term=' '):
 def get_data_ai(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
-    #sql = "select price from results where name like concat('%',%s,'%');"
-    sql = "select r.price as price ,s.name as name from results r join sellers s on r.sid = s.id where r.name like concat('%',%s,'%') order by s.name;"
+    dataQuery2 = "select r.price as price ,s.name as name from results r join sellers s on r.sid = s.id where r.name like concat('%',%s,'%') order by s.name;"
     val = (term,)
-    cursor.execute(sql, val)
-    #cursor.execute("select price from results;")
+    cursor.execute(dataQuery2, val)
     table_rows = cursor.fetchall()
     sql2 = "select price from results where name like concat('%',%s,'%') order by id desc limit 30;"
     cursor.execute(sql2, val)
     future_prices = cursor.fetchall()
+    cursor.close()
     return get_redication_price(table_rows, future_prices)

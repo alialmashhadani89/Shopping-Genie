@@ -55,11 +55,8 @@ def results():
     todayDate = str(datetime.date.today())
     results = get_results(search)
     tableDate = '2000-01-01'
-    '''
-    for resultlist in results:
-        tableDate = str(resultlist["todayDateTable"])
-    '''
 
+    # if we don't have the item in the databases, we will do webScripong.
     if len(results) == 0:
         search_results_bestbuy(search)
         search_results_bh(search)
@@ -67,6 +64,7 @@ def results():
         search_results_amazon(search)
         results = get_results(search)
     else:
+        # if we have then we check store by store if it out of date.
         for resultlist in results:
             if str(resultlist['storeName']) == 'Best Buy' and todayDate != resultlist['todayDateTable']:
                 search_results_bestbuy(search)
@@ -78,15 +76,21 @@ def results():
                 search_results_walmart(search)
             results = get_results(search)
 
+    # getting the preidcation per store
     predication_price_list = get_data_ai(search)
+    # print(predication_price_list)
 
-    for resultlist, index in zip(results, range(len(predication_price_list))):
-        if float(predication_price_list[index]) == 0:
-            resultlist["predictionPrice"] = 'Not Enough Data'
-            resultlist["predictionDate"] = 'No Date'
-        else:
-            resultlist["predictionPrice"] = str(
-                "$" + "{:.2f}".format(float(predication_price_list[index])))
+    # giving the predication to each raw in the data.
+    # Note: if the data is not enpugh, we will tell the user.
+    for resultlist in results:
+        for i in predication_price_list:
+            if i == resultlist["storeName"]:
+                if predication_price_list[i] == '0':
+                    resultlist["predictionPrice"] = 'Not Enough Data'
+                    resultlist["predictionDate"] = 'No Date'
+                else:
+                    resultlist["predictionPrice"] = str(
+                        "$" + "{:.2f}".format(float(predication_price_list[i])))
 
     # giving the seatch term to get the prices of the product.
     return json.dumps(results)
@@ -97,7 +101,7 @@ def results():
 def catch_all(path):
     return render_template('index.html')
 
-
+# the feed back mail function and route
 @app.route('/api/feedbackmail', methods=["POST"])
 def sendmail():
     data = request.get_json(force=True)
@@ -112,6 +116,8 @@ def sendmail():
         "MAIL_DEFAULT_SENDER": creds["MAIL_DEFAULT_SENDER"]
     }
 
+    # composed the date we colleced from the website to the mail.
+    # second the data in an email to us.
     app.config.update(mail_settings)
     mail = Mail(app)
     with app.app_context():
