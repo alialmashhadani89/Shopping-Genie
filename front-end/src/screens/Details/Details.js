@@ -10,6 +10,7 @@ import bhlogo from "../../images/bh.png";
 import amazonlogo from "../../images/aa.png";
 import walmartlogo from "../../images/wm.png";
 import MDSpinner from "react-md-spinner";
+import noResultImag from "../../images/no-resultfound.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -165,12 +166,18 @@ const Details = () => {
   } = useHistory();
   const [search, setSearch] = useState((state && state.term) || "");
   const [results, setResults] = useState([]);
+  const [noResults, setNoResults] = useState(false);
 
   const getResults = term => {
+    setNoResults(false);
     fetch(`/api/results?search=${term}`)
       .then(res => res.json())
       .then(res => {
-        if (Array.isArray(res)) setResults(res);
+        if (Array.isArray(res) && res.length > 0) setResults(res);
+        else {
+          setResults([]);
+          setNoResults(true);
+        }
       });
   };
 
@@ -243,7 +250,7 @@ const Details = () => {
               </tr>
             </thead>
 
-            {checkSpin(results) ? (
+            {checkSpin(results) && !noResults && (
               <MDSpinner
                 size={50}
                 style={{
@@ -251,13 +258,17 @@ const Details = () => {
                   marginLeft: "390px"
                 }}
               />
-            ) : (
+            )}
+            {!checkSpin(results) && (
               <TableBody>
                 {" "}
                 {results.map(item => (
                   <RenderItem key={item.id} {...item} />
                 ))}
               </TableBody>
+            )}
+            {noResults && (
+              <img src={noResultImag} style={{ marginLeft: "300px" }} />
             )}
           </Table>
         </ResultsContainer>
