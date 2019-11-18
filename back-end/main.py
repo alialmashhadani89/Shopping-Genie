@@ -35,6 +35,8 @@ def search_results_amazon(search_term):
 def search_results_bh(search_term):
     website_bh_info(search_term)
 
+# check if the data out of date. if so then update for each store as needed.
+
 
 def checkScrapingDate(search, results):
 
@@ -53,6 +55,8 @@ def checkScrapingDate(search, results):
         results = get_results(search)
     return results
 
+# feeding the preidcation to the right place in the result table.
+
 
 def storePredication(results, predication_price_list):
     for resultlist in results:
@@ -64,6 +68,8 @@ def storePredication(results, predication_price_list):
                 resultlist["predictionPrice"] = str(
                     "$" + "{:.2f}".format(float(predication_price_list[resultlist["storeName"]])))
 
+# scarping the 4 website for date
+
 
 def webResult(search):
     search_results_bestbuy(search)
@@ -71,6 +77,22 @@ def webResult(search):
     search_results_walmart(search)
     search_results_amazon(search)
     return get_results(search)
+
+# getting the mail setting.
+
+
+def mailCredentations():
+    creds = getCredentials()
+    mail_settings = {
+        "MAIL_SERVER": creds["MAIL_SERVER"],
+        "MAIL_PORT": creds["MAIL_PORT"],
+        "MAIL_USE_TLS": creds["MAIL_USE_TLS"],
+        "MAIL_USE_SSL": creds["MAIL_USE_SSL"],
+        "MAIL_USERNAME": creds["MAIL_USERNAME"],
+        "MAIL_PASSWORD": creds["MAIL_PASSWORD"],
+        "MAIL_DEFAULT_SENDER": creds["MAIL_DEFAULT_SENDER"]
+    }
+    return mail_settings
 
 # the main API
 @app.route('/api')
@@ -115,16 +137,8 @@ def catch_all(path):
 @app.route('/api/feedbackmail', methods=["POST"])
 def sendmail():
     data = request.get_json(force=True)
-    creds = getCredentials()
-    mail_settings = {
-        "MAIL_SERVER": creds["MAIL_SERVER"],
-        "MAIL_PORT": creds["MAIL_PORT"],
-        "MAIL_USE_TLS": creds["MAIL_USE_TLS"],
-        "MAIL_USE_SSL": creds["MAIL_USE_SSL"],
-        "MAIL_USERNAME": creds["MAIL_USERNAME"],
-        "MAIL_PASSWORD": creds["MAIL_PASSWORD"],
-        "MAIL_DEFAULT_SENDER": creds["MAIL_DEFAULT_SENDER"]
-    }
+    #creds = getCredentials()
+    mail_settings = mailCredentations()
 
     # composed the date we colleced from the website to the mail.
     # second the data in an email to us.
@@ -132,7 +146,7 @@ def sendmail():
     mail = Mail(app)
     with app.app_context():
         msg = Message(subject="Feedback",
-                      recipients=[creds["MAIL_USERNAME"]],
+                      recipients=[mail_settings["MAIL_USERNAME"]],
                       # this is where we will put the content of the email.
                       body=data['name'] + ", \n\n" + data['email'] + "; \n\n" + data['content'])
         mail.send(msg)
