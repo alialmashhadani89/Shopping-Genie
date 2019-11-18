@@ -17,7 +17,7 @@ user_agent = {
 
 
 # Words for which to decrement the link score
-d_list = ["for", "adapter", "charger", "case", "cable", "cover"]
+d_list = [" for ", " adapter ", " charger ", " case ", " cable ", " cover "]
 # Words for which to kill the link score
 k_list_am = ["refurbished", "renewed"]
 k_list_bh = ["refurbished"]
@@ -34,6 +34,7 @@ def decrementScore(term_list, item_name):
     anti_score = 0
     for word in term_list:
         if word in item_name:
+            print(word)
             anti_score += 1
 
     #print("Anti-score: " + str(anti_score))
@@ -65,16 +66,33 @@ def killScore(term_list, item_name):
 
 def check_item_uni(item_name, search_term, d_list, k_list):
     score = 0
+    term_count = len(search_term.split())
+    #print(term_count)
     full_item_name = str(item_name).lower()
-    # print(full_item_name)
-    if search_term in full_item_name:
+    #print(full_item_name)
+    #print(search_term.split())
+    print(full_item_name)
+    #if search_term in full_item_name:
+    #    score = 2
+    occurence_count = 0
+    for word in search_term.split():
+        if len(word)>=2:
+            if str(word).lower() in full_item_name:
+                print(word)
+                occurence_count += 1
+
+    print("o count:" + str(occurence_count))
+    if term_count == occurence_count:
+        print("Score 2")
         score = 2
+    else:
+        return False
 
     score -= decrementScore(d_list, full_item_name)
     if killScore(k_list, full_item_name):
         score = 0
 
-    #print("Final Score: " + str(score))
+    print("Final Score: " + str(score))
     if score >= 2:
         return True
     else:
@@ -97,6 +115,11 @@ def search_guard_bh(response, search_term):
         #print(a.find('span', {"itemprop": "name"}).get_text())
         links.append({"url": a["href"],
                       "name": a.find('span', {"itemprop": "name"}).get_text()})
+
+    print(len(links))
+    if len(links) == 0:
+        return False
+
     if check_item_uni(links[0]["name"], search_term, d_list, k_list_bh):
         return True
     else:
@@ -115,6 +138,10 @@ def search_guard_bb(response, search_term):
     item_name = []
     for header in name_headers:
         item_name.append(header.a.get_text())
+
+    if len(item_name) == 0:
+        return False
+
     if check_item_uni(item_name[0], search_term, d_list, k_list_bb):
         return True
     else:
@@ -135,6 +162,10 @@ def search_guard_wm(response, search_term):
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
+
+    if len(item_name) == 0:
+        return False
+
     if check_item_uni(item_name[0], search_term, d_list, k_list_wm):
         return True
     else:
@@ -153,6 +184,11 @@ def search_guard_am(response, search_term):
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
+
+
+    if len(item_name) == 0:
+        return False
+
     i = 0
     for name in item_name:
         if i < 3:
