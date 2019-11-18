@@ -10,7 +10,7 @@ import bhlogo from "../../images/bh.png";
 import amazonlogo from "../../images/aa.png";
 import walmartlogo from "../../images/wm.png";
 import MDSpinner from "react-md-spinner";
-import noResultImag from "../../images/no-resultfound.jpg";
+import noResultImag2 from "../../images/no_result_found.gif";
 
 const View = styled.div({
   display: "flex"
@@ -268,7 +268,7 @@ const Details = () => {
               </TableBody>
             )}
             {noResults && (
-              <img src={noResultImag} style={{ marginLeft: "300px" }} />
+              <img src={noResultImag2} style={{ marginLeft: "100px" }} />
             )}
           </Table>
         </ResultsContainer>

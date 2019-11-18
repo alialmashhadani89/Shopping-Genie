@@ -33,8 +33,8 @@ def get_predication(input_data, future_prices):
     X_train = []
     y_train = []
 
-    for i in range(20, len(training_set_scaled)):
-        X_train.append(training_set_scaled[i-20:i, 0])
+    for i in range(40, len(training_set_scaled)):
+        X_train.append(training_set_scaled[i-40:i, 0])
         y_train.append(training_set_scaled[i, 0])
     X_train, y_train = np.array(X_train), np.array(y_train)
 
@@ -71,6 +71,8 @@ def get_predication(input_data, future_prices):
 
     # if the model is already been computed, then load it
     # else, compute, save it then load it.
+    #regressor.fit(X_train, y_train, epochs=100, batch_size=32)
+
     if(not os.path.exists('price_prediction.h5')):
         regressor.fit(X_train, y_train, epochs=100, batch_size=32)
         regressor.save('price_prediction.h5')
@@ -85,14 +87,14 @@ def get_predication(input_data, future_prices):
     # formating the prices so we can start the predication
     dataset_total = pd.concat((input_data, future_predication), axis=0)
     inputs = dataset_total[len(dataset_total) -
-                           len(future_predication) - 20:].values
+                           len(future_predication) - 40:].values
     inputs = inputs.reshape(-1, 1)
     inputs = sc.transform(inputs)
     X_test = []
 
     # reshaping the data
-    for i in range(20, len(inputs)):
-        X_test.append(inputs[i-20:i, 0])
+    for i in range(40, len(inputs)):
+        X_test.append(inputs[i-40:i, 0])
     X_test = np.array(X_test)
     X_test = np.reshape(X_test, (X_test.shape[0], X_test.shape[1], 1))
     predicted_price = regressor.predict(X_test)
@@ -117,7 +119,7 @@ def get_redication_price(pricesdb, future_prices):
 
         for store in store_list:
             data = training_set[training_set[1] == store]
-            if (len(data) > 20):
+            if (len(data) > 40):
                 predication_list.update(
                     {store: get_predication((data[0]), future_prices)})
             else:
