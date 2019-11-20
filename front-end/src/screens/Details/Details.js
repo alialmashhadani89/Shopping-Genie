@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
@@ -109,6 +110,12 @@ const Table = styled.table({
   }
 });
 
+const TekeMeButton = styled.button({
+  "&:hover": {
+    backgroundColor: "#f4511e"
+  }
+});
+
 const TableBody = styled.tbody({});
 
 const ResultsImage = styled.img({
@@ -135,6 +142,12 @@ function checklogo(storeName) {
   }
 }
 
+const onClick = storeLink => {
+  var win = window.open(storeLink, "_blank");
+  win.focus();
+  return false;
+};
+
 const RenderItem = ({
   image,
   brand,
@@ -142,7 +155,8 @@ const RenderItem = ({
   itemPrice,
   predictionPrice,
   predictionDate,
-  storeName
+  storeName,
+  storeLink
 }) => (
   <tr>
     <td>
@@ -156,7 +170,11 @@ const RenderItem = ({
     <td>
       <ResultsImage src={checklogo(storeName)} />
     </td>
-    <td>{storeName} </td>
+    <td>
+      <TekeMeButton id="bt" onClick={() => onClick(storeLink)}>
+        Take me
+      </TekeMeButton>
+    </td>
   </tr>
 );
 
@@ -242,10 +260,10 @@ const Details = () => {
                   <h5> Prediction Date </h5>
                 </th>
                 <th>
-                  <h5> Store Logo </h5>
+                  <h5> Store </h5>
                 </th>
                 <th>
-                  <h5> Store Name </h5>
+                  <h5> Link </h5>
                 </th>
               </tr>
             </thead>

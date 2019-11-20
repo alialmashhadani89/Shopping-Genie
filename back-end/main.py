@@ -14,7 +14,7 @@ CORS(app)
 
 
 # the main API
-@app.route('/api')
+@app.route('/x`')
 def api():
     search = request.args.get('search')
     # to search straight in in each website.

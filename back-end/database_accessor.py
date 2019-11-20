@@ -140,7 +140,7 @@ def get_results(term=' '):
         SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
         max(DATE_FORMAT(date,'%Y-%m-%d')) as todayDateTable,\
         DATE_FORMAT(NOW()+ INTERVAL 30 DAY, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
-        s.name as storeName\
+        s.name as storeName, r.url as storeLink\
         FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
         and r.price in (select min(price) from results where name like concat('%',%s,'%') group by sid)\
         or DATE_FORMAT(date,'%Y-%m-%d') in (select max(DATE_FORMAT(date,'%Y-%m-%d')) from results where r.bid = b.id group by r.sid)\
