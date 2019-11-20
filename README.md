@@ -3,7 +3,7 @@
 ## Installation
 
 ### Back-End
-The back-End has been tested on pythong 3.6.8. Please follow the link for instaltion.
+The back-End has been tested on python 3.6.8. Please follow the link for instaltion.
 ```
 https://www.python.org/downloads/release/python-365/
 ```
