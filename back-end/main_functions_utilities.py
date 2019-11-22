@@ -56,8 +56,8 @@ def storePredication(results, predication_price_list):
     for resultlist in results:
         if resultlist["storeName"] in predication_price_list:
             if float(predication_price_list[resultlist["storeName"]]) == 0:
-                resultlist["predictionPrice"] = 'Not Enough Data'
-                resultlist["predictionDate"] = 'No Date'
+                resultlist["predictionPrice"] = 'Not enough data!'
+                resultlist["predictionDate"] = ' '
             else:
                 resultlist["predictionPrice"] = str(
                     "$" + "{:.2f}".format(float(predication_price_list[resultlist["storeName"]])))

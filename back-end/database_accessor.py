@@ -153,8 +153,6 @@ def get_results(term=' '):
 
     columns = cursor.description
 
-    cursor.close()
-
     return [{columns[index][0]:column for index, column in enumerate(value)} for value in cursor.fetchall()]
 
 
@@ -168,5 +166,4 @@ def get_data_ai(term=' '):
     sql2 = "select price from results where name like concat('%',%s,'%') order by id desc limit 30;"
     cursor.execute(sql2, val)
     future_prices = cursor.fetchall()
-    cursor.close()
     return get_redication_price(table_rows, future_prices)
