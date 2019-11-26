@@ -54,7 +54,11 @@ const Button = styled.button({
   borderTopLeftRadius: 0,
   borderBottomLeftRadius: 0,
   borderTopRightRadius: 4,
-  borderBottomRightRadius: 4
+  borderBottomRightRadius: 4,
+
+  "&:hover": {
+    backgroundColor: "#f4511e"
+  }
 });
 
 const Icon = styled.i({

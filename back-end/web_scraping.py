@@ -418,12 +418,12 @@ def website_am_info_helping(response, search_term):
 # @post  Results will possibly be gathered.
 # @param  search_term  The given search term made by the user.
 def website_am_info(search_term):
+    
     link = amazon_base_url + search_term
     # Opening the pages and check how many page numbers
     response = requests.get(link, headers=user_agent,
                             allow_redirects=True).text
     soup = BeautifulSoup(response, 'lxml')
-
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
     if search_guard_am(response, search_term):

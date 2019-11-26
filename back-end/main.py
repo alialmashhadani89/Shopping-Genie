@@ -25,10 +25,10 @@ def api():
 @app.route('/api/results')
 def results():
     search = request.args.get('search')
-    #todayDate = str(datetime.date.today())
     results = get_results(search)
 
     # if we don't have the item in the databases, we will do webScripong.
+    
     if len(results) == 0:
         results = webResult(search)
     else:

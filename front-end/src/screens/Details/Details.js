@@ -110,7 +110,17 @@ const Table = styled.table({
   }
 });
 
-const TekeMeButton = styled.button({
+const LinkButton = styled.button({
+  backgroundColor: "#cc2900",
+  width: "100px",
+  padding: "12.5px",
+  height: "52px",
+  color: "white",
+  borderTopLeftRadius: 0,
+  borderBottomLeftRadius: 0,
+  borderTopRightRadius: 4,
+  borderBottomRightRadius: 4,
+
   "&:hover": {
     backgroundColor: "#f4511e"
   }
@@ -171,9 +181,9 @@ const RenderItem = ({
       <ResultsImage src={checklogo(storeName)} />
     </td>
     <td>
-      <TekeMeButton id="bt" onClick={() => onClick(storeLink)}>
+      <LinkButton id="bt" onClick={() => onClick(storeLink)}>
         Take me
-      </TekeMeButton>
+      </LinkButton>
     </td>
   </tr>
 );
