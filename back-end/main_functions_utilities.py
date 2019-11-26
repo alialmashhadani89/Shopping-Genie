@@ -33,11 +33,14 @@ def search_results_bh(search_term):
 
 
 def checkScrapingDate(search, results):
-
     todayDate = str(datetime.date.today())
-
+    storeList =[]
+    # getting the list of store we current have in the databases.
     for resultlist in results:
-
+        storeList.append(str(resultlist['storeName']))
+    
+    # check if each store in the databases up to date.
+    for resultlist in results:
         if str(resultlist['storeName']) == 'Best Buy' and todayDate != resultlist['todayDateTable']:
             search_results_bestbuy(search)
         elif str(resultlist['storeName']) == 'B&H' and todayDate != resultlist['todayDateTable']:
@@ -46,9 +49,23 @@ def checkScrapingDate(search, results):
             search_results_amazon(search)
         elif str(resultlist['storeName']) == 'Walmart' and todayDate != resultlist['todayDateTable']:
             search_results_walmart(search)
-        results = database_accessor.get_results(search)
+    
+    # if the store not even in the databses, then we need to do some webscriping for one more time. 
+    if 'Best Buy' not in storeList:
+        search_results_bestbuy(search)
+    elif 'B&H' not in storeList:
+        search_results_bh(search)
+    elif 'Amazon' not in storeList:
+        search_results_amazon(search)
+    elif 'Walmart' not in storeList:
+        search_results_walmart(search)
+    
+    # uodating the result list after all the update we did above.    
+    results = database_accessor.get_results(search)
+    
+    # return the final result. 
     return results
-
+    
 # feeding the preidcation to the right place in the result table.
 
 
