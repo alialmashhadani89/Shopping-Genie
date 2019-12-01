@@ -40,9 +40,9 @@ def get_predication(input_data, future_prices):
 
     # Reshaping
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
-
-    # Part 2 - Building the RNN
     '''
+    # Part 2 - Building the RNN
+   
     # Initialising the RNN
     regressor = Sequential()
 
@@ -74,7 +74,7 @@ def get_predication(input_data, future_prices):
     #regressor.fit(X_train, y_train, epochs=100, batch_size=32)
 
     if(not os.path.exists('price_prediction.h5')):
-        regressor.fit(X_train, y_train, epochs=50, batch_size=32)
+        regressor.fit(X_train, y_train, epochs=100, batch_size=32)
         regressor.save('price_prediction.h5')
     '''
     regressor = load_model('price_prediction.h5')
@@ -119,7 +119,7 @@ def get_redication_price(pricesdb, future_prices):
 
         for store in store_list:
             data = training_set[training_set[1] == store]
-            if (len(data) > 40):
+            if (len(data) >= 40):
                 predication_list.update(
                     {store: get_predication((data[0]), future_prices)})
             else:
