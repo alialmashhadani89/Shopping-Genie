@@ -48,7 +48,7 @@ To run the Flask server, use the following commands:
 
 ```sh
 cd back-end
-python json_io.py
+python main.py
 ```
 
 This will boot the server on port 5000 so you can access it on http://127.0.0.1:5000.
