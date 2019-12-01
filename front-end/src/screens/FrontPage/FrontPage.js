@@ -4,7 +4,16 @@ import { useState, useEffect } from "react";
 import SearchBar from "../../components/SearchBar";
 import logo from "../../images/logo15.png";
 import { useHistory } from "react-router-dom";
-import backgoundpic from "../../images/home.jpeg";
+
+import BackgroundSlider from 'react-background-slider';
+
+import main_image1 from '../../images/main_image1.jpg';
+import main_image3 from '../../images/main_image3.png';
+import main_image8 from '../../images/main_image8.jpg';
+import main_image4 from '../../images/main_image4.jpg';
+import main_image10 from '../../images/main_image10.jpg';
+
+
 
 const View = styled.div({
   display: "flex"
@@ -17,7 +26,6 @@ const MainContainer = styled(View)({
   flexDirection: "column",
   overflowX: "hidden",
   overflowY: "hidden",
-  backgroundImage: `url(${backgoundpic})`,
   backgroundSize: "cover",
   overflow: "hidden",
   backgroundRepeat: "no-repeat",
@@ -36,7 +44,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  // backgroundColor: "black",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -46,12 +53,7 @@ const RoutesContainer = styled(View)({
 
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
-  //backgroundColor: selected ? "orange" : "transparent",
   color: "white"
-  //"&:hover": {
-  // backgroundColor: selected ? "orange" : "lightgrey",
-  // color: selected ? "white" : "green"
-  //}
 }));
 
 const LogoImage = styled.img({
@@ -95,6 +97,11 @@ const FrontPage = () => {
 
   return (
     <MainContainer>
+     <BackgroundSlider
+          images={[main_image1, main_image3, main_image8, main_image4, main_image10]}
+          duration={3}
+          transition={2}
+        />
       <NavBar>
         <NavBarImageContainer>
           <RouteItem href="/home" style={{ backgroundColor: "transparent" }}>
