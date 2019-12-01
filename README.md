@@ -8,7 +8,7 @@ The back-End has been tested on python 3.6.8. Please follow the link for instalt
 https://www.python.org/downloads/release/python-365/
 ```
 
-Please run the following command on the folder of the back-end
+Please run the following command in the back-end folder
 ```sh
 pip install -r requirements.txt
 ```
@@ -19,6 +19,7 @@ pip install -r requirements.txt
 ```sh
 npm install --save react
 npm install --save react-dom
+npm install
 ```
 
 ## Running
