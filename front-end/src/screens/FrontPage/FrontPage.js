@@ -100,7 +100,7 @@ const FrontPage = () => {
      <BackgroundSlider
           images={[main_image1, main_image3, main_image8, main_image4, main_image10]}
           duration={3}
-          transition={2}
+          transition={0.1}
         />
       <NavBar>
         <NavBarImageContainer>
