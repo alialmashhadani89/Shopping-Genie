@@ -9,8 +9,8 @@ import BackgroundSlider from 'react-background-slider';
 
 import main_image0 from '../../images/home.jpeg'
 import main_image1 from '../../images/main_image1.jpg';
-import main_image3 from '../../images/main_image3.png';
-import main_image8 from '../../images/main_image8.jpg';
+import main_image11 from '../../images/main_image11.jpg';
+import main_image12 from '../../images/main_image12.jpg';
 import main_image4 from '../../images/main_image4.jpg';
 import main_image10 from '../../images/main_image10.jpg';
 
@@ -99,7 +99,7 @@ const FrontPage = () => {
   return (
     <MainContainer>
      <BackgroundSlider
-          images={[main_image0,main_image1, main_image3, main_image8, main_image4, main_image10]}
+          images={[main_image0,main_image1, main_image11, main_image12, main_image4, main_image10]}
           duration={3}
           transition={0.1}
         />
