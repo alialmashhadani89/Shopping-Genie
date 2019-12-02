@@ -31,9 +31,10 @@ const MainContainer = styled(View)({
 });
 
 const NavBar = styled(View)({
-  height: 150,
+  height: 100,
   flexDirection: "row",
-  alignItems: "center"
+  alignItems: "center",
+  marginTop: "10px"
 });
 
 const NavBarImageContainer = styled(View)({
@@ -41,7 +42,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -51,12 +51,7 @@ const RoutesContainer = styled(View)({
 
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
-  //backgroundColor: selected ? "orange" : "transparent",
   color: "black"
-  //"&:hover": {
-  //  backgroundColor: selected ? "orange" : "lightgrey",
-  //  color: selected ? "white" : "green"
-  //}
 }));
 
 const Image = styled.img({
