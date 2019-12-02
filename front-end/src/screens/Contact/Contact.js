@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-import backgroundpic from "../../images/contact.jpg";
+import backgroundpic from "../../images/contact1.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -27,9 +27,10 @@ const MainContainer = styled(View)({
 });
 
 const NavBar = styled(View)({
-  height: 150,
+  height: 100,
   flexDirection: "row",
-  alignItems: "center"
+  alignItems: "center",
+  marginTop: "10px"
 });
 
 const NavBarImageContainer = styled(View)({
@@ -37,7 +38,6 @@ const NavBarImageContainer = styled(View)({
 });
 
 const RoutesContainer = styled(View)({
-  //backgroundColor: "grey",
   flex: 1,
   marginLeft: 20,
   flexDirection: "row",
@@ -47,12 +47,7 @@ const RoutesContainer = styled(View)({
 
 const RouteItem = styled.a(({ selected }) => ({
   padding: "20px 20px",
-  //backgroundColor: selected ? "orange" : "transparent",
-  color: "black"
-  //"&:hover": {
-  // backgroundColor: selected ? "orange" : "lightgrey",
-  //color: selected ? "white" : "green"
-  //}
+  color: "white"
 }));
 
 const LogoImage = styled.img({
@@ -78,10 +73,10 @@ const ContactPage = () => {
       <NavBar>
         <NavBarImageContainer>
           <RouteItem href="/home">
-            <LogoImage src={logo} style={{ marginLeft: "-40px" }} />
+            <LogoImage src={logo} />
           </RouteItem>
         </NavBarImageContainer>
-        <RoutesContainer style={{ marginLeft: "130px" }}>
+        <RoutesContainer>
           <RouteItem href="/home">Home</RouteItem>
           <RouteItem href="/details">Details</RouteItem>
           <RouteItem href="/about"> About</RouteItem>
@@ -93,10 +88,10 @@ const ContactPage = () => {
       </NavBar>
       <Content>
         <Text>
-          <h2 style={{ marginLeft: "850px", color: "black" }}>
+          <h2 style={{ marginLeft: "280px", marginTop: "450px", color: "white" }}>
             How Can We Help You?
           </h2>
-          <h4 style={{ marginLeft: "850px", color: "black" }}>
+          <h4 style={{ marginLeft: "280px", color: "white" }}>
             Please contact us, if you have any questions.
             <p>Call-US: 888-888-8888</p>
             <p>Email: pricegenie0499@gmail.com</p>
