@@ -31,9 +31,10 @@ const MainContainer = styled(View)({
 });
 
 const NavBar = styled(View)({
-  height: 150,
+  height: 100,
   flexDirection: "row",
-  alignItems: "center"
+  alignItems: "center",
+  marginTop: "10px"
 });
 
 const NavBarImageContainer = styled(View)({
