@@ -137,15 +137,12 @@ def get_results(term=' '):
     cursor = mydb.cursor(buffered=True)
     term = term.replace(' ', '%')
     dataQuery = """
-        SELECT r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
+        select r.image_link as image, b.name as brand, r.name as itemName, 0 as predictionPrice,\
         max(DATE_FORMAT(date,'%Y-%m-%d')) as todayDateTable,\
         DATE_FORMAT(NOW()+ INTERVAL 30 DAY, '%Y-%m-%d %T.%f') as predictionDate, concat('$', min(r.price))  as itemPrice,\
-        s.name as storeName, r.url as storeLink\
-        FROM results r join sellers s on r.sid = s.id join brands b on r.bid = b.id\
-        and r.price in (select min(price) from results where name like concat('%',%s,'%') and date(NOW()) = date(r.date) group by sid)\
-        or DATE_FORMAT(date,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')\
-        WHERE r.name like concat('%',%s,'%')\
-        group by s.name;
+        s.name as storeName, r.url as storeLink from results r join brands b on r.bid = b.id join sellers s on r.sid = s.id\
+        and r.price in (select min(price) from results where name like concat('%',%s,'%') and date(NOW()) = date(date) group by sid)\
+        where r.name like concat('%',%s,'%') group by s.name;
         """
     val = (term, term,)
 
