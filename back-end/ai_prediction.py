@@ -90,7 +90,7 @@ def get_predication(input_data, future_prices):
                            len(future_predication) - 40:].values
     inputs = inputs.reshape(-1, 1)
     inputs = sc.transform(inputs)
-    X_test = []
+    X_test = [] 
 
     # reshaping the data
     for i in range(40, len(inputs)):

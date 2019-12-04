@@ -56,12 +56,6 @@ const LogoImage = styled.img({
   marginTop: 5
 });
 
-const Image = styled.img({
-  width: 1300,
-  height: 450,
-  marginLeft: 20,
-  marginTop: 25
-});
 
 const Text = styled.text({
   marginLeft: 20
@@ -88,12 +82,12 @@ const ContactPage = () => {
       </NavBar>
       <Content>
         <Text>
-          <h2 style={{ marginLeft: "280px", marginTop: "450px", color: "white" }}>
+          <h2 style={{ marginLeft: "240px", marginTop: "530px", color: "white" }}>
             How Can We Help You?
           </h2>
-          <h4 style={{ marginLeft: "280px", color: "white" }}>
+          <h4 style={{ marginLeft: "240px", color: "white" }}>
             Please contact us, if you have any questions.
-            <p>Call-US: 888-888-8888</p>
+            <p>Call-US: 212-772-4000</p>
             <p>Email: pricegenie0499@gmail.com</p>
           </h4>
         </Text>
