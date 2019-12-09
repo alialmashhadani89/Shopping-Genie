@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import logo from "../../images/logo15.png";
-import backgroundpic from "../../images/feedback.jpeg";
+import backgroundpic from "../../images/feedback.jpg";
 
 const View = styled.div({
   display: "flex"
@@ -108,7 +108,7 @@ const FeedBackPage = () => {
         </RoutesContainer>
       </NavBar>
       <Content>
-        <h2 style={{ marginLeft: "60px", color: "white" }}>
+        <h2 style={{ marginLeft: "60px", color: "#42f5f5" , marginTop:"500px"}}>
           <p>Do you have something to tell us?</p>
 
           <p>Please send us your feed back by</p>
@@ -117,7 +117,7 @@ const FeedBackPage = () => {
 
         <form
           onSubmit={sendFeedBack}
-          style={{ marginLeft: "320px", marginRight: "20PX", color: "white" }}
+          style={{ marginLeft: "320px", marginRight: "20PX", color: "#42f5f5" ,marginTop:"70px"}}
         >
           <h2>Please Fill Out the Form Below.</h2>
           <p>Name:</p>
