@@ -2,7 +2,8 @@
 from bs4 import BeautifulSoup
 import requests
 import re
-
+#from torrequest import TorRequest
+from concealer import *
 from item_page_scraping_utilities import *
 
 
@@ -11,13 +12,13 @@ bestbuy_base_url = "https://www.bestbuy.com/site/searchpage.jsp?st="
 amazon_base_url = "https://www.amazon.com/s?k="
 walmart_base_url = "https://www.walmart.com/search/?query="
 bh_base_url = "https://www.bhphotovideo.com/c/search?sts=ma&N=0&pn=1&Ntt="
+bh_base_url2 = "https://www.bhphotovideo.com/c/search?Ntt=" 
 # to paypass the website restriction
-user_agent = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
 
-
+headers = {}
+referer = "https://google.com"
 # Words for which to decrement the link score
-d_list = [" for ", " adapter ", " charger ", " case ", " cable ", " cover "]
+d_list = [" for ", " adapter ", " charger ", " case ", " cable ", " cover ", " screen "]
 # Words for which to kill the link score
 k_list_am = ["refurbished", "renewed"]
 k_list_bh = ["refurbished"]
@@ -34,7 +35,7 @@ def decrementScore(term_list, item_name):
     anti_score = 0
     for word in term_list:
         if word in item_name:
-            print(word)
+            #print(word)
             anti_score += 1
 
     #print("Anti-score: " + str(anti_score))
@@ -51,7 +52,6 @@ def killScore(term_list, item_name):
     for word in term_list:
         if word in item_name:
             return True
-            #print("IT DEAD")
 
     return False
 
@@ -64,26 +64,20 @@ def killScore(term_list, item_name):
 # @return  True if link is valid, otherwise False
 
 
-def check_item_uni(item_name, search_term, d_list, k_list):
+def check_item_uni(item_name, search_term, d_list, k_list, store):
     score = 0
     term_count = len(search_term.split())
-    #print(term_count)
     full_item_name = str(item_name).lower()
-    #print(full_item_name)
-    #print(search_term.split())
-    print(full_item_name)
-    #if search_term in full_item_name:
-    #    score = 2
+
     occurence_count = 0
     for word in search_term.split():
         if len(word)>=2:
             if str(word).lower() in full_item_name:
-                print(word)
+
                 occurence_count += 1
 
-    print("o count:" + str(occurence_count))
+
     if term_count == occurence_count:
-        print("Score 2")
         score = 2
     else:
         return False
@@ -92,7 +86,6 @@ def check_item_uni(item_name, search_term, d_list, k_list):
     if killScore(k_list, full_item_name):
         score = 0
 
-    print("Final Score: " + str(score))
     if score >= 2:
         return True
     else:
@@ -111,16 +104,13 @@ def search_guard_bh(response, search_term):
     anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
     links = []
     for a in anchors:
-        # print(a["href"])
-        #print(a.find('span', {"itemprop": "name"}).get_text())
         links.append({"url": a["href"],
                       "name": a.find('span', {"itemprop": "name"}).get_text()})
 
-    print(len(links))
     if len(links) == 0:
         return False
 
-    if check_item_uni(links[0]["name"], search_term, d_list, k_list_bh):
+    if check_item_uni(links[0]["name"], search_term, d_list, k_list_bh, "B&H"):
         return True
     else:
         return False
@@ -140,9 +130,10 @@ def search_guard_bb(response, search_term):
         item_name.append(header.a.get_text())
 
     if len(item_name) == 0:
+        print("Page empty of links")
         return False
 
-    if check_item_uni(item_name[0], search_term, d_list, k_list_bb):
+    if check_item_uni(item_name[0], search_term, d_list, k_list_bb, "Best Buy"):
         return True
     else:
         return False
@@ -158,7 +149,6 @@ def search_guard_wm(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all(
         'a', {"class": "product-title-link line-clamp line-clamp-2"})
-    # print(len(anchors))
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
@@ -166,7 +156,7 @@ def search_guard_wm(response, search_term):
     if len(item_name) == 0:
         return False
 
-    if check_item_uni(item_name[0], search_term, d_list, k_list_wm):
+    if check_item_uni(item_name[0], search_term, d_list, k_list_wm, "Walmart"):
         return True
     else:
         return False
@@ -181,36 +171,50 @@ def search_guard_wm(response, search_term):
 def search_guard_am(response, search_term):
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all('a', {"class": "a-link-normal a-text-normal"})
+
     item_name = []
     for anchor in anchors:
         item_name.append(anchor.span.get_text())
 
 
     if len(item_name) == 0:
+        print("Page empty of links")
         return False
 
     i = 0
     for name in item_name:
         if i < 3:
-            if check_item_uni(name, search_term, d_list, k_list_am):
+            #print("Run #: " + str(i))
+            if check_item_uni(name, search_term, d_list, k_list_am, "Amazon"):
                 return True
             i += 1
         else:
             return False
 
-    #while i < 3:
-    #    if check_item_uni(item_name[i], search_term, d_list, k_list_am):
-    #        return True
-    #    i += 1
-    #return False
 
-# def search_guard_uni(response, search_term):
-#    soup = BeautifulSoup(response, 'lxml')
-#    containers = [] # fix this
-#    item_name = []
-#    for item in containers:
-#        item_name.append(item.get_text()) # also sketch
-#        if
+def info_requester(link, package, search_term):
+    try:
+        #tr = TorRequest(password="hashpass")
+        #tr.reset_identity()
+        headers = package["user_agent"]
+
+        # Opening the pages and check how many page numbers
+        #result = package["tr"].get(link, headers=headers)
+        result = requests.get(link, headers=headers,
+                            allow_redirects=True)
+        response = result.text
+        print(result.url)
+        soup = BeautifulSoup(response, 'lxml')
+
+        return response
+    except:
+        #print("Problem")
+        package["count"] = 3
+        package = getPackage(package)
+        # Try again with new package
+        return info_requester(link, package, search_term)
+
+
 
 # ====B&H====
 # getting the info from the website.
@@ -219,8 +223,7 @@ def search_guard_am(response, search_term):
 # @param  response  The HTML response of the page in question
 # @param  search_term  The term a given user is searching
 
-
-def website_bh_info_helping(response, search_term):
+def website_bh_info_helping(response, search_term, package):
     soup = BeautifulSoup(response, 'lxml')
     anchors = soup.find_all('a', {"data-selenium": "itemHeadingLink"})
     links = []
@@ -230,10 +233,12 @@ def website_bh_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        if check_item_uni(link["name"], search_term, d_list, k_list_bh):
+        if check_item_uni(link["name"], search_term, d_list, k_list_bh, "B&H"):
             if i > 15:
                 break
-            outcome = page_parser_bandh(link["url"])
+
+            package = getPackage(package)
+            outcome = page_parser_bandh(link["url"], package)
             if outcome:
                 i += 1
             else:
@@ -249,18 +254,18 @@ def website_bh_info_helping(response, search_term):
 
 
 def website_bh_info(search_term):
-    link = bh_base_url + search_term
+    link = bh_base_url2 + search_term.replace(" ", "%20")
+    print(link)
 
-    # Opening the pages and check how many page numbers
-    response = requests.get(link, headers=user_agent,
-                            allow_redirects=True).text
-    soup = BeautifulSoup(response, 'lxml')
+    package = getPackage(None)
+    response = info_requester(link, package, search_term)
+
 
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
     if search_guard_bh(response, search_term):
 
-        website_bh_info_helping(response, search_term)
+        website_bh_info_helping(response, search_term, package)
 
     else:
         print("We are sorry! The item you looking for is not in the B&H store")
@@ -272,8 +277,7 @@ def website_bh_info(search_term):
 # @post  Item pages will possibly be parsed.
 # @param  response  The HTML response of the page in question
 # @param  search_term  The term a given user is searching
-def website_bb_info_helping(response, search_term):
-    # Cannot use check item because for bestbuy, brand name is not accessable at this stage
+def website_bb_info_helping(response, search_term, package):
     soup = BeautifulSoup(response, 'lxml')
     headers = soup.find_all('h4', {"class": "sku-header"})
     links = []
@@ -283,11 +287,12 @@ def website_bb_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        # if check_item_bb(link["name"], search_term):
-        if check_item_uni(link["name"], search_term, d_list, k_list_bb):
+        if check_item_uni(link["name"], search_term, d_list, k_list_bb, "Best Buy"):
             if i > 15:
                 break
-            outcome = page_parser_bestbuy(link["url"])
+
+            package = getPackage(package)
+            outcome = page_parser_bestbuy(link["url"], package)
             if outcome:
                 i += 1
             else:
@@ -306,16 +311,15 @@ def website_bb_info_helping(response, search_term):
 def website_bb_info(search_term):
     link = bestbuy_base_url + search_term
 
-    # Opening the pages and check how many page numbers
-    response = requests.get(link, headers=user_agent,
-                            allow_redirects=True).text
-    soup = BeautifulSoup(response, 'lxml')
+    package = getPackage(None)
+    response = info_requester(link, package, search_term)
+    #soup = BeautifulSoup(response, 'lxml')
 
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
     if search_guard_bb(response, search_term):
 
-        website_bb_info_helping(response, search_term)
+        website_bb_info_helping(response, search_term, package)
 
     else:
         print("We are sorry! The item you looking for is not in the Best Buy store")
@@ -326,9 +330,7 @@ def website_bb_info(search_term):
 # @param  response  The HTML response of the page in question
 # @param  search_term  The term a given user is searching
 # getting the info from the website.
-
-
-def website_wm_info_helping(response, search_term):
+def website_wm_info_helping(response, search_term, package):
 
     # Cannot use check item because for bestbuy, brand name is not accessable at this stage
     soup = BeautifulSoup(response, 'lxml')
@@ -341,10 +343,11 @@ def website_wm_info_helping(response, search_term):
 
     i = 0
     for link in links:
-        if check_item_uni(link["name"], search_term, d_list, k_list_wm):
+        if check_item_uni(link["name"], search_term, d_list, k_list_wm, "Walmart"):
             if i > 15:
                 break
-            outcome = page_parser_walmart(link["url"])
+            package = getPackage(package)
+            outcome = page_parser_walmart(link["url"], package)
             if outcome:
                 i += 1
             else:
@@ -358,20 +361,17 @@ def website_wm_info_helping(response, search_term):
 # @pre  A web search has begun
 # @post  Results will possibly be gathered.
 # @param  search_term  The given search term made by the user.
-
-
 def website_wm_info(search_term):
-    link = walmart_base_url + search_term
+    link = walmart_base_url + search_term.replace(" ", "%20")
+    package = getPackage(None)
+    response = info_requester(link, package, search_term)
 
-    # Opening the pages and check how many page numbers
-    response = requests.get(link, headers=user_agent,
-                            allow_redirects=True).text
-    soup = BeautifulSoup(response, 'lxml')
+    #soup = BeautifulSoup(response, 'lxml')
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
     if search_guard_wm(response, search_term):
 
-        website_wm_info_helping(response, search_term)
+        website_wm_info_helping(response, search_term, package)
     else:
         print("We are sorry! The item you looking for is not in the Walmart store")
 
@@ -381,27 +381,25 @@ def website_wm_info(search_term):
 # @post  Item pages will possibly be parsed.
 # @param  response  The HTML response of the page in question
 # @param  search_term  The term a given user is searching
-
-
-def website_am_info_helping(response, search_term):
+def website_am_info_helping(response, search_term, package):
     soup = BeautifulSoup(response, 'lxml')
 
-    headers = soup.find_all(
+    htwos = soup.find_all(
         'h2', {"class": "a-size-mini a-spacing-none a-color-base s-line-clamp-2"})
 
     links = []
 
-    for header in headers:
+    for header in htwos:
         if header.find_previous_sibling('a') == None:
             links.append({"url": "https://www.amazon.com" + header.a["href"],
                           "name": header.a.span.get_text()})
     i = 0
     for link in links:
-        # if check_item_am(link["name"], search_term):
-        if check_item_uni(link["name"], search_term, d_list, k_list_am):
+        if check_item_uni(link["name"], search_term, d_list, k_list_am, "Amazon"):
             if i > 15:
                 break
-            outcome = page_parser_amazon(link["url"])
+            package = getPackage(package)
+            outcome = page_parser_amazon(link["url"], package)
             if outcome:
                 i += 1
             else:
@@ -419,15 +417,16 @@ def website_am_info_helping(response, search_term):
 # @param  search_term  The given search term made by the user.
 def website_am_info(search_term):
     
-    link = amazon_base_url + search_term
-    # Opening the pages and check how many page numbers
-    response = requests.get(link, headers=user_agent,
-                            allow_redirects=True).text
-    soup = BeautifulSoup(response, 'lxml')
+    link = amazon_base_url + search_term.replace(" ", "+")
+
+    package = getPackage(None)
+    response = info_requester(link, package, search_term)
+    #soup = BeautifulSoup(response, 'lxml')
+
     # if the item in the store, we will go forth with the search.
     # if not then we will stop the search.
     if search_guard_am(response, search_term):
 
-        website_am_info_helping(response, search_term)
+        website_am_info_helping(response, search_term, package)
     else:
         print("We are sorry! The item you looking for is not in the Amazon store")

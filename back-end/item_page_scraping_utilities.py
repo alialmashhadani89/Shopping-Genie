@@ -2,14 +2,32 @@
 
 from bs4 import BeautifulSoup
 import requests
+#from torrequest import TorRequest
 
 from database_accessor import insertOneIntoResultTable
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36'}
-referer = "https://google.com"
 
+
+headers = {}
+referer = "https://google.com"
 # ===================================
 # Functions for parsing the actual product pages
+
+
+def info_requester(link, package):
+    try:
+       # tr = TorRequest(password="hashpass")
+        #tr.reset_identity()
+        headers = package["user_agent"]
+
+        response = requests.get(link, headers=headers,
+                                allow_redirects=True)
+        #result = package["tr"].get(link, headers=headers)
+        if(response == None):
+            print("There is an issue, no response.")
+        return response
+    except:
+        print("There was an issue in item page requesting")
+
 
 def bestbuy_brand_table_parser(tags):
     brand_in_general = False
@@ -51,12 +69,16 @@ def bestbuy_brand_table_parser(tags):
 # @pre  A search result page has been scraped of any links for items relevant to the search
 # @post  A valid result will be inserted into the database.
 # @param  link  The link of the item page to be scraped.
-def page_parser_bestbuy(link):
+def page_parser_bestbuy(link, package):
     #print(link)
-    result = requests.get(link, headers=headers, timeout=None, allow_redirects=True)
+    #print("bb page")
+
+    #result = requests.get(link, headers=headers, timeout=None, allow_redirects=True, proxies=package["proxy"])
+    result = info_requester(link, package)
 
     #print(result.status_code)
-
+    if result == None:
+        return False
     src = result.content
     soup = BeautifulSoup(src, 'lxml')
 
@@ -108,15 +130,19 @@ def page_parser_bestbuy(link):
 # @pre  A website's search result page has been scraped of any item page links relevant to the search
 # @post  A result, if valid, will be inserted into the database
 # @param  link  The link of the item page to be scraped.
-def page_parser_walmart(link):
-    result = requests.get(link, headers=headers, stream=False)
+def page_parser_walmart(link, package):
+    #print("Walmart page")
+    #result = requests.get(link, headers=headers, stream=False, proxies=package["proxy"])
+    result = info_requester(link, package)
+
     #print(result.status_code)
+
     prelink = result.url
     if "?wpa_bd=" in prelink:
         link = prelink[0:prelink.index("?wpa_bd=")]
     else:
         link = prelink
-    print(link)
+    #print(link)
 
     src = result.content
     soup = BeautifulSoup(src, 'lxml')
@@ -147,10 +173,6 @@ def page_parser_walmart(link):
     t_mant = soup.select_one(".price-mantissa")
     #print(t_mant)
 
-    # Motive: Combine corresponding values from Price Char with Price Mantissa
-    # The first value is the current price (or sale price)
-    # The second one is a value hidden from display
-    # The third value is the regular price
     price = t_char.get_text().replace(",","") + '.' + t_mant.get_text()
 
     #print(price)
@@ -168,11 +190,16 @@ def page_parser_walmart(link):
     return True
 
 
+
+
 # @pre
 # @post
 # @param  link  The link of the item page to be scraped
-def page_parser_amazon(link):
-    result = requests.get(link, headers=headers, stream=False, allow_redirects=True)
+# @param  package  The proxy + user agent combination used to fool websites
+def page_parser_amazon(link, package):
+
+    #result = requests.get(link, headers=headers, stream=False, allow_redirects=True, proxies=package["proxy"])
+    result = info_requester(link, package)
     prelink = result.url
     link = prelink[0:prelink.index("/ref=")]
 
@@ -180,7 +207,7 @@ def page_parser_amazon(link):
     #print(link)
     src = result.content
     soup = BeautifulSoup(src, 'lxml')
-
+    #print(soup.prettify())
     # For amazon
     # <span id="price_inside_buybox> value </span>
     # Get Item Name
@@ -208,7 +235,7 @@ def page_parser_amazon(link):
     if len(tag) == 0:
         return False
     price = tag[0].get_text(strip="true").strip("$").replace(',', '')
-    print(price)
+    #print("Amazon Price: " + str(price))
 
     result = {
         "price": price,
@@ -224,10 +251,13 @@ def page_parser_amazon(link):
 # @pre  A search result page has been scraped of any links relevant to the search
 # @post  A valid result will be inserted into the database
 # @param  link  The link of the item page to scrape.
-def page_parser_bandh(link):
-    result = requests.get(link, headers=headers, timeout=None, allow_redirects=True)
-    print(link)
-    print(result.status_code)
+def page_parser_bandh(link, package):
+
+    #headers = package["user_agent"]
+    #result = requests.get(link, headers=headers, timeout=None, allow_redirects=True, proxies=package["proxy"])
+    result = info_requester(link, package)
+    #print(link)
+    #print(result.status_code)
 
     src = result.content
 
