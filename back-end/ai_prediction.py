@@ -5,19 +5,20 @@
 
 # Importing the libraries
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import pandas as pd
 
-import os
+#import os
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
-
+from aiModleFunction import model_create
+from tensorflow.keras.models import load_model
 # Importing the Keras libraries and packages
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import Dropout
+#from tensorflow.keras.models import Sequential, load_model
+#from tensorflow.keras.layers import Dense
+#from tensorflow.keras.layers import LSTM
+#from tensorflow.keras.layers import Dropout
 
 
 def get_predication(input_data, future_prices):
@@ -40,43 +41,10 @@ def get_predication(input_data, future_prices):
 
     # Reshaping
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
-    '''
-    # Part 2 - Building the RNN
-   
-    # Initialising the RNN
-    regressor = Sequential()
-
-    # Adding the first LSTM layer and some Dropout regularisation
-    regressor.add(LSTM(units=50, return_sequences=True,
-                       input_shape=(X_train.shape[1], 1)))
-    regressor.add(Dropout(0.2))
-
-    # Adding a second LSTM layer and some Dropout regularisation
-    regressor.add(LSTM(units=50, return_sequences=True))
-    regressor.add(Dropout(0.2))
-
-    # Adding a third LSTM layer and some Dropout regularisation
-    regressor.add(LSTM(units=50, return_sequences=True))
-    regressor.add(Dropout(0.2))
-
-    # Adding a fourth LSTM layer and some Dropout regularisation
-    regressor.add(LSTM(units=50))
-    regressor.add(Dropout(0.2))
-
-    # Adding the output layer
-    regressor.add(Dense(units=1))
-
-    # Compiling the RNN
-    regressor.compile(optimizer='adam', loss='mean_squared_error')
-
-    # if the model is already been computed, then load it
-    # else, compute, save it then load it.
-    #regressor.fit(X_train, y_train, epochs=100, batch_size=32)
-
-    if(not os.path.exists('price_prediction.h5')):
-        regressor.fit(X_train, y_train, epochs=100, batch_size=32)
-        regressor.save('price_prediction.h5')
-    '''
+    
+    # create the model. 
+    # will be active when it needed.
+    #model_create(X_train,y_train)
     regressor = load_model('price_prediction.h5')
 
     # Part 3 - Making the predictions
