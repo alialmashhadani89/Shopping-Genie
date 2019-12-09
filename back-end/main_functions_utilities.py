@@ -62,7 +62,6 @@ def checkScrapingDate(search, results):
     
     # uodating the result list after all the update we did above.    
     results = database_accessor.get_results(search)
-    
     # return the final result. 
     return results
     
