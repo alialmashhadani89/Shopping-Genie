@@ -71,8 +71,9 @@ def check_item_uni(item_name, search_term, d_list, k_list, store):
 
     occurence_count = 0
     for word in search_term.split():
+        fluff = " " + word + " "
         if len(word)>=2:
-            if str(word).lower() in full_item_name:
+            if str(fluff).lower() in full_item_name:
 
                 occurence_count += 1
 
