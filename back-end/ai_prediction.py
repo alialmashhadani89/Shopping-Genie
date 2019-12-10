@@ -5,20 +5,13 @@
 
 # Importing the libraries
 import numpy as np
-#import matplotlib.pyplot as plt
 import pandas as pd
 
-#import os
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
 from aiModleFunction import model_create
 from tensorflow.keras.models import load_model
-# Importing the Keras libraries and packages
-#from tensorflow.keras.models import Sequential, load_model
-#from tensorflow.keras.layers import Dense
-#from tensorflow.keras.layers import LSTM
-#from tensorflow.keras.layers import Dropout
 
 
 def get_predication(input_data, future_prices):
