@@ -101,16 +101,16 @@ def page_parser_bestbuy(link, package):
 
     # Price
     if soup.find('span', {"class": "priceView-subscription-units"}):
-        print("A Subscription-based Item")
+        #print("A Subscription-based Item")
         return False
     tag = soup.find('div', {"class": "priceView-hero-price priceView-customer-price"})
     if tag == None:
-        print("Item is no longer available")
+        #print("Item is no longer available")
         return
     pre_price = tag.span.get_text()
     if pre_price == None:
         # Problem
-        print("Item no longer available")
+        #print("Item no longer available")
         return False
     else:
         price = pre_price.strip("$").replace(",","")
@@ -229,7 +229,7 @@ def page_parser_amazon(link, package):
     # Get price
     tag = soup.select("#price_inside_buybox")
     if len(tag) == 0:
-        print("Other")
+        #print("Other")
         tag = soup.select("#priceblock_ourprice")
 
     if len(tag) == 0:

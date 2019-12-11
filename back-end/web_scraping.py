@@ -67,14 +67,13 @@ def killScore(term_list, item_name):
 def check_item_uni(item_name, search_term, d_list, k_list, store):
     score = 0
     term_count = len(search_term.split())
-    full_item_name = str(item_name).lower()
+    full_item_name = " " + str(item_name).lower() + " "
 
     occurence_count = 0
     for word in search_term.split():
         fluff = " " + word + " "
         if len(word)>=2:
             if str(fluff).lower() in full_item_name:
-
                 occurence_count += 1
 
 
@@ -131,7 +130,7 @@ def search_guard_bb(response, search_term):
         item_name.append(header.a.get_text())
 
     if len(item_name) == 0:
-        print("Page empty of links")
+        #print("Page empty of links")
         return False
 
     if check_item_uni(item_name[0], search_term, d_list, k_list_bb, "Best Buy"):
@@ -179,7 +178,7 @@ def search_guard_am(response, search_term):
 
 
     if len(item_name) == 0:
-        print("Page empty of links")
+        #print("Page empty of links")
         return False
 
     i = 0
@@ -204,7 +203,7 @@ def info_requester(link, package, search_term):
         result = requests.get(link, headers=headers,
                             allow_redirects=True)
         response = result.text
-        print(result.url)
+        #print(result.url)
         soup = BeautifulSoup(response, 'lxml')
 
         return response
@@ -256,7 +255,7 @@ def website_bh_info_helping(response, search_term, package):
 
 def website_bh_info(search_term):
     link = bh_base_url2 + search_term.replace(" ", "%20")
-    print(link)
+    #print(link)
 
     package = getPackage(None)
     response = info_requester(link, package, search_term)
