@@ -141,8 +141,8 @@ def get_results(term=' '):
         max(DATE_FORMAT(date,'%Y-%m-%d')) as todayDateTable,\
         DATE_FORMAT(NOW()+ INTERVAL 30 DAY, '%Y-%m-%d %T.%f') as predictionDate, concat('$', r.price)  as itemPrice,\
         s.name as storeName, r.url as storeLink from results r join brands b on r.bid = b.id join sellers s on r.sid = s.id\
-        and r.price in (select min(price) from results where name like concat('%',%s,'%') and date(NOW()) = date(date) group by sid)\
-        where r.name like concat('%',%s,'%') group by s.name;
+        where r.price in (select min(price) from results where name like concat('%',%s,'%') and date(NOW()) = date(date) group by sid)\
+        and r.name like concat('%',%s,'%') and date(NOW()) = date(date) group by s.name;
         """
     val = (term, term,)
 

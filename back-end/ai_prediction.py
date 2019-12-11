@@ -38,6 +38,8 @@ def get_predication(input_data, future_prices):
     # create the model. 
     # will be active when it needed.
     #model_create(X_train,y_train)
+    
+    # loading the model.
     regressor = load_model('price_prediction.h5')
 
     # Part 3 - Making the predictions
