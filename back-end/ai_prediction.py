@@ -12,9 +12,10 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from aiModleFunction import model_create
 from tensorflow.keras.models import load_model
+import tensorflow as tf
 
 
-def get_predication(input_data, future_prices):
+def get_predication(input_data,regressor,future_prices):
 
     input_data = pd.DataFrame(input_data)
 
@@ -34,13 +35,6 @@ def get_predication(input_data, future_prices):
 
     # Reshaping
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
-    
-    # create the model. 
-    # will be active when it needed.
-    #model_create(X_train,y_train)
-    
-    # loading the model.
-    regressor = load_model('price_prediction.h5')
 
     # Part 3 - Making the predictions
 
@@ -79,13 +73,18 @@ def get_redication_price(pricesdb, future_prices):
 
     else:
         training_set = pd.DataFrame(pricesdb)
-
+        # create the model. 
+        # will be active when it needed.
+        #model_create(training_set[0])
+        regressor = load_model('price_prediction.h5')
         for store in store_list:
             data = training_set[training_set[1] == store]
             if (len(data) > 60):
                 predication_list.update(
-                    {store: get_predication((data[0]), future_prices)})
+                    {store: get_predication((data[0]),regressor, future_prices)})
             else:
                 predication_list.update({store: '0'})
-
+    
+    # to clear the model and avoid memory leak. 
+    tf.keras.backend.clear_session()           
     return predication_list
