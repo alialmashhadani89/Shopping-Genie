@@ -24,18 +24,6 @@ def get_predication(input_data,regressor,future_prices):
     # training_set_scaled = sc.fit_transform(training_set)
     training_set_scaled = sc.fit_transform(input_data)
 
-    # Creating a data structure with 60 timesteps and 1 output
-    X_train = []
-    y_train = []
-
-    for i in range(60, len(training_set_scaled)):
-        X_train.append(training_set_scaled[i-60:i, 0])
-        y_train.append(training_set_scaled[i, 0])
-    X_train, y_train = np.array(X_train), np.array(y_train)
-
-    # Reshaping
-    X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
-
     # Part 3 - Making the predictions
 
     # Getting the prices to work with for the next 10 days.
