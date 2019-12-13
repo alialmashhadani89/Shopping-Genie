@@ -14,8 +14,12 @@ pip install -r requirements.txt
 ```
 
 ### Front-End
-1. Please install npm that will come with node.js
-2. Please install react using the following command
+1. Please install npm that will come with node.js by following the link:
+```sh
+https://nodejs.org/en/download/
+```
+
+2. Please install react libraries using the following command:
 ```sh
 npm install --save react
 npm install --save react-dom
