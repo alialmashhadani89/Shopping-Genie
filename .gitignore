@@ -31,3 +31,4 @@ __pycache__
 venv
 db_credentials.py
 mail_credentations.py
+price_prediction.h5
