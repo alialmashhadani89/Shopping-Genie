@@ -18,7 +18,7 @@ bh_base_url2 = "https://www.bhphotovideo.com/c/search?Ntt="
 headers = {}
 referer = "https://google.com"
 # Words for which to decrement the link score
-d_list = [" for ", " adapter ", " charger ", " case ", " cable ", " cover ", " screen "]
+d_list = [" for ", " adapter ", " charger ", " case ", " cable ", " cover ", " screen ", " battery ", " battery compatible " ]
 # Words for which to kill the link score
 k_list_am = ["refurbished", "renewed"]
 k_list_bh = ["refurbished"]
