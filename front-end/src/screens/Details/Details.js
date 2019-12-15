@@ -249,57 +249,57 @@ const Details = () => {
           />
         </SearchBarContainer>
         <ResultsContainer>
-          <Table id="products">
-            <thead>
-              <tr>
-                <th>
-                  <h5> Item Image </h5>
-                </th>
-                <th>
-                  <h5> Product Brand </h5>
-                </th>
-                <th>
-                  <h5> Product Name </h5>
-                </th>
-                <th>
-                  <h5> Price </h5>
-                </th>
-                <th>
-                  <h5> Prediction Price </h5>
-                </th>
-                <th>
-                  <h5> Prediction Date </h5>
-                </th>
-                <th>
-                  <h5> Store </h5>
-                </th>
-                <th>
-                  <h5> Link </h5>
-                </th>
-              </tr>
-            </thead>
-
             {checkSpin(results) && !noResults && (
               <MDSpinner
                 size={50}
                 style={{
                   marginTop: "50px",
-                  marginLeft: "390px"
+                  marginLeft: "0px"
                 }}
               />
             )}
             {!checkSpin(results) && (
+              <Table id="products">
+              <thead>
+                <tr>
+                  <th>
+                    <h5> Item Image </h5>
+                  </th>
+                  <th>
+                    <h5> Product Brand </h5>
+                  </th>
+                  <th>
+                    <h5> Product Name </h5>
+                  </th>
+                  <th>
+                    <h5> Price </h5>
+                  </th>
+                  <th>
+                    <h5> Prediction Price </h5>
+                  </th>
+                  <th>
+                    <h5> Prediction Date </h5>
+                  </th>
+                  <th>
+                    <h5> Store </h5>
+                  </th>
+                  <th>
+                    <h5> Link </h5>
+                  </th>
+                </tr>
+              </thead>
+              
               <TableBody>
                 {" "}
                 {results.map(item => (
                   <RenderItem key={item.id} {...item} />
                 ))}
               </TableBody>
-            )}
+            
+              </Table>)}
             {noResults && (
-              <img src={noResultImag2} style={{ marginLeft: "100px" }} />
+              <img src={noResultImag2} style={{height:"350px"}} />
             )}
-          </Table>
         </ResultsContainer>
       </Content>
     </MainContainer>
