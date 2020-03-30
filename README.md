@@ -1,4 +1,6 @@
 # Shopping Genie
+hopping Genie is a website that aims to help users save time and money on buying technology products. The website is doing one stop search to help condense the information on these websites into one databases. The website has an AI [neural network] that will help predict the future price of each item with each store. 
+
 
 ## Installation
 
