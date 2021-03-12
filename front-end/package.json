@@ -52,7 +52,7 @@
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.4",
     "react-background-slider": "^1.2.0",
-    "react-dev-utils": "^9.1.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.11.0",
     "react-md-spinner": "^1.0.0",
     "react-router-dom": "^5.1.2",
